@@ -1,0 +1,3 @@
+# ----------  Excluiding all node_modules form git staging or git commiting -------------
+
+node_modules
