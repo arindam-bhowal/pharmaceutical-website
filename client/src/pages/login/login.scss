@@ -1,0 +1,123 @@
+.login {
+  width: 100vw;
+
+  .wrapper {
+    display: flex;
+
+    .rightBox {
+      flex: 1;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 32rem;
+        height: 32rem;
+      }
+    }
+
+    .leftBox {
+      flex: 2;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .top {
+        .logo {
+          img {
+            width: 15rem;
+          }
+        }
+      }
+
+      .bottom {
+        .heading {
+          font-size: 35px;
+          font-weight: 700;
+          text-align: center;
+          span {
+            color: red;
+          }
+        }
+
+        form {
+          margin-top: 15px;
+          width: 40rem;
+          background: rgba(178, 153, 153, 0.2);
+          border-radius: 16px;
+          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+          backdrop-filter: blur(5px);
+          -webkit-backdrop-filter: blur(5px);
+          border: 1px solid rgba(178, 153, 153, 0.3);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          box-shadow: 10px 9px 8px -5px rgba(0, 0, 0, 0.33);
+          -webkit-box-shadow: 10px 9px 8px -5px rgba(0, 0, 0, 0.33);
+          -moz-box-shadow: 10px 9px 8px -5px rgba(0, 0, 0, 0.33);
+
+          .inputContainer {
+            display: block;
+            border: none;
+            background: none;
+            border-bottom: 1px solid green;
+            margin: 25px;
+            position: relative;
+            top: 10px;
+            width: 13rem;
+
+            &:focus {
+              outline: none;
+
+              &::placeholder {
+                transform: translateY(-5px);
+                color: red;
+              }
+            }
+          }
+
+          .rememberMe {
+            display: flex;
+            //   flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+
+            #checkbox {
+              margin: 5px;
+            }
+          }
+          .btn {
+            width: 350px;
+            background-color: lightgreen;
+            outline: none;
+            border: none;
+            height: 30px;
+            margin: 10px;
+            font-weight: 900;
+            color: rgb(70, 67, 67);
+          }
+
+          .forgotPassword {
+            color: blue;
+            text-decoration: underline;
+            margin: 10px;
+          }
+
+          .registerLink {
+            margin: 10px;
+            margin-bottom: 30px;
+
+            span {
+              color: red;
+            }
+          }
+        }
+      }
+    }
+  }
+}
