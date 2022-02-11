@@ -4,7 +4,7 @@ const Login = () => {
     return (
         <div className='login' >
             <div className="wrapper">
-                <div className="rightBox">
+                <div className="rightBox" >
                     <img src="/assets/login-register.png" alt="" />
                 </div>
                 <div className="leftBox">
@@ -14,9 +14,9 @@ const Login = () => {
                         </div>
                     </div>
                     <div className="bottom">
-                        <h1 className="heading">
+                        <div className="heading text">
                             <span>L</span>OGIN
-                        </h1>
+                        </div>
                         <form className='loginForm'>
                             {/* <input type="text" className='inputContainer' placeholder='Name' /> */}
                             <input type="email" className='inputContainer' placeholder='Email' />

@@ -1,5 +1,7 @@
 .login {
   width: 100vw;
+  height: 100vh;
+  // background-color: yellowgreen;
 
   .wrapper {
     display: flex;
@@ -33,6 +35,7 @@
       }
 
       .bottom {
+        margin-top: -15px;
         .heading {
           font-size: 35px;
           font-weight: 700;
@@ -44,7 +47,6 @@
 
         form {
           margin-top: 15px;
-          width: 40rem;
           background: rgba(178, 153, 153, 0.2);
           border-radius: 16px;
           box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -55,7 +57,8 @@
           flex-direction: column;
           justify-content: center;
           align-items: center;
-
+          width: 650px;
+          
           box-shadow: 10px 9px 8px -5px rgba(0, 0, 0, 0.33);
           -webkit-box-shadow: 10px 9px 8px -5px rgba(0, 0, 0, 0.33);
           -moz-box-shadow: 10px 9px 8px -5px rgba(0, 0, 0, 0.33);
@@ -72,11 +75,15 @@
 
             &:focus {
               outline: none;
+              background: none;
 
               &::placeholder {
                 transform: translateY(-5px);
                 color: red;
               }
+            }
+            &:active{
+              background: none;
             }
           }
 
@@ -121,3 +128,86 @@
     }
   }
 }
+
+// ---------------Media Queries------------
+// @media only screen and (min-width: 300px) and (max-width: 1200px){
+
+// }
+@media only screen and (max-width: 1200px){
+  .login{
+    .wrapper{
+      .leftBox{
+        .bottom{
+          form{
+            width: 490px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 1200px){
+  .login::before{
+    content: '';
+            background: url('../../../public//assets/login-register.png') 
+                no-repeat center center/cover;
+            position: absolute;
+            opacity: 0.3;
+            top: 0px;
+            left: 0px;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+  }
+  .login{
+    .wrapper{
+      .rightBox{
+        display: none;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px){
+  .login::before{
+    content: '';
+            background: url('../../../public//assets/login-register.png') 
+                no-repeat center center/cover;
+            position: absolute;
+            opacity: 0.3;
+            top: 0px;
+            left: 0px;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+  }
+  .login{
+    .wrapper{
+      .rightBox{
+        display: none;
+      }
+      .leftBox{
+        .bottom{
+          form{
+            width: 300px;
+
+            .btn{
+              width: 250px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// @media screen and (max-width: 450px) {
+//   .login{
+//     .wrapper{
+//       .rightBox{
+//         display: none;
+//       }
+//     }
+//   }
+// }
