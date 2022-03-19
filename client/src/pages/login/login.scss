@@ -1,7 +1,6 @@
 .login {
   width: 100vw;
   height: 100vh;
-  // background-color: yellowgreen;
 
   .wrapper {
     display: flex;
@@ -130,9 +129,7 @@
 }
 
 // ---------------Media Queries------------
-// @media only screen and (min-width: 300px) and (max-width: 1200px){
 
-// }
 @media only screen and (max-width: 1200px){
   .login{
     .wrapper{
@@ -147,7 +144,7 @@
   }
 }
 
-@media only screen and (min-width: 600px) and (max-width: 1200px){
+@media only screen and (min-width: 600px) and (max-width: 800px){
   .login::before{
     content: '';
             background: url('../../../public//assets/login-register.png') 

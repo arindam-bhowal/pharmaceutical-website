@@ -1,0 +1,45 @@
+.home {
+    width: 100%;
+    // text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 100px;
+
+.left-sec h2 {
+    font-size: 20px;
+    text-transform: capitalize;
+    font-weight: lighter;
+    color: #242424;
+    margin-top: 100px;
+}
+
+.left-sec h1 {
+    font-size: 55px;
+    text-transform: capitalize;
+    font-weight: 700;
+    margin: 15px 0;
+}
+
+.left-sec p {
+    margin-bottom: 20px;
+}
+
+.left-sec button {
+    padding: 15px 0px;
+    text-align: center;
+    font-size: 14px;
+    color: #fff;
+    border: none;
+    background-image: linear-gradient(to right, #649bff, #0070fa, #649bff);
+    border-radius: 10px;
+}
+
+.right-sec{
+    margin-left: 150px;
+    img{
+        width: 45%;
+    }
+}
+
+}
