@@ -19,7 +19,7 @@ return (
         </section>
         <section className="right-sec">
             <figure>
-                <img src="assets/home-bg.png" />
+                <img src="assets/home-bg.png" alt='' />
             </figure>
         </section>
     </div>
