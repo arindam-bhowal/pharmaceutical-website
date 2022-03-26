@@ -3,8 +3,9 @@ const connectToMongo = require('./db')
 const cors = require('cors')
 const app = express()
 
-const patientAuth = require('./routes/patientAuth')
-
+const patientAuthRoute = require('./routes/patientAuth')
+const patientRoute = require('./routes/patient')
+const medicineRoute = require('./routes/medicine')
 
 
 // -----------------Middle wares ---------------
@@ -17,8 +18,12 @@ app.use(cors())
 // ===========
 // For Patients
 // ===========
-app.use('/api/patient', patientAuth)
-
+app.use('/api/patient', patientAuthRoute)
+app.use('/api/patient', patientRoute)
+// ===========
+// For Medicines
+// ===========
+app.use('/api/medicine', medicineRoute)
 
 
 // -----------------Listing to port ---------------
