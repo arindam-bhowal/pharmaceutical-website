@@ -25,30 +25,36 @@ const Sidebar = () => {
       <div className="center">
         <ul>
           <p className="title">MAIN</p>
+
           <Link to="/" style={{ textDecoration: "none" }}>
           <li>
             <DashboardIcon className="icon" />
             <span>Dashboard</span>
           </li>
           </Link>
+
           <p className="title">USERS</p>
-          <Link to="/users" style={{ textDecoration: "none" }}>
+
+          <Link to="/doctors" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
               <span>Doctors</span>
             </li>
           </Link>
-          <Link to="/products" style={{ textDecoration: "none" }}>
+
+          <Link to="/workers" style={{ textDecoration: "none" }}>
             <li>
               <PeopleAltOutlined className="icon" />
               <span>Workers</span>
             </li>
           </Link>
+
+          <Link to="/patients" style={{ textDecoration: "none" }}>
           <li>
             <GroupsOutlined className="icon" />
             <span>Patients</span>
           </li>
-          
+          </Link>
 
           
           <p className="title">USEFUL</p>
@@ -63,10 +69,15 @@ const Sidebar = () => {
 
 
           <p className="title">SERVICE</p>
+
+          <Link to="/patients" style={{ textDecoration: "none" }}>
           <li>
             <MedicationOutlined className="icon" />
             <span>Stocks</span>
           </li>
+          </Link>
+
+          
           <li>
             <CurrencyRupeeOutlined className="icon" />
             <span>Billing</span>

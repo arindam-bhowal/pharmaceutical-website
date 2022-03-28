@@ -1,11 +1,21 @@
-import './history.scss'
+import Navbar from "../../components/navbar/Navbar";
+import "./history.scss";
 
 const History = () => {
   return (
-    <div className='history'>
-        
-    </div>
-  )
-}
+    <>
+      <div className="navbar">
+        <Navbar />
+      </div>
 
-export default History
+      <div className="history">
+        <h1>History</h1>
+        <div className="table">
+          
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default History;
