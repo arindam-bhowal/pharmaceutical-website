@@ -3,10 +3,9 @@ const connectToMongo = require('./db')
 const cors = require('cors')
 const app = express()
 
-const patientAuthRoute = require('./routes/patientAuth')
 const patientRoute = require('./routes/patient')
 const medicineRoute = require('./routes/medicine')
-
+const doctorRoute = require('./routes/doctor')
 
 // -----------------Middle wares ---------------
 app.use(express.json())
@@ -18,12 +17,26 @@ app.use(cors())
 // ===========
 // For Patients
 // ===========
-app.use('/api/patient', patientAuthRoute)
 app.use('/api/patient', patientRoute)
+
+// ===========
+// For Doctors
+// ===========
+app.use('api/doctors', doctorRoute)
+
 // ===========
 // For Medicines
 // ===========
 app.use('/api/medicine', medicineRoute)
+
+
+
+
+// ===========
+// For Admin
+// ===========
+
+
 
 
 // -----------------Listing to port ---------------
