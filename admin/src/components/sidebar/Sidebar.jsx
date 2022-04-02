@@ -1,58 +1,100 @@
-import React from 'react'
-// import DashboardIcon from '@mui/icons-material/Dashboard';
-// import MedicationIcon from "@mui/icons-material/Medication";
-import './sidebar.scss'
-const Sidebar = () => {
-    return (
-      <div className="s-layout">
-        <div className="s-layout__sidebar">
-          <a className="s-sidebar__trigger" href="#0">
-            <i className="fa fa-bars"></i>
-          </a>
+import {
+  ChevronRightOutlined,
+  CreditCardOutlined,
+  DarkModeOutlined,
+  DashboardOutlined,
+  GroupOutlined,
+  GroupsOutlined,
+  LightModeOutlined,
+  LogoutOutlined,
+  MedicationOutlined,
+  PersonOutlineOutlined
+} from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import "./sidebar.scss";
 
-          <nav className="s-sidebar__nav">
-            <ul>
-              <li>
-                <a className="s-sidebar__nav-link" href="#0">
-                  {/* <DashboardIcon/> */}
-                  <em>Dashboard</em>
+const Sidebar = () => {
+  // All useStates
+  const [isToggled, setisToggled] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
+
+  // For toggling button
+  const handleToggle = () => {
+    setisToggled(!isToggled);
+  };
+
+  return (
+    <>
+      <nav className={`sidebar ${!isToggled && "close"}`}>
+        <header>
+          <div className="image-text">
+            <span className="image"><img src="/assets/logo.png" alt="" /></span>
+            <div className="text logo-text">
+              <span className="name">Jan-Kalyan</span>
+            </div>
+          </div>
+          <ChevronRightOutlined
+            className="bx bx-chevron-right toggle"
+            onClick={handleToggle}
+          />
+        </header>
+        <div className="menu-bar">
+          <div className="menu">
+            <ul className="menu-links">
+
+              <li className="nav-link">
+                <a href="#">
+                  <DashboardOutlined className="sidebar-icon" />
+                  <span className="text nav-text">Dashboard</span>
                 </a>
               </li>
-              <li>
-                <a className="s-sidebar__nav-link" href="#0">
-                  {/* <MedicationIcon /> */}
-                  <em>Doctor</em>
+
+              <li className="nav-link">
+                <a href="#">
+                  <GroupsOutlined className="sidebar-icon" />
+                  <span className="text nav-text">Patients</span>
                 </a>
               </li>
-              <li>
-                <a className="s-sidebar__nav-link" href="#0">
-                  <i className="fa fa-camera"></i>
-                  <em>Paitent</em>
+              <li className="nav-link">
+                <a href="#">
+                  <GroupOutlined className="sidebar-icon" />
+                  <span className="text nav-text">Staffs</span>
                 </a>
               </li>
-              <li>
-                <a className="s-sidebar__nav-link" href="#0">
-                  <i className="fa fa-camera"></i>
-                  <em>Staff</em>
+              <li className="nav-link">
+                <a href="#">
+                  <PersonOutlineOutlined className="sidebar-icon" />
+                  <span className="text nav-text">Doctors</span>
                 </a>
               </li>
-              <li>
-                <a className="s-sidebar__nav-link" href="#0">
-                  <i className="fa fa-camera"></i>
-                  <em>Stock</em>
+              <li className="nav-link">
+                <a href="#">
+                  <MedicationOutlined className="sidebar-icon" />
+                  <span className="text nav-text">Stocks</span>
                 </a>
               </li>
-              <li>
-                <a className="s-sidebar__nav-link" href="#0">
-                  <i className="fa fa-camera"></i>
-                  <em>Checkout</em>
+              <li className="nav-link">
+                <a href="#">
+                  <CreditCardOutlined className="sidebar-icon" />
+                  <span className="text nav-text">Check-out</span>
                 </a>
               </li>
             </ul>
-          </nav>
-        </div>
-      </div>
-    );
-}
+          </div>
+          <div className="bottom-content">
+            <li className="">
+              <a href="#">
+                <LogoutOutlined className="sidebar-icon" />
+                <span className="text nav-text">Logout</span>
+              </a>
+            </li>
 
-export default Sidebar
+          </div>
+        </div>
+      </nav>
+    </>
+  );
+};
+
+export default Sidebar;

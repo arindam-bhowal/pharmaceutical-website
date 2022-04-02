@@ -1,0 +1,19 @@
+.patients{
+    display: flex;
+
+    .main{
+        margin: auto;
+        width: 85%;
+        .top{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-style: italic;
+            margin: 20px;
+            text-decoration: underline;
+            text-decoration-color: rgb(107, 209, 232);
+        }
+        
+    }
+}

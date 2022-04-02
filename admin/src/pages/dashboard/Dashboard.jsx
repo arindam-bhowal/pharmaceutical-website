@@ -3,8 +3,10 @@ import Table from '../../components/table/Table'
 import './dashboard.scss'
 const Dashboard = () => {
   return (
-    // <Sidebar/>
-    <Table />
+    <div className='dashboard' >
+    <Sidebar/>
+    {/* <Table /> */}
+    </div>
   )
 }
 

@@ -8,7 +8,7 @@ const patientSchema = new mongoose.Schema({
   sex: String,
   age: Number,
   profilePic: String,
-  id: String
+  govtId: String
 });
 
 module.exports = mongoose.model("Patients", patientSchema);
