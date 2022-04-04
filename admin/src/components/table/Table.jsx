@@ -10,17 +10,17 @@ import {
   ModeEditOutlineOutlined,
   DeleteOutlineOutlined,
 } from "@mui/icons-material";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import patientContext from "../../context/patient/patientContext";
-import { useLocation, useNavigate } from "react-router-dom";
-import Profile from "../profile/Profile";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 const List = (props) => {
   const { data, query } = props;
 
   const { deletePatient } = useContext(patientContext);
 
-  const location = useLocation();
   const navigate = useNavigate();
 
   return (
@@ -60,7 +60,9 @@ const List = (props) => {
                 </TableCell>
                 <TableCell className="tableCell">
                   {/* <span className={`status ${row.status}`}>{row.status}</span> */}
+                  <Link to={`/patient/update/${row._id}`}>
                   <ModeEditOutlineOutlined className="status edit" />
+                  </Link>
                   <DeleteOutlineOutlined
                     className="status delete"
                     onClick={() => {

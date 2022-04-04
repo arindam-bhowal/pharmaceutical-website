@@ -39,13 +39,32 @@ const PatientState = (props) => {
     }
   };
 
+  // -------------------Update patient details--------------------------
 
+  const updatePatient = async (patientId, name, email, phoneNumber, sex, age, profilePic, govtId, location) =>{
+    try {
+        await axios.put(`${host}/patient/update/${patientId}`, {name, email, phoneNumber, sex, age, profilePic, govtId, location})
+    } catch (error) {
+        //  To do
+    }
+  }
+
+  // -------------------Find a patient from database---------------------
+
+  const getPatient = async (patientId) => {
+      try {
+          const res = await axios.get(`${host}/patient/find/${patientId}`)
+          return res.data
+      } catch (error) {
+        //   to do
+      }
+  }
 
 
 
 
   return (
-    <patientContext.Provider value={{ fetchAllPatients, deletePatient, newPatient}}>
+    <patientContext.Provider value={{ fetchAllPatients, deletePatient, newPatient, updatePatient, getPatient}}>
       {props.children}
     </patientContext.Provider>
   );

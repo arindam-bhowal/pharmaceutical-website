@@ -49,7 +49,7 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await newPatient(name, email, password,phoneNumber,sex,age,profilePic,govtId,location);
-    navigate('/patient/patients')
+    navigate('/patients')
   };
 
   return (

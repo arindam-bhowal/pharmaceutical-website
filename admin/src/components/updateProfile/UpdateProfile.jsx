@@ -4,15 +4,19 @@ import { Button } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import patientContext from "../../context/patient/patientContext";
 import { useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
 
 const UpdateProfile = () => {
+  
+  const { updatePatient, getPatient } = useContext(patientContext);
 
+  const { patientId } = useParams()
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const { newPatient } = useContext(patientContext);
+  const [reqPatient, setReqPatient] = useState()
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("jankalyan");
   const [phoneNumber, setPhoneNumber] = useState();
@@ -48,13 +52,37 @@ const UpdateProfile = () => {
     setSelectedFile(e.target.files[0]);
   };
 
+  // ---------------------*******************---------------------------------------
+  // Get patient details 
+  useEffect(() => {
+    const fetchPatient = async () => {
+      const res = await getPatient(patientId)
+      setReqPatient(res)
+    }
+    fetchPatient()
+  }, [])
+
+  useEffect(() => {
+    if(reqPatient){
+      setName(reqPatient.name)
+      setEmail(reqPatient.email)
+      setPhoneNumber(reqPatient.phoneNumber)
+      setAge(reqPatient.age)
+      setLocation(reqPatient.location)
+      setSex(reqPatient.sex)
+      setProfilePic(reqPatient.profilePic)
+      setGovtId(reqPatient.govtId)
+    }
+  }, [reqPatient])
+  
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await newPatient(name, email, password,phoneNumber,sex,age,profilePic,govtId,location);
-    navigate('/patient/patients')
+    await updatePatient(patientId, name, email, phoneNumber, sex, age, profilePic, govtId, location)
+    navigate("/patients");
   };
-
-
+  
 
   return (
     <div className="updateProfile">
@@ -66,7 +94,7 @@ const UpdateProfile = () => {
           }}
         />
         <div className="header">
-          <h1>Add a Patient</h1>
+          <h1>Update Patient Details</h1>
         </div>
 
         <form className="container" onSubmit={handleSubmit}>
@@ -80,7 +108,7 @@ const UpdateProfile = () => {
               <div className="inputContainer">
                 <label htmlFor="profilePic">
                   <Edit className="editIcon" />
-                  Add Profile Picture
+                  Add Profile Picture 
                 </label>
                 <input
                   type="file"
@@ -113,6 +141,7 @@ const UpdateProfile = () => {
                 name="name"
                 type="text"
                 required
+                defaultValue={reqPatient && reqPatient.name}
                 onChange={(e) => setName(e.target.value)}
               />
               <span className="highlight"></span>
@@ -125,6 +154,7 @@ const UpdateProfile = () => {
                 name="email"
                 type="text"
                 required
+                defaultValue={reqPatient && reqPatient.email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <span className="highlight"></span>
@@ -141,7 +171,7 @@ const UpdateProfile = () => {
               />
               <span className="highlight"></span>
               <span className="bar"></span>
-              <label>Default Password</label>
+              <label>Password cannot be changed</label>
             </div>
 
             <div className="group">
@@ -149,6 +179,7 @@ const UpdateProfile = () => {
                 name="phoneNumber"
                 type="number"
                 required
+                defaultValue={reqPatient && reqPatient.phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
               <span className="highlight"></span>
@@ -162,6 +193,7 @@ const UpdateProfile = () => {
                   name="age"
                   placeholder="Age"
                   type="number"
+                  defaultValue={reqPatient && reqPatient.age}
                   onChange={(e) => setAge(e.target.value)}
                 />
               </div>
@@ -197,7 +229,7 @@ const UpdateProfile = () => {
             </div>
 
             <Button variant="contained" type="submit" className="submitBtn">
-              Create
+              Update
             </Button>
           </div>
         </form>

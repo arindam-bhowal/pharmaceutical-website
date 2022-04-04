@@ -12,7 +12,7 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/patients" element={<Patients />} />
         <Route path="/patient/profile" element={<Profile />} />
-        <Route path="/patient/update" element={<UpdateProfile />} />
+        <Route path="/patient/update/:patientId" element={<UpdateProfile />} />
       </Routes>
     </BrowserRouter>
   );
