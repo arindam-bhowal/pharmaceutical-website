@@ -10,31 +10,18 @@ import {
   ModeEditOutlineOutlined,
   DeleteOutlineOutlined,
 } from "@mui/icons-material";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import patientContext from "../../context/patient/patientContext";
+import { useLocation, useNavigate } from "react-router-dom";
+import Profile from "../profile/Profile";
 
 const List = (props) => {
+  const { data, query } = props;
 
-  const { data } = props;
+  const { deletePatient } = useContext(patientContext);
 
-  useEffect(() => {
-    console.log(data)
-  }, [])
-  
-  
-
-  const rows = [
-    {
-      name: "Acer Nitro 5",
-      profilePic:
-        "https://m.media-amazon.com/images/I/81bc8mA3nKL._AC_UY327_FMwebp_QL65_.jpg",
-      email: "arindam@gmail.com",
-      phoneNumber: "1 March",
-      sex: 785,
-      age: "Cash on Delivery",
-      govtId:
-        "https://m.media-amazon.com/images/I/81bc8mA3nKL._AC_UY327_FMwebp_QL65_.jpg",
-    },
-  ];
+  const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <TableContainer component={Paper} className="table">
@@ -51,32 +38,40 @@ const List = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
-            <TableRow key={row.email}>
-              <TableCell className="tableCell">
-                <div className="cellWrapper">
-                  <img src={row.profilePic} alt="" className="image" />
-                  {row.name}
-                </div>
-              </TableCell>
-              <TableCell className="tableCell">{row.email}</TableCell>
-              {/* <TableCell className="tableCell">{row.email}</TableCell> */}
-              <TableCell className="tableCell">{row.phoneNumber}</TableCell>
-              <TableCell className="tableCell">{row.sex}</TableCell>
-              <TableCell className="tableCell">{row.age}</TableCell>
-              <TableCell className="tableCell">
-                <div className="cellWrapper">
-                  <img src={row.govtId} alt="" className="image" />
-                </div>
-              </TableCell>
-              <TableCell className="tableCell">
-                {/* <span className={`status ${row.status}`}>{row.status}</span> */}
-                <ModeEditOutlineOutlined className="status edit" />
-                <DeleteOutlineOutlined className="status delete" />
-                {/* Approved and pending */}
-              </TableCell>
-            </TableRow>
-          ))}
+          {data
+            .filter((user) => user.name.toLowerCase().includes(query))
+            .map((row) => (
+              <TableRow key={row.email}>
+                <TableCell className="tableCell">
+                  <div className="cellWrapper">
+                    <img src={row.profilePic} alt="" className="image" />
+                    {row.name}
+                  </div>
+                </TableCell>
+                <TableCell className="tableCell">{row.email}</TableCell>
+                {/* <TableCell className="tableCell">{row.email}</TableCell> */}
+                <TableCell className="tableCell">{row.phoneNumber}</TableCell>
+                <TableCell className="tableCell">{row.sex}</TableCell>
+                <TableCell className="tableCell">{row.age}</TableCell>
+                <TableCell className="tableCell">
+                  <div className="cellWrapper">
+                    <img src={row.govtId} alt="" className="image" />
+                  </div>
+                </TableCell>
+                <TableCell className="tableCell">
+                  {/* <span className={`status ${row.status}`}>{row.status}</span> */}
+                  <ModeEditOutlineOutlined className="status edit" />
+                  <DeleteOutlineOutlined
+                    className="status delete"
+                    onClick={() => {
+                      deletePatient(row._id);
+                      navigate(0)
+                    }}
+                  />
+                  {/* Approved and pending */}
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

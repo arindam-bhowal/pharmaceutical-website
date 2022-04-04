@@ -2,7 +2,6 @@ import './profile.scss'
 import { Edit } from '@mui/icons-material'
 import Navbar from '../../components/navbar/Navbar'
 import { useEffect, useState } from 'react'
-import { handleBreakpoints } from '@mui/system'
 
 const Profile = () => {
 

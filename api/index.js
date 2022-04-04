@@ -48,6 +48,6 @@ app.use('/api/admin', adminRoute)
 
 
 // -----------------Listing to port ---------------
-app.listen(8800, () => {
+app.listen(8801, () => {
     console.log('The backend server is running successfully!!')
 })

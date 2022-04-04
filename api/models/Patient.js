@@ -8,7 +8,10 @@ const patientSchema = new mongoose.Schema({
   sex: String,
   age: Number,
   profilePic: String,
-  govtId: String
+  govtId: String,
+  location: {type: String, required: true},
+  prescriptions: Array,
+  previousPayment: Array
 });
 
 module.exports = mongoose.model("Patients", patientSchema);
