@@ -2,7 +2,7 @@ import patientContext from "./patientContext";
 import axios from "axios";
 
 const PatientState = (props) => {
-  const host = "http://localhost:8801/api";
+  const host = "http://localhost:8801/api/admin";
 
 
   // =============================================================
@@ -12,7 +12,7 @@ const PatientState = (props) => {
   // -------------------- Get all patients ------------------------
   const fetchAllPatients = async () => {
     try {
-      const res = await axios.get(`${host}/admin/patient/all`);
+      const res = await axios.get(`${host}/patient/all`);
       return res.data;
     } catch (error) {
       // To do
@@ -23,7 +23,7 @@ const PatientState = (props) => {
 
   const deletePatient = async (patientId) => {
     try {
-      await axios.delete(`${host}/admin/patient/delete/${patientId}`);
+      await axios.delete(`${host}/patient/delete/${patientId}`);
     } catch (error) {
       // To do
     }
@@ -33,7 +33,7 @@ const PatientState = (props) => {
 
   const newPatient = async (name, email, password, phoneNumber, sex, age, profilePic, govtId, location) => {
     try {
-        await axios.post(`${host}/admin/patient/register`, {name, email, password, phoneNumber, sex, age, profilePic, govtId, location})
+        await axios.post(`${host}/patient/register`, {name, email, password, phoneNumber, sex, age, profilePic, govtId, location})
     } catch (error) {
       // To do
     }

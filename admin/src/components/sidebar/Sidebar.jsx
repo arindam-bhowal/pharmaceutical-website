@@ -11,6 +11,7 @@ import {
   PersonOutlineOutlined
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./sidebar.scss";
 
 const Sidebar = () => {
@@ -44,50 +45,50 @@ const Sidebar = () => {
             <ul className="menu-links">
 
               <li className="nav-link">
-                <a href="#">
+                <Link to="/">
                   <DashboardOutlined className="sidebar-icon" />
                   <span className="text nav-text">Dashboard</span>
-                </a>
+                </Link>
               </li>
 
               <li className="nav-link">
-                <a href="#">
+                <Link to="/patients">
                   <GroupsOutlined className="sidebar-icon" />
                   <span className="text nav-text">Patients</span>
-                </a>
+                </Link>
               </li>
               <li className="nav-link">
-                <a href="#">
+                <Link to="/">
                   <GroupOutlined className="sidebar-icon" />
                   <span className="text nav-text">Staffs</span>
-                </a>
+                </Link>
               </li>
               <li className="nav-link">
-                <a href="#">
+                <Link to="/">
                   <PersonOutlineOutlined className="sidebar-icon" />
                   <span className="text nav-text">Doctors</span>
-                </a>
+                </Link>
               </li>
               <li className="nav-link">
-                <a href="#">
+                <Link to="/medicines">
                   <MedicationOutlined className="sidebar-icon" />
                   <span className="text nav-text">Stocks</span>
-                </a>
+                </Link>
               </li>
               <li className="nav-link">
-                <a href="#">
+                <Link to="/">
                   <CreditCardOutlined className="sidebar-icon" />
                   <span className="text nav-text">Check-out</span>
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
           <div className="bottom-content">
             <li className="">
-              <a href="#">
+              <Link to="/">
                 <LogoutOutlined className="sidebar-icon" />
                 <span className="text nav-text">Logout</span>
-              </a>
+              </Link>
             </li>
 
           </div>
