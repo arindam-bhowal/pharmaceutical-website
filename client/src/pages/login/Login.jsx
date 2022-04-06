@@ -1,6 +1,11 @@
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import './login.scss'
 
 const Login = () => {
+
+    const [isChecked, setIsChecked] = useState(false)
+
     return (
         <div className='login' >
             <div className="wrapper">
@@ -21,16 +26,18 @@ const Login = () => {
                             <input type="email" className='inputContainer' placeholder='Email' />
                             <input type="password" className='inputContainer' placeholder='password' />
                             <div className="rememberMe">
-                                <input type="checkbox" id='checkbox'/>
+                                <input type="checkbox" id='checkbox' onClick={(e) => console.log(e)} />
                                 <span>remember me</span>
                             </div>
-                            <button className='btn'>Login</button>
+                            <button className='btn' style={{cursor: 'pointer'}}>Login</button>
                             <div className="forgotPassword">
                                 <p>forgot password? </p>
                             </div>
                             <div className="registerLink">
                                 <p>Need an account? 
-                                <span> Register Now</span>
+                                    <Link to='/register' style={{textDecoration: 'none'}}>
+                                <span style={{cursor: 'pointer'}}> Register Now</span>
+                                </Link>
                                 </p>
                             </div>
                         </form>

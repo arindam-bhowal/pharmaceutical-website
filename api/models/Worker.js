@@ -8,8 +8,11 @@ const workerSchema = new mongoose.Schema({
   sex: String,
   age: Number,
   profilePic: String,
-  id: String,
-  branch: {type: String, required: true}
+  govtId: String,
+  branch: {type: String, required: true},
+  noOfReferals: {type: Number, default: 0},
+  referalId: String,
+  percentPerReferal: Number
 });
 
 module.exports = mongoose.model("Workers", workerSchema);

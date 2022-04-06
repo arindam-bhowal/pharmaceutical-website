@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './register.scss'
 
 const Register = () => {
@@ -39,10 +40,12 @@ const Register = () => {
                 <p>I agree to the </p>
                 <span>&nbsp;terms & conditions </span>
               </div>
-              <button className='btn'>Register</button>
+              <button className='btn'style={{cursor: 'pointer'}}>Register</button>
               <div className="loginLink">
                 <p>Already have an account?
-                  <span> Login Now</span>
+                  <Link to='/login' style={{textDecoration: 'none'}}>
+                  <span style={{cursor: 'pointer'}}> Login Now</span>
+                  </Link>
                 </p>
               </div>
             </form>

@@ -8,7 +8,7 @@ const doctorSchema = new mongoose.Schema({
   sex: String,
   age: Number,
   profilePic: String,
-  id: String,
+  govtId: String,
   registrationNo: {type: String, required: true, unique: true}
 });
 
