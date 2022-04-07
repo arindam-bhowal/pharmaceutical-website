@@ -2,34 +2,34 @@ import { Add } from '@mui/icons-material'
 import { Button, Typography } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import DocTable from '../../components/doctor/docTable/DocTable'
 import Sidebar from '../../components/sidebar/Sidebar'
-import doctorContext from '../../context/doctor/doctorContext'
-import './doctor.scss'
+import WorkerTable from '../../components/worker/workerTable/WorkerTable'
+import workerContext from '../../context/worker/workerContext'
+import './workers.scss'
 
-const Doctor = () => {
+const Workers = () => {
 
-    const { fetchAllDoctors } = useContext(doctorContext)
+    const { fetchAllWorkers } = useContext(workerContext)
 
     const navigate = useNavigate()
 
     const [searchInput, setSearchInput] = useState("")
-    const [allDoctors, setAllDoctors] = useState([])
+    const [allWorkers, setAllWorkers] = useState([])
 
     useEffect(() => {
-        const getAllDoctors = async () => {
-          const res = await fetchAllDoctors();
+        const getAllWorkers = async () => {
+          const res = await fetchAllWorkers();
           if(res==='error'){
               navigate('/error')
           }
-          setAllDoctors(res);
+          setAllWorkers(res);
         };
-        getAllDoctors();
+        getAllWorkers();
       }, []);
 
 
   return (
-    <div className="doctors">
+    <div className="workers">
     <div className="left">
       <Sidebar />
     </div>
@@ -38,7 +38,7 @@ const Doctor = () => {
       <div className="top">
         <div className="heading">
           <Typography variant="h2" component="h3">
-            Doctor's Database
+            Worker's Database
           </Typography>
         </div>
         <div className="container">
@@ -57,9 +57,9 @@ const Doctor = () => {
             </a>
           </div>
           <div className="addButton">
-            <Link to='/doctor/create'>
+            <Link to='/worker/create'>
             <Button variant="outlined">
-              <p>Add Doctor</p>
+              <p>Add Worker</p>
               <Add />
             </Button>
             </Link>
@@ -67,11 +67,11 @@ const Doctor = () => {
         </div>
       </div>
       <div className="bottom">
-        <DocTable data={allDoctors} query={searchInput} />
+        <WorkerTable data={allWorkers} query={searchInput} />
       </div>
     </div>
   </div>
   )
 }
 
-export default Doctor
+export default Workers

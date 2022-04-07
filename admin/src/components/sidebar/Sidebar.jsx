@@ -58,7 +58,7 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li className="nav-link">
-                <Link to="/">
+                <Link to="/workers">
                   <GroupOutlined className="sidebar-icon" />
                   <span className="text nav-text">Staffs</span>
                 </Link>

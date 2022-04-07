@@ -34,9 +34,9 @@ const WorkerState = (props) => {
 
            // --------------------Add a new worker in database ------------------------
 
-     const newWorker = async (name, email, password, phoneNumber, age, sex, profilePic, govtId, location, noOfReferals,referalId, percentPerReferal) => {
+     const newWorker = async (name, email, password, phoneNumber, age, sex, profilePic, govtId, location, referals ,referalId, percentPerReferal) => {
         try {
-            await axios.post(`${host}/worker/register`, {name, email, password, phoneNumber, age, sex, profilePic, govtId, location, noOfReferals,referalId, percentPerReferal})
+            await axios.post(`${host}/worker/register`, {name, email, password, phoneNumber, age, sex, profilePic, govtId, location, referals ,referalId, percentPerReferal})
             return 'success'
         } catch (error) {
             return 'error'
@@ -45,9 +45,9 @@ const WorkerState = (props) => {
 
       //   --------------------------- Update worker credentials ---------------------------
 
-     const updateWorker = async (workerId, name, email, password, phoneNumber, age, sex, profilePic, govtId, location, noOfReferals,referalId, percentPerReferal) => {
+     const updateWorker = async (workerId, name, email, password, phoneNumber, age, sex, profilePic, govtId, location, referals,referalId, percentPerReferal) => {
          try {
-             await axios.put(`${host}/worker/update/${workerId}`, { name, email, password, phoneNumber, age, sex, profilePic, govtId, location, noOfReferals,referalId, percentPerReferal })
+             await axios.put(`${host}/worker/update/${workerId}`, { name, email, password, phoneNumber, age, sex, profilePic, govtId, location, referals,referalId, percentPerReferal })
              return 'sucess'
          } catch (error) {
              return 'error'

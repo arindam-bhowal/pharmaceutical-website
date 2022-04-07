@@ -1,4 +1,4 @@
-import './docTable.scss'
+import './workerTable.scss'
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,12 +12,12 @@ import {
 } from "@mui/icons-material";
 import { useNavigate, Link } from "react-router-dom";
 import { useContext } from 'react';
-import doctorContext from "../../../context/doctor/doctorContext";
+import workerContext from '../../../context/worker/workerContext';
 
 
 
-const DocTable = (props) => {
-    const {deleteDoctor} = useContext(doctorContext)
+const WorkerTable = (props) => {
+    const {deleteWorker} = useContext(workerContext)
 
     const { data, query } = props;
 
@@ -25,16 +25,19 @@ const DocTable = (props) => {
 
 
   return (
-    <TableContainer component={Paper} className="docTable">
+    <TableContainer component={Paper} className="workerTable">
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
       <TableHead>
         <TableRow>
           <TableCell className="tableCell">Name</TableCell>
           <TableCell className="tableCell">E-mail</TableCell>
-          <TableCell className="tableCell">Registration Number</TableCell>
           <TableCell className="tableCell">Phone Number</TableCell>
           <TableCell className="tableCell">Sex</TableCell>
           <TableCell className="tableCell">Age</TableCell>
+          <TableCell className="tableCell">Location</TableCell>
+          <TableCell className="tableCell">Number of Referals</TableCell>
+          <TableCell className="tableCell">Referal Id</TableCell>
+          <TableCell className="tableCell">Percent Per Referal</TableCell>
           <TableCell className="tableCell">Identity</TableCell>
           <TableCell className="tableCell">Actions</TableCell>
         </TableRow>
@@ -51,11 +54,14 @@ const DocTable = (props) => {
                 </div>
               </TableCell>
               <TableCell className="tableCell">{row.email}</TableCell>
-              <TableCell className="tableCell">{row.registrationNo}</TableCell>
               {/* <TableCell className="tableCell">{row.email}</TableCell> */}
               <TableCell className="tableCell">{row.phoneNumber}</TableCell>
               <TableCell className="tableCell">{row.sex}</TableCell>
               <TableCell className="tableCell">{row.age}</TableCell>
+              <TableCell className="tableCell">{row.location}</TableCell>
+              <TableCell className="tableCell">{row.referals? row.referals.length : 0}</TableCell>
+              <TableCell className="tableCell">{row.referalId}</TableCell>
+              <TableCell className="tableCell">{row.percentPerReferal}</TableCell>
               <TableCell className="tableCell">
                 <div className="cellWrapper">
                   <img src={row.govtId} alt="" className="image" />
@@ -63,14 +69,14 @@ const DocTable = (props) => {
               </TableCell>
               <TableCell className="tableCell">
                 {/* <span className={`status ${row.status}`}>{row.status}</span> */}
-                <Link to={`/doctor/update/${row._id}`}>
+                {/* <Link to={`/doctor/update/${row._id}`}> */}
                 <ModeEditOutlineOutlined className="status edit" />
-                </Link>
+                {/* </Link> */}
 
                  <DeleteOutlineOutlined
                     className="status delete"
                     onClick={() => {
-                      const res=deleteDoctor(row._id);
+                      const res=deleteWorker(row._id);
                       if(res==='error'){
                           navigate('/error')
                       }
@@ -87,4 +93,4 @@ const DocTable = (props) => {
   )
 }
 
-export default DocTable
+export default WorkerTable

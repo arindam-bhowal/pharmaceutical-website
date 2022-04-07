@@ -9,8 +9,8 @@ const workerSchema = new mongoose.Schema({
   age: Number,
   profilePic: String,
   govtId: String,
-  branch: {type: String, required: true},
-  noOfReferals: {type: Number, default: 0},
+  location: {type: String, required: true},
+  referals: {type: Array},
   referalId: String,
   percentPerReferal: Number
 });

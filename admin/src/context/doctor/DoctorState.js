@@ -48,7 +48,6 @@ const DoctorState = (props) => {
       const updateDoctor = async (doctorId, name, email, phoneNumber, sex, age , profilePic, govtId, registrationNo) => {
           try {
               axios.put(`${host}/doctor/update/${doctorId}`, {name, email, phoneNumber, sex, age , profilePic, govtId, registrationNo})
-              return 'success'
           } catch (error) {
               return 'error'
           }
@@ -58,7 +57,8 @@ const DoctorState = (props) => {
 
         const getDoctor = async (doctorId) => {
             try {
-                await axios.get(`${host}/doctor/find/${doctorId}`)
+                const res = await axios.get(`${host}/doctor/find/${doctorId}`)
+                return res.data
             } catch (error) {
                 return 'error'
             }
