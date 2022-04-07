@@ -8,7 +8,7 @@ const About = () => {
         <div className='navbar'>
             <Navbar />
         </div>
-        
+        <div className="bdy">
             <div className="about">
                 <div className="container">
                     <div className="content-section">
@@ -35,6 +35,7 @@ const About = () => {
                         <img src="/assets/doctor.png" />
                     </div>
                 </div>
+            </div>
             </div>
         </>
     )
