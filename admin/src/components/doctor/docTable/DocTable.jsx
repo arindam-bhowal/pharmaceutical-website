@@ -2,7 +2,9 @@ import './docTable.scss'
 
 const DocTable = () => {
   return (
-    <div>DocTable</div>
+    <div>
+        
+    </div>
   )
 }
 
