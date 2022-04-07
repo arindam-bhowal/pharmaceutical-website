@@ -8,6 +8,8 @@ import Medicines from "./pages/medicines/Medicines";
 import Error from "./pages/error/Error";
 import MedProfile from "./components/medicine/medProfile/MedProfile";
 import UpdateMed from "./components/medicine/updateMed/UpdateMed";
+import Doctor from "./pages/doctors/Doctor";
+import DocProfile from "./components/doctor/docProfile/DocProfile";
 
 function App() {
   return (
@@ -18,6 +20,9 @@ function App() {
         <Route path="/patients" element={<Patients />} />
         <Route path="/patient/profile" element={<Profile />} />
         <Route path="/patient/update/:patientId" element={<UpdateProfile />} />
+
+        <Route path="/doctors" element={<Doctor />} />
+        <Route path="/doctor/create" element={<DocProfile />} />
 
         <Route path="/medicines" element={<Medicines />} />
         <Route path="/medicine/add" element={<MedProfile />} />
