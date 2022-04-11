@@ -12,6 +12,8 @@ const patientSchema = new mongoose.Schema({
   location: {type: String, required: true},
   prescriptions: Array,
   previousPayment: Array
-});
+},
+{timestamps: true }
+);
 
 module.exports = mongoose.model("Patients", patientSchema);

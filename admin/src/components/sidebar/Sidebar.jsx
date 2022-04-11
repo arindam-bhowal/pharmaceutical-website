@@ -76,7 +76,7 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li className="nav-link">
-                <Link to="/">
+                <Link to="/checkout/Patient">
                   <CreditCardOutlined className="sidebar-icon" />
                   <span className="text nav-text">Check-out</span>
                 </Link>

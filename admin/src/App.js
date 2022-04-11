@@ -13,6 +13,9 @@ import DocProfile from "./components/doctor/docProfile/DocProfile";
 import UpdateDoc from "./components/doctor/updateDoc/UpdateDoc";
 import Workers from "./pages/workers/Workers";
 import WorkerProfile from "./components/worker/workerProfile/WorkerProfile";
+import PatientCheckout from "./pages/checkout/patient/PatientCheckout";
+import Stocks from "./pages/checkout/stocks/Stocks";
+import Checkout from "./pages/checkout/Checkout";
 
 function App() {
   return (
@@ -37,6 +40,9 @@ function App() {
 
         <Route path="/error" element={<Error />} />
 
+        <Route path="/checkout/patient" element={<PatientCheckout />} />
+        <Route path="/checkout/stocks" element={<Stocks />} />
+        <Route path="/checkout" element={<Checkout   />} />
 
       </Routes>
     </BrowserRouter>

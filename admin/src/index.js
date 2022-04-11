@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import CheckoutState from "./context/checkout/CheckoutState";
 import DoctorState from "./context/doctor/DoctorState";
 import MedicineState from "./context/medicine/MedicineState";
 import PatientState from "./context/patient/PatientState";
@@ -12,7 +13,9 @@ ReactDOM.render(
       <WorkerState>
         <PatientState>
           <DoctorState>
+            <CheckoutState >
             <App />
+            </CheckoutState>
           </DoctorState>
         </PatientState>
       </WorkerState>
