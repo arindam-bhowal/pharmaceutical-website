@@ -5,18 +5,24 @@ import { useContext, useEffect, useState } from "react";
 import patientContext from "../../context/patient/patientContext";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import app from "../../firebase";
 
 const UpdateProfile = () => {
-  
   const { updatePatient, getPatient } = useContext(patientContext);
 
-  const { patientId } = useParams()
+  const { patientId } = useParams();
 
   const navigate = useNavigate();
 
-  const [reqPatient, setReqPatient] = useState()
+  const [reqPatient, setReqPatient] = useState();
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("jankalyan");
   const [phoneNumber, setPhoneNumber] = useState();
@@ -25,8 +31,12 @@ const UpdateProfile = () => {
   const [sex, setSex] = useState("");
   const [profilePic, setProfilePic] = useState("");
   const [govtId, setGovtId] = useState("");
+  const [prescriptions, setPrescriptions] = useState([])
 
-  // --------useStates and useEffects -----------
+
+  const [progressUpload, setProgressUpload] = useState();
+
+  // -------------------------------- -----------
 
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
@@ -36,11 +46,8 @@ const UpdateProfile = () => {
       setPreview(undefined);
       return;
     }
-
     const objectUrl = URL.createObjectURL(selectedFile);
     setPreview(objectUrl);
-
-    // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile]);
 
@@ -52,41 +59,173 @@ const UpdateProfile = () => {
     setSelectedFile(e.target.files[0]);
   };
 
-  // ---------------------*******************---------------------------------------
-  // Get patient details 
-  useEffect(() => {
-    const fetchPatient = async () => {
-      const res = await getPatient(patientId)
-      setReqPatient(res)
-    }
-    fetchPatient()
-  }, [])
+  const [selectedIdProof, setSelectedIdProof] = useState();
+  const [IdPreview, setIdPreview] = useState();
 
   useEffect(() => {
-    if(reqPatient){
-      setName(reqPatient.name)
-      setEmail(reqPatient.email)
-      setPhoneNumber(reqPatient.phoneNumber)
-      setAge(reqPatient.age)
-      setLocation(reqPatient.location)
-      setSex(reqPatient.sex)
-      setProfilePic(reqPatient.profilePic)
-      setGovtId(reqPatient.govtId)
+    if (!selectedIdProof) {
+      setIdPreview(undefined);
+      return;
     }
-  }, [reqPatient])
-  
-  
+    const previewUrl = URL.createObjectURL(selectedIdProof);
+    setIdPreview(previewUrl);
+    return () => URL.revokeObjectURL(previewUrl);
+  }, [selectedIdProof]);
+
+  const handleIdUpload = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedIdProof(undefined);
+      return;
+    }
+    setSelectedIdProof(e.target.files[0]);
+  };
+
+  const [selectedPrescription, setSelectedPrescription] = useState()
+
+  const handlePrescriptionUpload = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedPrescription(undefined);
+      return;
+    }
+    setSelectedPrescription(e.target.files[0])
+  }
+
+  // -----------------------------------------Firebase Upload Profile Pic --------------------------
+ const handleProfilePicUpload = (e) => {
+  e.preventDefault();
+  const fileName = new Date() + selectedFile.name;
+  const storage = getStorage(app);
+  const storageRef = ref(storage, fileName);
+  const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+  uploadTask.on(
+    "state_changed",
+    (snapshot) => {
+      const progress =
+        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      setProgressUpload(progress);
+    },
+    (error) => {
+      navigate("/error");
+    },
+    () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        setProfilePic(downloadURL);
+      });
+    }
+  );
+};
+
+// -----------------------------------------Firebase Upload Id Proof --------------------------
+
+  const idProofUpload = (e) => {
+    e.preventDefault()
+    const fileName = new Date() + selectedIdProof.name
+    const storage = getStorage(app)
+    const storageRef = ref(storage, fileName)
+    const uploadTask = uploadBytesResumable(storageRef,selectedIdProof )
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgressUpload(progress);
+        
+      },
+      (error) => {
+        navigate("/error");
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setGovtId(downloadURL);
+        });
+      }
+    );
+  };
+
+  // -----------------------------------------Firebase Upload Prescription --------------------------
+    const uploadPrescription = () => {
+      const fileName = new Date() + selectedPrescription.name
+      const storage = getStorage(app)
+      const storageRef = ref(storage, fileName)
+      const uploadTask = uploadBytesResumable(storageRef, selectedPrescription)
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setProgressUpload(progress);
+          
+        },
+        (error) => {
+          navigate("/error");
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setPrescriptions(prev => [...prev, downloadURL])
+          });
+        }
+      );
+    };
+
+  // ---------------------*******************---------------------------------------
+  // Get patient details
+  useEffect(() => {
+    const fetchPatient = async () => {
+      const res = await getPatient(patientId);
+      setReqPatient(res);
+    };
+    fetchPatient();
+  }, []);
+
+  useEffect(() => {
+    if (reqPatient) {
+      setName(reqPatient.name);
+      setEmail(reqPatient.email);
+      setPhoneNumber(reqPatient.phoneNumber);
+      setAge(reqPatient.age);
+      setLocation(reqPatient.location);
+      setSex(reqPatient.sex);
+      setProfilePic(reqPatient.profilePic);
+      setGovtId(reqPatient.govtId);
+      setPrescriptions(reqPatient.prescriptions)
+    }
+  }, [reqPatient]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await updatePatient(patientId, name, email, phoneNumber, sex, age, profilePic, govtId, location)
+    await updatePatient(
+      patientId,
+      name,
+      email,
+      phoneNumber,
+      sex,
+      age,
+      profilePic,
+      govtId,
+      location,
+      prescriptions
+    );
     navigate("/patients");
   };
-  
+
+
+
+
+
 
   return (
     <div className="updateProfile">
       <div className="wrapper">
+
+      {progressUpload &&
+       <div className="uploading">
+         <div className="progressBar">
+             <div className="progress" style={{width: `${progressUpload}%`}}>
+ 
+             </div>
+         </div>
+       </div>}
+
         <ArrowBack
           className="backBtn"
           onClick={() => {
@@ -101,14 +240,14 @@ const UpdateProfile = () => {
           <div className="left">
             <div className="profilePic">
               {selectedFile ? (
-                <img src={preview} />
+                <img src={preview} alt='' />
               ) : (
-                <img src="/assets/defaultProfilePic.png" alt="" />
+                <img src={reqPatient && reqPatient.profilePic} alt="" />
               )}
               <div className="inputContainer">
                 <label htmlFor="profilePic">
                   <Edit className="editIcon" />
-                  Add Profile Picture 
+                  Add Profile Picture
                 </label>
                 <input
                   type="file"
@@ -117,10 +256,22 @@ const UpdateProfile = () => {
                   onChange={handleFileUpload}
                 />
               </div>
+              <Button
+               variant="contained"
+               style={{ margin: "10px" }}
+               onClick={handleProfilePicUpload}
+             >
+               Upload Now
+             </Button>
             </div>
 
             <div className="identity">
-              <img src="/assets/defaultSignature.png" alt="" />
+              {selectedIdProof ? (
+                <img src={IdPreview} alt=''/>
+              ) : (
+                <img src={reqPatient && reqPatient.govtId} alt="" />
+  )
+              }
               <div className="inputContainer">
                 <label htmlFor="signature">
                   <Edit className="editIcon" />
@@ -130,9 +281,30 @@ const UpdateProfile = () => {
                   type="file"
                   id="signature"
                   accept=".png, .jpg, .jpeg"
-                  onChange={handleFileUpload}
+                  onChange={handleIdUpload}
                 />
               </div>
+                 <Button
+               variant="contained"
+               style={{ margin: "10px" }}
+               onClick={idProofUpload}
+             >
+               Upload Now
+             </Button>
+            </div>
+
+            <div
+              className="prescription"
+              style={{
+                margin: "20px auto",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <input type="file" name="" id="" onChange={handlePrescriptionUpload} />
+              <Button variant="contained" onClick={uploadPrescription}>Upload Prescription</Button>
             </div>
           </div>
           <div className="right">

@@ -41,9 +41,9 @@ const PatientState = (props) => {
 
   // -------------------Update patient details--------------------------
 
-  const updatePatient = async (patientId, name, email, phoneNumber, sex, age, profilePic, govtId, location) =>{
+  const updatePatient = async (patientId, name, email, phoneNumber, sex, age, profilePic, govtId, location, prescriptions) =>{
     try {
-        await axios.put(`${host}/patient/update/${patientId}`, {name, email, phoneNumber, sex, age, profilePic, govtId, location})
+        await axios.put(`${host}/patient/update/${patientId}`, {name, email, phoneNumber, sex, age, profilePic, govtId, location, prescriptions})
     } catch (error) {
         //  To do
     }
@@ -61,10 +61,21 @@ const PatientState = (props) => {
   }
 
 
+  // -----------------Patient Stats ------------------------------------
+  const patientStats = () => {
+    try {
+      const res = axios.get(`${host}/stats`)
+      return res
+    } catch (error) {
+      return 'error'
+    }
+  }
+
+
 
 
   return (
-    <patientContext.Provider value={{ fetchAllPatients, deletePatient, newPatient, updatePatient, getPatient}}>
+    <patientContext.Provider value={{ fetchAllPatients, deletePatient, newPatient, updatePatient, getPatient, patientStats}}>
       {props.children}
     </patientContext.Provider>
   );

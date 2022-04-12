@@ -1,8 +1,8 @@
+import "./profile.scss";
 import { ArrowBack, Edit } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import patientContext from "../../context/patient/patientContext";
-import "./profile.scss";
 import { useNavigate } from "react-router";
 import {
   getStorage,
@@ -19,7 +19,7 @@ const Profile = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("jankalyan");
+  const password = 'janKalyan'
   const [phoneNumber, setPhoneNumber] = useState();
   const [age, setAge] = useState();
   const [location, setLocation] = useState("");
@@ -107,15 +107,6 @@ const handleIdUpload = (e) => {
       const progress =
         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       setProgressUpload(progress);
-      console.log("Upload is " + progress + "% done");
-      switch (snapshot.state) {
-        case "paused":
-          console.log("Upload is paused");
-          break;
-        case "running":
-          console.log("Upload is running");
-          break;
-      }
     },
     (error) => {
       navigate("/error");
@@ -130,19 +121,58 @@ const handleIdUpload = (e) => {
   );
 };
 
-useEffect(() => {
-  
-  console.log(progressUpload)
-}, [progressUpload])
+// -----------------------------------------Firebase Upload Id Proof --------------------------
+
+  const idProofUpload = (e) => {
+    e.preventDefault()
+    const fileName = new Date() + selectedIdProof.name
+    const storage = getStorage(app)
+    const storageRef = ref(storage, fileName)
+    const uploadTask = uploadBytesResumable(storageRef,selectedIdProof )
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // Observe state change events such as progress, pause, and resume
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgressUpload(progress);
+        // console.log("Upload is " + progress + "% done");
+        // switch (snapshot.state) {
+        //   case "paused":
+        //     console.log("Upload is paused");
+        //     break;
+        //   case "running":
+        //     console.log("Upload is running");
+        //     break;
+        // }
+      },
+      (error) => {
+        navigate("/error");
+      },
+      () => {
+        // Handle successful uploads on complete
+        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setGovtId(downloadURL);
+        });
+      }
+    );
+  };
 
 
 
+// ================================================================================================
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await newPatient(name, email, password,phoneNumber,sex,age,profilePic,govtId,location);
     navigate('/patients')
   };
+
+
+
+  
 
   return (
     <div className="profile">
@@ -164,9 +194,10 @@ useEffect(() => {
 
         <form className="container" onSubmit={handleSubmit}>
           <div className="left">
+
             <div className="profilePic">
               {selectedFile ? (
-                <img src={preview} />
+                <img src={preview} alt='' />
               ) : (
                 <img src="/assets/defaultProfilePic.png" alt="" />
               )}
@@ -193,7 +224,7 @@ useEffect(() => {
 
             <div className="identity">
              {setSelectedIdProof ? (
-               <img src={IdPreview} />
+               <img src={IdPreview} alt='' />
              ) : (
                <img src="" alt="" />
              )}
@@ -209,7 +240,7 @@ useEffect(() => {
                  onChange={handleIdUpload}
                />
              </div>
-             <Button variant="contained" style={{ margin: "10px" }}>
+             <Button variant="contained" style={{ margin: "10px" }} onClick={idProofUpload}>
                Upload Now
              </Button>
            </div>

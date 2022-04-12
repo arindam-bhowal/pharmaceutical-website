@@ -124,7 +124,7 @@ router.get("/stats", async (req, res) => {
   const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
 
   try {
-    const data = await User.aggregate([
+    const data = await Patient.aggregate([
       { $match: { createdAt: { $gte: lastYear } } },
       {
         $project: {

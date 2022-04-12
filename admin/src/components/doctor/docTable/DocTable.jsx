@@ -46,7 +46,9 @@ const DocTable = (props) => {
             <TableRow key={row.email}>
               <TableCell className="tableCell">
                 <div className="cellWrapper">
+                  <a href={row.profilePic} target='_blank' rel="noreferrer">
                   <img src={row.profilePic} alt="" className="image" />
+                  </a>
                   {row.name}
                 </div>
               </TableCell>
@@ -58,7 +60,9 @@ const DocTable = (props) => {
               <TableCell className="tableCell">{row.age}</TableCell>
               <TableCell className="tableCell">
                 <div className="cellWrapper">
+                  <a href={row.govtId} target='_blank' rel="noreferrer">
                   <img src={row.govtId} alt="" className="image" />
+                  </a>
                 </div>
               </TableCell>
               <TableCell className="tableCell">
