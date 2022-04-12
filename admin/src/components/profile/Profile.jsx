@@ -4,6 +4,13 @@ import { useContext, useEffect, useState } from "react";
 import patientContext from "../../context/patient/patientContext";
 import "./profile.scss";
 import { useNavigate } from "react-router";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+ } from "firebase/storage";
+ import app from "../../firebase";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -20,7 +27,9 @@ const Profile = () => {
   const [profilePic, setProfilePic] = useState("");
   const [govtId, setGovtId] = useState("");
 
-  // --------useStates and useEffects -----------
+  const [progressUpload, setProgressUpload] = useState();
+
+ // --------------------------------------------------Profile Pic Upload -------------------------------------------
 
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
@@ -46,6 +55,89 @@ const Profile = () => {
     setSelectedFile(e.target.files[0]);
   };
 
+ // --------------------------------------------------Profile Pic Upload -------------------------------------------
+
+
+//  -----------------------------------------------------Id Proof Upload ------------------------------------------------
+const [selectedIdProof, setSelectedIdProof] = useState();
+const [IdPreview, setIdPreview] = useState();
+
+useEffect(() => {
+  if (!selectedIdProof) {
+    setIdPreview(undefined);
+    return;
+  }
+
+  const previewUrl = URL.createObjectURL(selectedIdProof);
+  setIdPreview(previewUrl);
+  // free memory when ever this component is unmounted
+  return () => URL.revokeObjectURL(previewUrl);
+}, [selectedIdProof]);
+
+const handleIdUpload = (e) => {
+  if (!e.target.files || e.target.files.length === 0) {
+    setSelectedIdProof(undefined);
+    return;
+  }
+  setSelectedIdProof(e.target.files[0]);
+};
+
+
+
+//  -----------------------------------------------------Id Proof Upload ------------------------------------------------
+
+
+// -----------------------------------------Firebase Upload Profile Pic --------------------------
+ const handleProfilePicUpload = (e) => {
+  e.preventDefault();
+  const fileName = new Date() + selectedFile.name;
+  const storage = getStorage(app);
+  const storageRef = ref(storage, fileName);
+  const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+
+  // Register three observers:
+  // 1. 'state_changed' observer, called any time the state changes
+  // 2. Error observer, called on failure
+  // 3. Completion observer, called on successful completion
+  uploadTask.on(
+    "state_changed",
+    (snapshot) => {
+      // Observe state change events such as progress, pause, and resume
+      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+      const progress =
+        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      setProgressUpload(progress);
+      console.log("Upload is " + progress + "% done");
+      switch (snapshot.state) {
+        case "paused":
+          console.log("Upload is paused");
+          break;
+        case "running":
+          console.log("Upload is running");
+          break;
+      }
+    },
+    (error) => {
+      navigate("/error");
+    },
+    () => {
+      // Handle successful uploads on complete
+      // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        setProfilePic(downloadURL);
+      });
+    }
+  );
+};
+
+useEffect(() => {
+  
+  console.log(progressUpload)
+}, [progressUpload])
+
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     await newPatient(name, email, password,phoneNumber,sex,age,profilePic,govtId,location);
@@ -55,6 +147,16 @@ const Profile = () => {
   return (
     <div className="profile">
       <div className="wrapper">
+
+      {progressUpload &&
+       <div className="uploading">
+         <div className="progressBar">
+             <div className="progress" style={{width: `${progressUpload}%`}}>
+ 
+             </div>
+         </div>
+       </div>}
+
         <ArrowBack className="backBtn"  onClick={()=> {navigate(-1)}} />
         <div className="header">
           <h1>Add a Patient</h1>
@@ -80,23 +182,38 @@ const Profile = () => {
                   onChange={handleFileUpload}
                 />
               </div>
+              <Button
+               variant="contained"
+               style={{ margin: "10px" }}
+               onClick={handleProfilePicUpload}
+             >
+               Upload Now
+             </Button>
             </div>
 
             <div className="identity">
-              <img src="/assets/defaultSignature.png" alt="" />
-              <div className="inputContainer">
-                <label htmlFor="signature">
-                  <Edit className="editIcon" />
-                  Add Identity Proof
-                </label>
-                <input
-                  type="file"
-                  id="signature"
-                  accept=".png, .jpg, .jpeg"
-                  onChange={handleFileUpload}
-                />
-              </div>
-            </div>
+             {setSelectedIdProof ? (
+               <img src={IdPreview} />
+             ) : (
+               <img src="" alt="" />
+             )}
+             <div className="inputContainer">
+               <label htmlFor="signature">
+                 <Edit className="editIcon" />
+                 Add Identity Proof
+               </label>
+               <input
+                 type="file"
+                 id="signature"
+                 accept=".png, .jpg, .jpeg"
+                 onChange={handleIdUpload}
+               />
+             </div>
+             <Button variant="contained" style={{ margin: "10px" }}>
+               Upload Now
+             </Button>
+           </div>
+
           </div>
           <div className="right">
             <div className="group">

@@ -3,27 +3,27 @@ import Sidebar from '../../components/sidebar/Sidebar'
 import './dashboard.scss'
 const Dashboard = () => {
   
-  const [userStats, setUserStats] = useState([]);
+  // const [userStats, setUserStats] = useState([]);
 
-  const MONTHS = useMemo(
-    () => [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Agu",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    []
-  );
+  // const MONTHS = useMemo(
+  //   () => [
+  //     "Jan",
+  //     "Feb",
+  //     "Mar",
+  //     "Apr",
+  //     "May",
+  //     "Jun",
+  //     "Jul",
+  //     "Agu",
+  //     "Sep",
+  //     "Oct",
+  //     "Nov",
+  //     "Dec",
+  //   ],
+  //   []
+  // );
 
-  useEffect(() => {
+  // useEffect(() => {
     // const getStats = async () => {
     //   try {
     //     const res = await userRequest.get("/users/stats");
@@ -38,7 +38,7 @@ const Dashboard = () => {
     //   }
     // };
     // getStats();
-  }, [MONTHS]);
+  // }, [MONTHS]);
 
   return (
     <>
