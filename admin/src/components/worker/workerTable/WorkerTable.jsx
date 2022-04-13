@@ -17,6 +17,7 @@ import workerContext from '../../../context/worker/workerContext';
 
 
 const WorkerTable = (props) => {
+  
     const {deleteWorker} = useContext(workerContext)
 
     const { data, query } = props;
@@ -49,12 +50,13 @@ const WorkerTable = (props) => {
             <TableRow key={row.email}>
               <TableCell className="tableCell">
                 <div className="cellWrapper">
+                  <a href={row.profilePic && row.profilePic} target='_blank' rel='noreferrer'>
                   <img src={row.profilePic} alt="" className="image" />
+                  </a>
                   {row.name}
                 </div>
               </TableCell>
               <TableCell className="tableCell">{row.email}</TableCell>
-              {/* <TableCell className="tableCell">{row.email}</TableCell> */}
               <TableCell className="tableCell">{row.phoneNumber}</TableCell>
               <TableCell className="tableCell">{row.sex}</TableCell>
               <TableCell className="tableCell">{row.age}</TableCell>
@@ -64,14 +66,15 @@ const WorkerTable = (props) => {
               <TableCell className="tableCell">{row.percentPerReferal}</TableCell>
               <TableCell className="tableCell">
                 <div className="cellWrapper">
+                  <a href={row.govtId && row.govtId} target='_blank' rel='noreferrer'>
                   <img src={row.govtId} alt="" className="image" />
+                  </a>
                 </div>
               </TableCell>
               <TableCell className="tableCell">
-                {/* <span className={`status ${row.status}`}>{row.status}</span> */}
-                {/* <Link to={`/doctor/update/${row._id}`}> */}
+                <Link to={`/worker/update/${row._id}`}>
                 <ModeEditOutlineOutlined className="status edit" />
-                {/* </Link> */}
+                </Link>
 
                  <DeleteOutlineOutlined
                     className="status delete"
@@ -83,7 +86,6 @@ const WorkerTable = (props) => {
                       navigate(0)
                     }}
                   />
-                {/* Approved and pending */}
               </TableCell>
             </TableRow>
           ))}

@@ -16,6 +16,7 @@ import WorkerProfile from "./components/worker/workerProfile/WorkerProfile";
 import PatientCheckout from "./pages/checkout/patient/PatientCheckout";
 import Stocks from "./pages/checkout/stocks/Stocks";
 import Checkout from "./pages/checkout/Checkout";
+import UpdateWorker from "./components/worker/updateWorker/UpdateWorker";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
 
         <Route path="/workers" element={<Workers />} />
         <Route path="/worker/create" element={<WorkerProfile />} />
+        <Route path="/worker/update/:workerId" element={<UpdateWorker  />} />
 
         <Route path="/medicines" element={<Medicines />} />
         <Route path="/medicine/add" element={<MedProfile />} />

@@ -112,15 +112,11 @@ router.get("/stats", async (req, res) => {
         },
       },
     ]);
-    res.status(200).json(data)
+    res.status(200).json(data);
   } catch (err) {
     res.status(500).json(err);
   }
 });
-
-
-
-
 
 // ============================================================================================================================================
 // ============================================================================================================================================
@@ -291,16 +287,14 @@ router.put("/worker/update/:workerId", async (req, res) => {
 });
 
 // ----------------------Delete a Worker details from database ----------------
-
-router.delete("/worker/delete/:workerId", async (req, res) => {
-  try {
-    await Doctor.findByIdAndDelete(req.params.workerId);
-    res.status(200).json("Successfully deleted patient details!!");
-  } catch (error) {
-    // We will come to the error page later
-    res.status(500).json(error);
-  }
-});
+  router.delete('/worker/delete/:workerId', async (req, res) => {
+    try {
+      await Worker.findByIdAndDelete(req.params.workerId)
+      return 'success'
+    } catch (error) {
+      return 'error'
+    }
+  })
 
 // ============================================================================================================================================
 // ============================================================================================================================================

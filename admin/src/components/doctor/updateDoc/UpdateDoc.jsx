@@ -258,27 +258,32 @@ const idProofUpload = (e) => {
             </div>
 
             <div className="identity">
-             {setSelectedIdProof ? (
-               <img src={IdPreview} alt='' />
-             ) : (
-              <img src={reqDoc && reqDoc.govtId} alt="" />
-             )}
-             <div className="inputContainer">
-               <label htmlFor="signature">
-                 <Edit className="editIcon" />
-                 Add Identity Proof
-               </label>
-               <input
-                 type="file"
-                 id="signature"
-                 accept=".png, .jpg, .jpeg"
-                 onChange={handleIdUpload}
-               />
-             </div>
-             <Button variant="contained" style={{ margin: "10px" }} onClick={idProofUpload}>
+              {selectedIdProof ? (
+                <img src={IdPreview} alt=''/>
+              ) : (
+                <img src={reqDoc && reqDoc.govtId} alt="" />
+  )
+              }
+              <div className="inputContainer">
+                <label htmlFor="signature">
+                  <Edit className="editIcon" />
+                  Add Identity Proof
+                </label>
+                <input
+                  type="file"
+                  id="signature"
+                  accept=".png, .jpg, .jpeg"
+                  onChange={handleIdUpload}
+                />
+              </div>
+                 <Button
+               variant="contained"
+               style={{ margin: "10px" }}
+               onClick={idProofUpload}
+             >
                Upload Now
              </Button>
-           </div>
+            </div>
 
         </div>
         <div className="right">
