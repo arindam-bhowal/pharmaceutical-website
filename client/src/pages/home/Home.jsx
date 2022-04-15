@@ -30,7 +30,7 @@ const Home = () => {
       }
     };
     getReferedPerson();
-  }, []);
+  }, [referalId]);
 
   return (
     <>

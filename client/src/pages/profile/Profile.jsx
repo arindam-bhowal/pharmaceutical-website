@@ -32,7 +32,7 @@ const Profile = () => {
 
   const [progressUpload, setProgressUpload] = useState();
 
-  const [requser, setRequser] = useState([])
+  const [reqUser, setRequser] = useState([])
 
   // --------------------------------------------------Profile Pic Upload -------------------------------------------
 
@@ -140,22 +140,22 @@ const Profile = () => {
     const res = JSON.parse(localStorage.getItem('user'));
       setRequser(res)
 
-    setName(requser.name)
-    setEmail(requser.email)
-    setPassword(requser.password)
-    setPhoneNumber(requser.phoneNumber)
-    setAge(requser.age)
-    setLocation(requser.location)
-    setSex(requser.sex)
-    setProfilePic(requser.profilePic)
-    setGovtId(requser.govtId)
+    setName(reqUser.name)
+    setEmail(reqUser.email)
+    setPassword(reqUser.password)
+    setPhoneNumber(reqUser.phoneNumber)
+    setAge(reqUser.age)
+    setLocation(reqUser.location)
+    setSex(reqUser.sex)
+    setProfilePic(reqUser.profilePic)
+    setGovtId(reqUser.govtId)
 
   }, [])
   
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await updateUser(requser._id, name, email, password, phoneNumber, age, location, sex, profilePic, govtId)
+    const res = await updateUser(reqUser._id, name, email, password, phoneNumber, age, location, sex, profilePic, govtId, reqUser.prescriptions, reqUser.previousPayment, reqUser.referedBy)
     if(res==='error'){
       navigate('/error')
     }
@@ -196,7 +196,7 @@ const Profile = () => {
               {selectedFile ? (
                 <img src={preview} alt="" />
               ) : (
-                <img src={requser? requser.profilePic : "/assets/defaultProfilePic.png"} alt="" />
+                <img src={reqUser? reqUser.profilePic : "/assets/defaultProfilePic.png"} alt="" />
               )}
               <div className="inputContainer">
                 <label htmlFor="profilePic">
@@ -223,7 +223,7 @@ const Profile = () => {
               {setSelectedIdProof ? (
                 <img src={IdPreview} alt="" />
               ) : (
-                <img src={requser? requser.govtId : ""} alt="" />
+                <img src={reqUser? reqUser.govtId : ""} alt="" />
               )}
               <div className="inputContainer">
                 <label htmlFor="signature">
@@ -252,7 +252,7 @@ const Profile = () => {
                 name="name"
                 type="text"
                 required
-                defaultValue={requser && requser.name}
+                defaultValue={reqUser && reqUser.name}
                 onChange={(e) => setName(e.target.value)}
               />
               <span className="highlight"></span>
@@ -265,7 +265,7 @@ const Profile = () => {
                 name="email"
                 type="text"
                 required
-                defaultValue={requser && requser.email}
+                defaultValue={reqUser && reqUser.email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <span className="highlight"></span>
@@ -278,7 +278,7 @@ const Profile = () => {
                 name="password"
                 type="password"
                 required
-                defaultValue={requser && requser.password}
+                defaultValue={reqUser && reqUser.password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <span className="highlight"></span>
@@ -291,7 +291,7 @@ const Profile = () => {
                 name="phoneNumber"
                 type="number"
                 required
-                defaultValue={requser && requser.phoneNumber}
+                defaultValue={reqUser && reqUser.phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
               <span className="highlight"></span>
@@ -305,7 +305,7 @@ const Profile = () => {
                   name="age"
                   placeholder="Age"
                   type="number"
-                  defaultValue={requser && requser.age}
+                  defaultValue={reqUser && reqUser.age}
                   onChange={(e) => setAge(e.target.value)}
                 />
               </div>

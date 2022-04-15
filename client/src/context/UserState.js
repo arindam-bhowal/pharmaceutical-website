@@ -25,9 +25,9 @@ const UserState = (props) => {
     }
 
 
-    const updateUser = async (userId, name, email, password, phoneNumber, age, location, sex, profilePic, govtId) => {
+    const updateUser = async (userId, name, email, password, phoneNumber, age, location, sex, profilePic, govtId, prescriptions, previousPayment, referedBy ) => {
         try {
-            await axios.put(`${host}/update/${userId}`, { name, email, password, phoneNumber, age, location, sex, profilePic, govtId })
+            await axios.put(`${host}/update/${userId}`, { name, email, password, phoneNumber, age, location, sex, profilePic, govtId, prescriptions, previousPayment, referedBy })
             return 'success'
         } catch (error) {
             return 'error'
