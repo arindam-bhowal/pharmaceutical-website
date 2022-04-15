@@ -78,6 +78,19 @@ router.get("/find/:workerId", async (req, res) => {
   }
 });
 
+// ----------------------Find a Worker using referalId ----------------
+
+router.get('/referedBy/:referalId', async (req, res) => {
+  try {
+    const reqWorker = await Worker.findOne({ referalId: req.params.referalId})
+    const { name, email, phoneNumber} = reqWorker._doc
+    res.status(200).json({name, email, phoneNumber})
+  } catch (error) {
+    return 'error'
+  }
+})
+
+
 // ----------------------Get all Workers from database ----------------
 router.get("/all", async (req, res) => {
   try {

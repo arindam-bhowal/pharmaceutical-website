@@ -10,6 +10,8 @@ const workerRoute = require('./routes/worker')
 
 const adminRoute = require('./routes/admin')
 
+const paymentRoute = require('./routes/payment')
+
 // -----------------Middle wares ---------------
 app.use(express.json())
 app.use(cors())
@@ -39,11 +41,15 @@ app.use('/api/medicine', medicineRoute)
 
 
 
-
 // ===========
 // For Admin
 // ===========
 app.use('/api/admin', adminRoute)
+
+// ===========
+// For Payment
+// ===========
+app.use('/api/payment', paymentRoute)
 
 
 

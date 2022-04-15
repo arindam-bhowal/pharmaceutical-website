@@ -1,0 +1,40 @@
+.history{
+    .heading{
+        text-align: center;
+        margin: 20px;
+        padding: 10px;
+        font-size: 3em;
+    }
+
+    .historyCards{
+        .wrapper{
+            display: flex;
+            flex-direction: column;
+            .card{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                height: 10vh;
+                width: 30vw;
+                margin: 10px auto;
+                background-color: rgb(228, 228, 228);
+                border: 2px solid green;
+                .icon{
+                    .cardIcon{
+                        font-size: 3em;
+                    }
+
+                    &.download{
+                        background-color: green;
+                        height: 10vh;
+                        width: 4vw;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,109 @@
+.payment{
+    .pendingPayments{
+        width: 30vw;
+        margin: auto;
+        .header{
+            text-align: center;
+            font-size: 2em;
+            margin-top: 10px;
+            background: -webkit-linear-gradient(#eee, #333);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .wrapper{
+            .noPendingPayments {
+                font-size: 3em;
+                display: block;
+                text-align: center;
+                margin: 20px;
+            }
+
+            .card{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin: 20px;
+                border: 1px solid #1976d2;
+                height: 10vh;
+
+                .date{
+                    margin: 5px;
+                }
+                .status{
+                    &.pending{
+                        color: white;
+                        border: 2px solid red;
+                        border-radius: 10px;
+                        background-color: red;
+                    }
+                }
+
+                .payNow{
+                    background-color: #1976d2;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    .btn{
+                        height: 10vh;
+                    }
+                }
+            }
+        }
+    }
+
+    .previousPayments{
+        width: 40vw;
+        margin: auto;
+        .header{
+            text-align: center;
+            font-size: 2em;
+            margin-top: 10px;
+            background: -webkit-linear-gradient(#eee, #333);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .wrapper{
+            .noPreviousPayment {
+                font-size: 3em;
+                display: block;
+                text-align: center;
+                margin: 20px;
+            }
+
+            .card{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin: 20px;
+                border: 1px solid #1976d2;
+                height: 10vh;
+
+                .date{
+                    margin: 5px;
+                }
+                .status{
+                    &.paid{
+                        color: white;
+                        border: 2px solid green;
+                        border-radius: 10px;
+                        background-color: green;
+                    }
+                }
+
+                .download{
+                    background-color: #1976d2;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    .btn{
+                        height: 10vh;
+                    }
+                }
+            }
+        }
+
+    }
+}

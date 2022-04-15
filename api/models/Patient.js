@@ -11,7 +11,8 @@ const patientSchema = new mongoose.Schema({
   govtId: String,
   location: {type: String, required: true},
   prescriptions: Array,
-  previousPayment: Array
+  previousPayment: Array,
+  referedBy: String
 },
 {timestamps: true }
 );

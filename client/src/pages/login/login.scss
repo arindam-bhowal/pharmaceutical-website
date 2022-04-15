@@ -5,7 +5,7 @@
   .wrapper {
     display: flex;
 
-    .rightBox {
+    .leftBox {
       flex: 2;
       height: 100vh;
       display: flex;
@@ -18,13 +18,13 @@
       }
     }
 
-    .leftBox {
+    .rightBox {
       flex: 3;
       height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-evenly;
+      justify-content: center;
 
       .top {
         .logo {
@@ -72,6 +72,7 @@
             position: relative;
             top: 10px;
             width: 13rem;
+            height: 2em;
 
             &:focus {
               outline: none;
@@ -160,7 +161,7 @@
   }
   .login{
     .wrapper{
-      .rightBox{
+      .leftBox{
         display: none;
       }
     }
@@ -182,10 +183,10 @@
   }
   .login{
     .wrapper{
-      .rightBox{
+      .leftBox{
         display: none;
       }
-      .leftBox{
+      .rightBox{
         .bottom{
           form{
             width: 300px;

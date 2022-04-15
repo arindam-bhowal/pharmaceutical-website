@@ -1,39 +1,9 @@
 import './contact.scss'
 import Navbar from '../../components/navbar/Navbar'
-import { useRef } from 'react';
-import emailjs from 'emailjs-com'
-import { init } from '@emailjs/browser';
-init("RgDD4nOo5FZhpqDRT");
 
-// export const ContactUs = () => {
-//     const form = useRef();
-  
-//     const sendEmail = (e) => {
-//       e.preventDefault();
-  
-//       emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_USER_ID')
-//         .then((result) => {
-//             console.log(result.text);
-//         }, (error) => {
-//             console.log(error.text);
-//         });
-//     };
+
 
 const Contact = () => {
-
-
-    const form = useRef();
-
-  const sendEmail = (e) => {
-    e.preventDefault();
-
-    emailjs.sendForm('SpritanKing', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_USER_ID')
-      .then((result) => {
-          console.log(result.text);
-      }, (error) => {
-          console.log(error.text);
-      });
-  };
 
 
     return (

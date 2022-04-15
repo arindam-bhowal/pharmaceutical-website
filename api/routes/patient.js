@@ -4,7 +4,6 @@ const Patient = require("../models/Patient");
 const CryptoJs = require("crypto-js");
 const jwt = require("jsonwebtoken");
 
-
 // ===========================================================================================
 
 // ====================
@@ -49,8 +48,8 @@ router.post("/login", async (req, res) => {
       const patientAuthToken = jwt.sign(jwt_data, process.env.JWT_TOKEN, {
         expiresIn: "7d",
       });
-      const { password, ...otherInfo } = reqPatient._doc;
-      res.status(200).json({ otherInfo, patientAuthToken });
+      // const { password, ...otherInfo } = reqPatient._doc;
+      res.status(200).json({ reqPatient, patientAuthToken });
     } else {
       // Todo:: the error message
       res.status(404).json("Invalid credentials");
