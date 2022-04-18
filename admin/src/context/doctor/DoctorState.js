@@ -47,7 +47,7 @@ const DoctorState = (props) => {
 
       const updateDoctor = async (doctorId, name, email, phoneNumber, sex, age , profilePic, govtId, registrationNo) => {
           try {
-              axios.put(`${host}/doctor/update/${doctorId}`, {name, email, phoneNumber, sex, age , profilePic, govtId, registrationNo})
+              await axios.put(`${host}/doctor/update/${doctorId}`, {name, email, phoneNumber, sex, age , profilePic, govtId, registrationNo})
           } catch (error) {
               return 'error'
           }

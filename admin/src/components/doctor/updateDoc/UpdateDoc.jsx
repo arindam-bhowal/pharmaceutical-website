@@ -35,6 +35,30 @@ const UpdateDoc = () => {
   const [govtId, setGovtId] = useState("");
 
   const [progressUpload, setProgressUpload] = useState();
+
+
+  const options = [
+    {
+      label: "Sex",
+      value: "Sex",
+      isDisabed: true
+    },
+    {
+      label: "Male",
+      value: "Male",
+      isDisabed: false
+    },
+    {
+      label: "Female",
+      value: "Female",
+      isDisabed: false
+    },
+    {
+      label: "Others",
+      value: "Others",
+      isDisabed: false
+    }
+  ];
 // --------------------------------------------------Profile Pic Upload -------------------------------------------
 
 const [selectedFile, setSelectedFile] = useState();
@@ -178,7 +202,6 @@ const idProofUpload = (e) => {
         navigate('/error')
       }
       setReqDoc(res)
-      console.log(res)
     }
     fetchDoctor()
   }, [getDoctor, doctorContext])
@@ -234,7 +257,7 @@ const idProofUpload = (e) => {
               {selectedFile ? (
                 <img src={preview} alt='' />
               ) : (
-                <img src={reqDoc && reqDoc.profilePic} alt="" />
+                <img src={reqDoc && (reqDoc.profilePic ? reqDoc.profilePic : '/assets/noProfilePic.png')} alt="" />
               )}
               <div className="inputContainer">
                 <label htmlFor="profilePic">
@@ -261,7 +284,7 @@ const idProofUpload = (e) => {
               {selectedIdProof ? (
                 <img src={IdPreview} alt=''/>
               ) : (
-                <img src={reqDoc && reqDoc.govtId} alt="" />
+                <img src={reqDoc && (reqDoc.govtId ? reqDoc.govtId  : '/assets/noIdProof.png' )} alt="" />
   )
               }
               <div className="inputContainer">
@@ -376,17 +399,15 @@ const idProofUpload = (e) => {
 
             <div className="sex">
               <select
+              value={sex ? sex : 'sex'}
                onChange={(e) => {
                 e.target.value !== "sex" && setSex(e.target.value);
               }}
                 required
               >
-                <option defaultValue="0">
-                  Sex
-                </option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Others</option>
+                {options.map((option) => (
+              <option key={option.value} value={option.value} >{option.label}</option>
+            ))}
               </select>
             </div>
           </div>

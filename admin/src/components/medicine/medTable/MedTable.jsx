@@ -10,7 +10,7 @@ import {
   ModeEditOutlineOutlined,
   DeleteOutlineOutlined,
 } from "@mui/icons-material";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import medicineContext from "../../../context/medicine/medicineContext";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -22,8 +22,10 @@ const MedTable = (props) => {
 
   const { deleteMedicine } = useContext(medicineContext)
 
-  const {data , query} = props
+  const {data , query, location} = props
 
+  const [reqData, setReqData] = useState([])
+  
   return (
     <TableContainer component={Paper} className="medTable">
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -41,6 +43,7 @@ const MedTable = (props) => {
       </TableHead>
       <TableBody>
         {data
+          .filter(med =>  med.location === location)
           .filter((user) => user.drugName.toLowerCase().includes(query))
           .map((row) => (
             <TableRow key={row._id}>

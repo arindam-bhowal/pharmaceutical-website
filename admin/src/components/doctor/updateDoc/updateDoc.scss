@@ -277,7 +277,8 @@
   
   // ------------------Media Queries ------------
   @media screen and (max-width: 780px) {
-    .profile {
+    .updateDoc {
+      margin-top: 15em;
       .wrapper {
         .container {
           flex-direction: column;

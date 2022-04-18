@@ -39,6 +39,30 @@ const UpdateWorker = () => {
     const [percentPerReferal, setPercentPerReferal] = useState()
   
     const [progressUpload, setProgressUpload] = useState();
+
+
+    const options = [
+      {
+        label: "Sex",
+        value: "Sex",
+        isDisabed: true
+      },
+      {
+        label: "Male",
+        value: "Male",
+        isDisabed: false
+      },
+      {
+        label: "Female",
+        value: "Female",
+        isDisabed: false
+      },
+      {
+        label: "Others",
+        value: "Others",
+        isDisabed: false
+      }
+    ];
    
 
 //------------------------------ File upload-------------------------------
@@ -223,7 +247,7 @@ const handleIdUpload = (e) => {
               {selectedFile ? (
                 <img src={preview} alt='' />
               ) : (
-                <img src={reqWorker && reqWorker.profilePic} alt="" />
+                <img src={reqWorker && (reqWorker.profilePic ? reqWorker.profilePic : '/assets/noProfilePic.png')} alt="" />
               )}
               <div className="inputContainer">
                 <label htmlFor="profilePic">
@@ -250,7 +274,7 @@ const handleIdUpload = (e) => {
               {selectedIdProof ? (
                 <img src={IdPreview} alt=''/>
               ) : (
-                <img src={reqWorker && reqWorker.govtId} alt="" />
+                <img src={reqWorker && (reqWorker.govtId ? reqWorker.govtId :  '/assets/noIdProof.png')} alt="" />
   )
               }
               <div className="inputContainer">
@@ -346,7 +370,7 @@ const handleIdUpload = (e) => {
             <input
               name="percentPerReferal"
               type="number"
-              defaultValue={reqWorker && reqWorker.percentPerReferal}
+              defaultValue={reqWorker ? reqWorker.percentPerReferal: 2}
               onChange={(e) => setPercentPerReferal(e.target.value)}
               required
             />
@@ -379,17 +403,15 @@ const handleIdUpload = (e) => {
 
             <div className="sex">
               <select
+              value={sex ? sex : 'sex'}
                onChange={(e) => {
                 e.target.value !== "sex" && setSex(e.target.value);
               }}
                 required
               >
-                <option>
-                  Sex
-                </option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Others</option>
+               {options.map((option) => (
+              <option key={option.value} value={option.value} >{option.label}</option>
+            ))}
               </select>
             </div>
           </div>

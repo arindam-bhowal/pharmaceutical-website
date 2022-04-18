@@ -1,7 +1,10 @@
 import './navbar.scss'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+
+  const navigate = useNavigate()
+
   return (
     <div className='navbar'>
       <nav className="stroke">
@@ -13,7 +16,10 @@ const Navbar = () => {
           <li><Link to="/payments">Payment History</Link></li>
           <li><Link to="/profile">Profile</Link></li>
           <li><Link to="/contact">Contact Us</Link></li>
-          <li><Link to="/login">Logout</Link></li>
+          <li><a style={{cursor: 'pointer'}} onClick={()=>{
+            localStorage.removeItem('user')
+            navigate('/login')
+          }} >Logout</a></li>
         </ul>
       </nav>
     </div>

@@ -51,7 +51,7 @@ const WorkerTable = (props) => {
               <TableCell className="tableCell">
                 <div className="cellWrapper">
                   <a href={row.profilePic && row.profilePic} target='_blank' rel='noreferrer'>
-                  <img src={row.profilePic} alt="" className="image" />
+                  <img src={row.profilePic? row.profilePic : '/assets/noProfilePic.png'} alt="" className="image" />
                   </a>
                   {row.name}
                 </div>
@@ -67,7 +67,7 @@ const WorkerTable = (props) => {
               <TableCell className="tableCell">
                 <div className="cellWrapper">
                   <a href={row.govtId && row.govtId} target='_blank' rel='noreferrer'>
-                  <img src={row.govtId} alt="" className="image" />
+                  <img src={row.govtId? row.govtId : '/assets/noIdProof.png'} alt="" className="image" />
                   </a>
                 </div>
               </TableCell>

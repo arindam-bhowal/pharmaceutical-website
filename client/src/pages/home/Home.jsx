@@ -2,8 +2,7 @@ import "./home.scss";
 import Navbar from "../../components/navbar/Navbar";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import userContext from "../../context/userContext";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const Home = () => {
@@ -55,7 +54,7 @@ const Home = () => {
           <section className="right-sec">
 
               {
-                  referedBy && (
+                  referedBy.name && (
             <div className="referalInfo" style={{ textAlign: "right" }}>
               <h4>Reffered By - {referedBy.name}</h4>
               <h5>Email - {referedBy.email} </h5>

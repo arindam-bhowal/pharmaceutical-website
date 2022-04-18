@@ -155,7 +155,7 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await updateUser(reqUser._id, name, email, password, phoneNumber, age, location, sex, profilePic, govtId, reqUser.prescriptions, reqUser.previousPayment, reqUser.referedBy)
+    const res = await updateUser(reqUser._id, name, email, password, phoneNumber, age, location, sex, profilePic, govtId)
     if(res==='error'){
       navigate('/error')
     }

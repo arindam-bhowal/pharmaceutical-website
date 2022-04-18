@@ -196,7 +196,7 @@ const handleProfilePicUpload = (e) => {
               {selectedFile ? (
                 <img src={preview} alt='' />
               ) : (
-                <img src="/assets/defaultProfilePic.png" alt="" />
+                <img src="/assets/noProfilePic.png" alt="" />
               )}
               <div className="inputContainer">
                 <label htmlFor="profilePic">
@@ -220,10 +220,10 @@ const handleProfilePicUpload = (e) => {
             </div>
 
             <div className="identity">
-             {setSelectedIdProof ? (
+             {selectedIdProof ? (
                <img src={IdPreview} alt='' />
              ) : (
-               <img src="" alt="" />
+               <img src="/assets/noIdProof.png" alt="" />
              )}
              <div className="inputContainer">
                <label htmlFor="signature">

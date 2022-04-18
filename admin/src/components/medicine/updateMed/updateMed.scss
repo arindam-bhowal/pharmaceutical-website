@@ -1,4 +1,9 @@
 .updateMed{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
     .container {
         max-width: 400px;
         width: 100%;
@@ -17,7 +22,6 @@
     #contact {
         background: #F9F9F9;
         padding: 25px;
-        margin: 150px 0;
         box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
       }
       
@@ -47,7 +51,8 @@
       #contact input[type="number"],
       #contact input[type="date"],
       #contact input[type="url"],
-      #contact textarea {
+      #contact textarea,
+      #contact select {
         width: 100%;
         border: 1px solid #ccc;
         background: #FFF;
@@ -59,7 +64,8 @@
       #contact input[type="email"]:hover,
       #contact input[type="tel"]:hover,
       #contact input[type="url"]:hover,
-      #contact textarea:hover {
+      #contact textarea:hover,
+      #contact select:hover {
         -webkit-transition: border-color 0.3s ease-in-out;
         -moz-transition: border-color 0.3s ease-in-out;
         transition: border-color 0.3s ease-in-out;
@@ -119,4 +125,15 @@
       :-ms-input-placeholder {
         color: #888;
       }
+}
+
+
+.updateMed{
+  .react-date-picker__wrapper {
+    border: none;
+  }
+  .expireDate{
+    margin: 5px;
+    height: 10px;
+  }
 }

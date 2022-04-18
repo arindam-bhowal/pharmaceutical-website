@@ -16,35 +16,25 @@ import medicineContext from "../../context/medicine/medicineContext";
 import "./medicines.scss";
 
 const Medicines = () => {
-
-    const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [searchInput, setSearchInput] = useState("");
   const [location, setLocation] = useState("Guwahati");
-  const [allMedicines, setAllMedicines] = useState([])
+  const [allMedicines, setAllMedicines] = useState([]);
 
-  const { fetchAllMedicines } = useContext(medicineContext)
-
-  const handleChangeLocation = (event) => {
-    setLocation(event.target.value);
-    if(allMedicines) {
-        const filteredArray = allMedicines.filter(medicine => medicine.location == location)
-        setAllMedicines(filteredArray)
-        console.log(location)
-    }
-  };
+  const { fetchAllMedicines } = useContext(medicineContext);
 
   useEffect(() => {
     const getAllMedicines = async () => {
-        const res = await fetchAllMedicines()
-        if(res === 'error'){
-            navigate('/error')
-        }
-        setAllMedicines(res)
-    }
-    getAllMedicines()
-  }, [])
-  
+      const res = await fetchAllMedicines();
+      if (res === "error") {
+        navigate("/error");
+      }
+      setAllMedicines(res);
+    };
+    getAllMedicines();
+
+  }, []);
 
   return (
     <div className="medicines">
@@ -55,7 +45,11 @@ const Medicines = () => {
       <div className="main">
         <div className="top">
           <div className="heading">
-            <Typography variant="h2" component="h3">
+            <Typography
+              variant="h2"
+              component="h3"
+              style={{ textAlign: "center" }}
+            >
               Medicine Database
             </Typography>
           </div>
@@ -67,10 +61,13 @@ const Medicines = () => {
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   label="Location"
-                  defaultValue='Guwahati'
-                  onChange={handleChangeLocation}
+                  defaultValue="Guwahati"
+                  onChange={(e) => {
+                    e.target.value === 'All' ? setLocation(undefined) : setLocation(e.target.value)
+                  }}
                 >
-                    <MenuItem value="Guwahati">Guwahati</MenuItem>
+                  {/* <MenuItem value="All">All</MenuItem> */}
+                  <MenuItem value="Guwahati">Guwahati</MenuItem>
                   <MenuItem value="Borpeta">Borpeta</MenuItem>
                   <MenuItem value="Majuli">Majuli</MenuItem>
                 </Select>
@@ -89,21 +86,26 @@ const Medicines = () => {
                 <img
                   className="search-icon"
                   src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"
+                  alt=""
                 />
               </a>
             </div>
             <div className="addButton">
               <Link to="/medicine/add">
-              <Button variant="outlined">
-                <p>Add a new Medicine</p>
-                <Add />
-              </Button>
+                <Button variant="outlined">
+                  <p>Add a new Medicine</p>
+                  <Add />
+                </Button>
               </Link>
             </div>
           </div>
         </div>
         <div className="bottom">
-          <MedTable data={allMedicines} query={searchInput} />
+          <MedTable
+            data={allMedicines}
+            query={searchInput}
+            location={location}
+          />
         </div>
       </div>
     </div>

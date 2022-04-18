@@ -1,9 +1,10 @@
 .medicines{
     display: flex;
+    margin-left: 60px;
 
     .main{
         margin: auto;
-        width: 85%;
+        width: 90%;
         .top{
             font-weight: bold;
             // font-style: italic;
@@ -68,4 +69,43 @@
         }
         
     }
+}
+
+@media screen and (max-width: 750px) {
+  .medicines{
+    .top{
+      .container{
+        flex-direction: column-reverse;
+      }
+    }
+  }
+  .medicines .main .top .container .search-container{
+    width: 400px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .medicines{
+    .top{
+      .container{
+        flex-direction: column-reverse;
+      }
+    }
+  }
+  .medicines .main .top .container .search-container{
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .medicines{
+    .top{
+      .container{
+        flex-direction: column-reverse;
+      }
+    }
+  }
+  .medicines .main .top .container .search-container{
+    width: 200px;
+  }
 }

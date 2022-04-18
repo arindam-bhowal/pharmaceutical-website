@@ -378,7 +378,7 @@ const UpdateProfile = () => {
                   }}
                   required
                 >
-                  <option defaultValue="0">Location</option>
+                  <option value="0">Location</option>
                   <option value="Guwahati">Guwahati</option>
                   <option value="Borpeta">Borpeta</option>
                   <option value="Other">Others</option>

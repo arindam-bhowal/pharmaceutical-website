@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import doctorContext from "../../../context/doctor/doctorContext";
 import medicineContext from "../../../context/medicine/medicineContext";
+import DatePicker from 'react-date-picker';
 import "./updateMed.scss";
 
 const UpdateMed = () => {
@@ -22,6 +23,32 @@ const UpdateMed = () => {
   const [sellingPrice, setSellingPrice] = useState();
   const [quantity, setQuantity] = useState();
   const [location, setLocation] = useState("");
+
+  const [date, setDate] = useState(new Date())
+
+  const options = [
+    {
+      label: "Location",
+      value: "location",
+    },
+    {
+      label: "Guwahati",
+      value: "Guwahati",
+    },
+    {
+      label: "Majuli",
+      value: "Majuli",
+    },
+    {
+      label: "Borpeta",
+      value: "Borpeta",
+    }
+  ];
+
+  useEffect(() => {
+    const reqDate = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+    setExpireDate(reqDate)
+  }, [date])
 
   useEffect(() => {
     const fetchMedicine = async () => {
@@ -95,13 +122,7 @@ const UpdateMed = () => {
           </fieldset>
           <fieldset>
             <label>Expire Date</label>
-            <input
-              type="date"
-              tabIndex="2"
-              defaultValue={reqMedicine && reqMedicine.expireDate}
-              onChange={(e) => setExpireDate(e.target.value)}
-              required
-            />
+            <DatePicker onChange={setDate} value={expireDate ? expireDate : date} className='expireDate' />
           </fieldset>
           <fieldset>
             <input
@@ -133,14 +154,17 @@ const UpdateMed = () => {
             />
           </fieldset>
           <fieldset>
-            <input
-              placeholder="Location"
-              type="text"
-              defaultValue={reqMedicine && reqMedicine.location}
-              onChange={(e) => setLocation(e.target.value)}
-              tabIndex="2"
-              required
-            />
+          <select
+          value={reqMedicine && reqMedicine.location}
+               onChange={(e) => {
+                e.target.value !== "location" && setLocation(e.target.value);
+              }}
+                required
+              >
+                {options.map((option) => (
+              <option key={option.value} value={option.value} >{option.label}</option>
+            ))}
+              </select>
           </fieldset>
           <fieldset>
             <button

@@ -37,7 +37,7 @@ const Doctor = () => {
     <div className="main">
       <div className="top">
         <div className="heading">
-          <Typography variant="h2" component="h3">
+          <Typography variant="h2" component="h3" style={{textAlign: 'center'}}>
             Doctor's Database
           </Typography>
         </div>
@@ -47,12 +47,13 @@ const Doctor = () => {
               type="text"
               id="search-bar"
               placeholder="Search for Patients"
-              onChange={(e)=>{setSearchInput(e.target.value)}}
+              onChange={(e)=>{setSearchInput(e.target.value.toLocaleLowerCase())}}
             />
             <a href="#">
               <img
                 className="search-icon"
                 src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"
+                alt=''
               />
             </a>
           </div>
