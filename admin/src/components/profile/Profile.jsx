@@ -11,12 +11,14 @@ import {
   getDownloadURL,
  } from "firebase/storage";
  import app from "../../firebase";
+import pharmacyContext from "../../context/pharmacy/pharmacyContext";
 
 const Profile = () => {
   const navigate = useNavigate();
 
   const { newPatient } = useContext(patientContext);
-
+  const { fetchAllPharmacies } = useContext(pharmacyContext)
+  
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const password = 'janKalyan'
@@ -27,7 +29,19 @@ const Profile = () => {
   const [profilePic, setProfilePic] = useState("");
   const [govtId, setGovtId] = useState("");
 
+  const [locationOptions, setLocationOptions] = useState([])
   const [progressUpload, setProgressUpload] = useState();
+
+  // ----------------Location -----------------
+
+  useEffect(() => {
+    const getAllLocations = async () => {
+      const res = await fetchAllPharmacies();
+      setLocationOptions(res);
+    };
+    getAllLocations();
+  }, []);
+
 
  // --------------------------------------------------Profile Pic Upload -------------------------------------------
 
@@ -313,10 +327,9 @@ const handleIdUpload = (e) => {
                   }}
                   required
                 >
-                  <option defaultValue="0">Location</option>
-                  <option value="Guwahati">Guwahati</option>
-                  <option value="Borpeta">Borpeta</option>
-                  <option value="Other">Others</option>
+                  {locationOptions.map((option) => (
+              <option key={option.drugLicenseNo} value={option.branch} >{option.branch}</option>
+            ))}
                 </select>
               </div>
 

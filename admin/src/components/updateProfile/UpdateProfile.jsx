@@ -12,9 +12,11 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../../firebase";
+import pharmacyContext from "../../context/pharmacy/pharmacyContext";
 
 const UpdateProfile = () => {
   const { updatePatient, getPatient } = useContext(patientContext);
+  const { fetchAllPharmacies } = useContext(pharmacyContext)
 
   const { patientId } = useParams();
 
@@ -32,6 +34,7 @@ const UpdateProfile = () => {
   const [govtId, setGovtId] = useState("");
   const [prescriptions, setPrescriptions] = useState([])
 
+  const [locationOptions, setLocationOptions] = useState([])
 
   const [progressUpload, setProgressUpload] = useState();
 
@@ -54,24 +57,17 @@ const UpdateProfile = () => {
     }
   ];
 
-  const locationOptions = [
-    {
-      label: "Location",
-      value: "Location",
-    },
-    {
-      label: "Guwahati",
-      value: "Guwahati",
-    },
-    {
-      label: "Borpeta",
-      value: "Borpeta",
-    },
-    {
-      label: "Majuli",
-      value: "Majuli",
-    }
-  ];
+  // ----------------Location -----------------
+
+  useEffect(() => {
+    const getAllLocations = async () => {
+      const res = await fetchAllPharmacies();
+      setLocationOptions(res);
+    };
+    getAllLocations();
+  }, []);
+
+
 
   // -------------------------------- -----------
 
@@ -413,7 +409,7 @@ const UpdateProfile = () => {
                 required
               >
                 {locationOptions.map((option) => (
-              <option key={option.value} value={option.value} >{option.label}</option>
+              <option key={option.drugLicenseNo} value={option.branch} >{option.branch}</option>
             ))}
               </select>
               </div>

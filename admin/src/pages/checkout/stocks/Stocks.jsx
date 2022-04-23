@@ -1,5 +1,11 @@
 import "./stocks.scss";
-import { FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import medicineContext from "../../../context/medicine/medicineContext";
@@ -7,19 +13,34 @@ import { useNavigate } from "react-router-dom";
 import { ShoppingCartOutlined } from "@mui/icons-material";
 import StockTable from "../stockTable/StockTable";
 import checkoutContext from "../../../context/checkout/checkoutContext";
+import pharmacyContext from "../../../context/pharmacy/pharmacyContext";
 
 const Stocks = () => {
   const { reqPatient, setReqStocks } = useContext(checkoutContext);
 
   const [allMedicines, setAllMedicines] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const [location, setLocation] = useState('')
+  const [location, setLocation] = useState("");
 
+  const [locationOptions, setLocationOptions] = useState([])
   const [cart, setCart] = useState([]);
 
   const { fetchAllMedicines } = useContext(medicineContext);
+  const { fetchAllPharmacies } = useContext(pharmacyContext)
 
   const navigate = useNavigate();
+
+    // ----------------Location -----------------
+
+    useEffect(() => {
+      const getAllLocations = async () => {
+        const res = await fetchAllPharmacies();
+        setLocationOptions(res);
+      };
+      getAllLocations();
+    }, []);
+
+    //  -------------Fetch Medicines --------------
 
   useEffect(() => {
     const getAllMedicines = async () => {
@@ -28,9 +49,9 @@ const Stocks = () => {
         navigate("/error");
       }
 
-      if(location){
-        setAllMedicines(res.filter(med=> med.location===location))
-      }else{
+      if (location) {
+        setAllMedicines(res.filter((med) => med.location === location));
+      } else {
         setAllMedicines(res);
       }
     };
@@ -39,11 +60,10 @@ const Stocks = () => {
 
   const handleCheckout = () => {
     setReqStocks(cart);
-    if(cart.length!==0){
+    if (cart.length !== 0) {
       navigate("/checkout");
-    }
-    else{
-      alert('No Iteams Added to Cart')
+    } else {
+      alert("No Iteams Added to Cart");
     }
   };
 
@@ -61,7 +81,7 @@ const Stocks = () => {
             </Typography>
           </div>
           <div className="container">
-          <div className="locationForm">
+            <div className="locationForm">
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Location</InputLabel>
                 <Select
@@ -70,13 +90,17 @@ const Stocks = () => {
                   label="Location"
                   defaultValue="All"
                   onChange={(e) => {
-                    e.target.value === 'All' ? setLocation('') : setLocation(e.target.value)
+                    e.target.value === "All"
+                      ? setLocation("")
+                      : setLocation(e.target.value);
                   }}
                 >
                   <MenuItem value="All">All</MenuItem>
-                  <MenuItem value="Guwahati">Guwahati</MenuItem>
-                  <MenuItem value="Borpeta">Borpeta</MenuItem>
-                  <MenuItem value="Majuli">Majuli</MenuItem>
+                  {locationOptions.map((option) => (
+                    <MenuItem key={option.drugLicenseNo} value={option.branch}>
+                      {option.branch}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </div>

@@ -11,21 +11,33 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Add } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import pharmacyContext from "../../context/pharmacy/pharmacyContext";
 
 const Patients = () => {
   const [allPatients, setAllPatients] = useState([]);
-  const [searchInput, setSearchInput] = useState("")
-  const [location, setLocation] = useState('')
+  const [searchInput, setSearchInput] = useState("");
+  const [location, setLocation] = useState("");
+  const [locationOptions, setLocationOptions] = useState([]);
 
   const { fetchAllPatients } = useContext(patientContext);
-  
+  const { fetchAllPharmacies } = useContext(pharmacyContext);
+
+  // ----------------Location -----------------
+
+  useEffect(() => {
+    const getAllLocations = async () => {
+      const res = await fetchAllPharmacies();
+      setLocationOptions(res);
+    };
+    getAllLocations();
+  }, []);
 
   useEffect(() => {
     const getAllPatients = async () => {
       const res = await fetchAllPatients();
-      if(location){
-        setAllPatients(res.filter(patient => patient.location === location))
-      }else{
+      if (location) {
+        setAllPatients(res.filter((patient) => patient.location === location));
+      } else {
         setAllPatients(res);
       }
     };
@@ -41,7 +53,11 @@ const Patients = () => {
       <div className="main">
         <div className="top">
           <div className="heading">
-            <Typography variant="h2" component="h3" style={{textAlign: 'center'}}>
+            <Typography
+              variant="h2"
+              component="h3"
+              style={{ textAlign: "center" }}
+            >
               Patient's Database
             </Typography>
           </div>
@@ -55,13 +71,17 @@ const Patients = () => {
                   label="Location"
                   defaultValue="All"
                   onChange={(e) => {
-                    e.target.value === 'All' ? setLocation('') : setLocation(e.target.value)
+                    e.target.value === "All"
+                      ? setLocation("")
+                      : setLocation(e.target.value);
                   }}
                 >
                   <MenuItem value="All">All</MenuItem>
-                  <MenuItem value="Guwahati">Guwahati</MenuItem>
-                  <MenuItem value="Borpeta">Borpeta</MenuItem>
-                  <MenuItem value="Majuli">Majuli</MenuItem>
+                  {locationOptions.map((option) => (
+                    <MenuItem key={option.drugLicenseNo} value={option.branch}>
+                      {option.branch}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </div>
@@ -70,20 +90,22 @@ const Patients = () => {
                 type="text"
                 id="search-bar"
                 placeholder="Search for Patients"
-                onChange={(e)=>{setSearchInput(e.target.value)}}
+                onChange={(e) => {
+                  setSearchInput(e.target.value);
+                }}
               />
-                <img
-                  className="search-icon"
-                  src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"
-                  alt=""
-                />
+              <img
+                className="search-icon"
+                src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"
+                alt=""
+              />
             </div>
             <div className="addButton">
-              <Link to='/patient/profile'>
-              <Button variant="outlined">
-                <p>Add a Patient</p>
-                <Add />
-              </Button>
+              <Link to="/patient/profile">
+                <Button variant="outlined">
+                  <p>Add a Patient</p>
+                  <Add />
+                </Button>
               </Link>
             </div>
           </div>
