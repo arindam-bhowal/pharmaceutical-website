@@ -15,7 +15,7 @@ const PatientState = (props) => {
       const res = await axios.get(`${host}/patient/all`);
       return res.data;
     } catch (error) {
-      // To do
+      return 'error'
     }
   };
 
@@ -24,8 +24,9 @@ const PatientState = (props) => {
   const deletePatient = async (patientId) => {
     try {
       await axios.delete(`${host}/patient/delete/${patientId}`);
+      return 'success'
     } catch (error) {
-      // To do
+      return 'error'
     }
   };
 
@@ -33,9 +34,10 @@ const PatientState = (props) => {
 
   const newPatient = async (name, email, password, phoneNumber, sex, age, profilePic, govtId, location) => {
     try {
-        await axios.post(`${host}/patient/register`, {name, email, password, phoneNumber, sex, age, profilePic, govtId, location})
+        const res = await axios.post(`${host}/patient/register`, {name, email, password, phoneNumber, sex, age, profilePic, govtId, location})
+        return res.data
     } catch (error) {
-      // To do
+      return 'error'
     }
   };
 
@@ -45,7 +47,7 @@ const PatientState = (props) => {
     try {
         await axios.put(`${host}/patient/update/${patientId}`, {name, email, phoneNumber, sex, age, profilePic, govtId, location, prescriptions})
     } catch (error) {
-        //  To do
+      return 'error'
     }
   }
 
@@ -56,7 +58,7 @@ const PatientState = (props) => {
           const res = await axios.get(`${host}/patient/find/${patientId}`)
           return res.data
       } catch (error) {
-        //   to do
+        return 'error'
       }
   }
 

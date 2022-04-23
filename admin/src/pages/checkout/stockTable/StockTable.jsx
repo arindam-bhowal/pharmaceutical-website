@@ -7,53 +7,54 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Add, Remove } from "@mui/icons-material";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import checkoutContext from "../../../context/checkout/checkoutContext";
+import { useBeforeunload } from "react-beforeunload";
+import { useContext } from "react";
 
 const StockTable = (props) => {
-  const { data, query, cart, setCart} = props;
+  const { reqPatient } = useContext(checkoutContext);
+
+  const { data, query, cart, setCart } = props;
+
+  useBeforeunload((event) => {
+    if (reqPatient !== "") {
+      event.preventDefault();
+    }
+  });
 
   const handleAddition = (id, amount) => {
-
-    let newArray = []
-    const res = cart.find(item => item.stockId === id)
-
-    if(res===undefined){
-      setCart((cart) => [...cart, { stockId: id, quantity: 1 }]) 
-    }
-    else{
-        newArray = [...cart]
-        newArray.forEach(item => {
-          if(item.stockId === id && item.quantity < amount)
-          {
-            item.quantity++
-          }
-        })
-        setCart(newArray)
+    let newArray = [];
+    const res = cart.find((item) => item.stockId === id);
+    if (res === undefined) {
+      setCart((cart) => [...cart, { stockId: id, quantity: 1 }]);
+    } else {
+      newArray = [...cart];
+      newArray.forEach((item) => {
+        if (item.stockId === id && item.quantity < amount) {
+          item.quantity++;
+        }
+      });
+      setCart(newArray);
     }
   };
 
   const handleDeletion = (id) => {
-    let newArray =[]
-    const res = cart.find(item => item.stockId === id)
-
-      if(res!==undefined && res.quantity!==0){
-        newArray=[...cart]
-        newArray.forEach(item => {
-          if(item.stockId === id && item.quantity > 0){
-            item.quantity -- 
-          }
-        })
-        setCart(newArray)
-      }
-
-      if(res!== undefined && res.quantity === 0){
-        newArray= [...cart]
-        setCart(newArray.filter(item => item.stockId !== id))
-      }
-
-      console.log(cart)
-  }
+    let newArray = [];
+    const res = cart.find((item) => item.stockId === id);
+    if (res !== undefined && res.quantity !== 0) {
+      newArray = [...cart];
+      newArray.forEach((item) => {
+        if (item.stockId === id && item.quantity > 0) {
+          item.quantity--;
+        }
+      });
+      setCart(newArray);
+    }
+    if (res !== undefined && res.quantity === 0) {
+      newArray = [...cart];
+      setCart(newArray.filter((item) => item.stockId !== id));
+    }
+  };
 
   return (
     <TableContainer component={Paper} className="stockTable">
@@ -91,15 +92,16 @@ const StockTable = (props) => {
                     {/* <Add className="icon status add" onClick={()=>{setCartItem(cartItem => [...cartItem, row._id])}} /> */}
                     <Add
                       className="icon status add"
-                      onClick={ () =>  handleAddition(row._id, row.quantity) }
+                      onClick={() => handleAddition(row._id, row.quantity)}
                     />
                     <span className="status quantity">
                       {cart.find((item) => item.stockId === row._id)
                         ? cart.find((item) => item.stockId === row._id).quantity
                         : 0}
                     </span>
-                    <Remove className="icon status remove" 
-                      onClick={()=> handleDeletion(row._id)}
+                    <Remove
+                      className="icon status remove"
+                      onClick={() => handleDeletion(row._id)}
                     />
                   </TableCell>
                 </TableRow>

@@ -35,6 +35,9 @@ const DocTable = (props) => {
           <TableCell className="tableCell">Phone Number</TableCell>
           <TableCell className="tableCell">Sex</TableCell>
           <TableCell className="tableCell">Age</TableCell>
+          <TableCell className="tableCell">Number of Referals</TableCell>
+          <TableCell className="tableCell">Referal Id</TableCell>
+          <TableCell className="tableCell">Percent Per Referal</TableCell>
           <TableCell className="tableCell">Identity</TableCell>
           <TableCell className="tableCell">Actions</TableCell>
         </TableRow>
@@ -58,6 +61,9 @@ const DocTable = (props) => {
               <TableCell className="tableCell">{row.phoneNumber}</TableCell>
               <TableCell className="tableCell">{row.sex}</TableCell>
               <TableCell className="tableCell">{row.age}</TableCell>
+              <TableCell className="tableCell">{row.referals? row.referals.length : 0}</TableCell>
+              <TableCell className="tableCell">{row.referalId}</TableCell>
+              <TableCell className="tableCell">{row.percentPerReferal}</TableCell>
               <TableCell className="tableCell">
                 <div className="cellWrapper">
                   <a href={row.govtId} target='_blank' rel="noreferrer">

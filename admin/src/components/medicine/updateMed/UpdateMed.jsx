@@ -1,7 +1,6 @@
 import { ArrowBack } from "@mui/icons-material";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import doctorContext from "../../../context/doctor/doctorContext";
 import medicineContext from "../../../context/medicine/medicineContext";
 import DatePicker from 'react-date-picker';
 import "./updateMed.scss";
@@ -10,7 +9,6 @@ const UpdateMed = () => {
   const navigate = useNavigate();
 
   const { updateMedicine, getMedicine } = useContext(medicineContext);
-  const {updateDoctor, getDoctor} = useContext(doctorContext)
 
   const { medicineId } = useParams();
 

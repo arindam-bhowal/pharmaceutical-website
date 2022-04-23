@@ -22,9 +22,8 @@ const MedTable = (props) => {
 
   const { deleteMedicine } = useContext(medicineContext)
 
-  const {data , query, location} = props
+  const {data , query} = props
 
-  const [reqData, setReqData] = useState([])
   
   return (
     <TableContainer component={Paper} className="medTable">
@@ -43,7 +42,7 @@ const MedTable = (props) => {
       </TableHead>
       <TableBody>
         {data
-          .filter(med =>  med.location === location)
+          // .filter(med =>  med.location === location)
           .filter((user) => user.drugName.toLowerCase().includes(query))
           .map((row) => (
             <TableRow key={row._id}>

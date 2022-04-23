@@ -1,4 +1,4 @@
-.patients{
+.pharmacies{
     display: flex;
 
     .main{
@@ -73,40 +73,40 @@
 
 
 @media screen and (max-width: 750px) {
-  .patients{
+  .pharmacies{
     .top{
       .container{
         flex-direction: column-reverse;
       }
     }
   }
-  .patients .main .top .container .search-container{
+  .pharmacies .main .top .container .search-container{
     width: 400px;
   }
 }
 
 @media screen and (max-width: 600px) {
-  .patients{
+  .pharmacies{
     .top{
       .container{
         flex-direction: column-reverse;
       }
     }
   }
-  .patients .main .top .container .search-container{
+  .pharmacies .main .top .container .search-container{
     width: 300px;
   }
 }
 
 @media screen and (max-width: 600px) {
-  .patients{
+  .pharmacies{
     .top{
       .container{
         flex-direction: column-reverse;
       }
     }
   }
-  .patients .main .top .container .search-container{
+  .pharmacies .main .top .container .search-container{
     width: 200px;
   }
 }

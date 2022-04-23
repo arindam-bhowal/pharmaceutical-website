@@ -33,6 +33,10 @@ const UpdateDoc = () => {
   const [sex, setSex] = useState("");
   const [profilePic, setProfilePic] = useState("");
   const [govtId, setGovtId] = useState("");
+  const [referals, setReferals] = useState([])
+  const [referalId, setReferalId] = useState('')
+
+  const [percentPerReferal, setPercentPerReferal] = useState()
 
   const [progressUpload, setProgressUpload] = useState();
 
@@ -216,12 +220,15 @@ const idProofUpload = (e) => {
       setSex(reqDoc.sex)
       setProfilePic(reqDoc.profilePic)
       setGovtId(reqDoc.govtId)
+      setReferalId(reqDoc.referalId)
+      setReferals(reqDoc.referals)
+      setPercentPerReferal(reqDoc.percentPerReferal)
     }
   }, [reqDoc])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await updateDoctor(doctorId,  name, email, phoneNumber, sex, age , profilePic, govtId, registrationNo)
+    await updateDoctor(doctorId,  name, email, phoneNumber, sex, age , profilePic, govtId, registrationNo, referals,referalId, percentPerReferal)
     navigate("/doctors");
   };
 
@@ -375,6 +382,19 @@ const idProofUpload = (e) => {
             <label>Phone Number</label>
           </div>
 
+          <div className="group">
+            <input
+              name="percentPerReferal"
+              type="number"
+              defaultValue={reqDoc && reqDoc.percentPerReferal}
+              onChange={(e) => setPercentPerReferal(e.target.value)}
+              required
+            />
+            <span className="highlight"></span>
+            <span className="bar"></span>
+            <label>Percent Per Referal</label>
+          </div>
+
           <div className="ageSexLocation">
             <div className="age">
               <input
@@ -385,17 +405,6 @@ const idProofUpload = (e) => {
                 onChange={(e) => setAge(e.target.value)}
               />
             </div>
-
-            {/* <div className="location">
-              <select
-                required
-              >
-                <option defaultValue="0">Location</option>
-                <option value="Guwahati">Guwahati</option>
-                <option value="Borpeta">Borpeta</option>
-                <option value="Other">Others</option>
-              </select>
-            </div> */}
 
             <div className="sex">
               <select

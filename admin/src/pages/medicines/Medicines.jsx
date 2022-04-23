@@ -19,7 +19,7 @@ const Medicines = () => {
   const navigate = useNavigate();
 
   const [searchInput, setSearchInput] = useState("");
-  const [location, setLocation] = useState("Guwahati");
+  const [location, setLocation] = useState(undefined);
   const [allMedicines, setAllMedicines] = useState([]);
 
   const { fetchAllMedicines } = useContext(medicineContext);
@@ -30,11 +30,15 @@ const Medicines = () => {
       if (res === "error") {
         navigate("/error");
       }
-      setAllMedicines(res);
+      if(location){
+        setAllMedicines(res.filter(med=> med.location===location))
+      }else{
+        setAllMedicines(res);
+      }
     };
     getAllMedicines();
 
-  }, []);
+  }, [location]);
 
   return (
     <div className="medicines">
@@ -61,12 +65,12 @@ const Medicines = () => {
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   label="Location"
-                  defaultValue="Guwahati"
+                  defaultValue="All"
                   onChange={(e) => {
-                    e.target.value === 'All' ? setLocation(undefined) : setLocation(e.target.value)
+                    e.target.value === 'All' ? setLocation('') : setLocation(e.target.value)
                   }}
                 >
-                  {/* <MenuItem value="All">All</MenuItem> */}
+                  <MenuItem value="All">All</MenuItem>
                   <MenuItem value="Guwahati">Guwahati</MenuItem>
                   <MenuItem value="Borpeta">Borpeta</MenuItem>
                   <MenuItem value="Majuli">Majuli</MenuItem>
@@ -77,7 +81,7 @@ const Medicines = () => {
               <input
                 type="text"
                 id="search-bar"
-                placeholder="Search for Patients"
+                placeholder="Search for a Medicine"
                 onChange={(e) => {
                   setSearchInput(e.target.value);
                 }}
@@ -104,7 +108,6 @@ const Medicines = () => {
           <MedTable
             data={allMedicines}
             query={searchInput}
-            location={location}
           />
         </div>
       </div>

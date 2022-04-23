@@ -9,7 +9,10 @@ const doctorSchema = new mongoose.Schema({
   age: Number,
   profilePic: String,
   govtId: String,
-  registrationNo: {type: String, required: true, unique: true}
+  registrationNo: {type: String, required: true, unique: true},
+  referals: {type: Array},
+  referalId: String,
+  percentPerReferal: Number
 });
 
 module.exports = mongoose.model("Doctors", doctorSchema);

@@ -6,7 +6,6 @@ import patientContext from "../../context/patient/patientContext";
 import doctorContext from "../../context/doctor/doctorContext";
 import workerContext from "../../context/worker/workerContext";
 import "./dashboard.scss";
-import axios from "axios";
 
 
 const Dashboard = () => {
@@ -19,9 +18,12 @@ const Dashboard = () => {
   const [noOfPatient, setNoOfPatient] = useState(0);
   const [noOfWorker, setNoOfWorker] = useState(0);
   const [noOfDoctor, setNoOfDoctor] = useState(0);
+  const [allPatients, setAllPatients] = useState([])
+  const [profitInAMonth, setProfitInAMonth] = useState(0)
 
   const navigate = useNavigate();
 
+  // ====================  For calculating user states=============
   const MONTHS = useMemo(
     () => [
       "Jan",
@@ -58,18 +60,41 @@ const Dashboard = () => {
     getStats();
   }, [MONTHS, patientStats]);
 
+
+  // ================Calculate no of users =============
   useEffect(() => {
     const calculateUsers = async () => {
       const patients = await fetchAllPatients()
       const workers = await fetchAllWorkers()
       const doctors = await fetchAllDoctors()
 
+      setAllPatients(patients)
       setNoOfPatient(patients.length)
       setNoOfWorker(workers.length)
       setNoOfDoctor(doctors.length)
     }
     calculateUsers()
   }, [])
+
+  //  =============Calculate Profit ======================
+  useEffect(() => {
+    if(allPatients){
+      let totalAmount = 0
+      allPatients.forEach(patient => {
+        patient.payments.forEach(data => {
+          if(data.status === 'success'){
+            totalAmount += data.amount
+            // const date = data.date
+            // const currentDate = new Date()
+            // console.log(currentDate.getMonth())
+          }
+        })
+      })
+      setProfitInAMonth(totalAmount)
+    }
+  }, [allPatients])
+  
+
   
 
   return (
@@ -87,7 +112,7 @@ const Dashboard = () => {
 
           <div className="netEarning">
             <h2>Net Earning</h2>
-            <span> ₹ 232 </span>
+            <span> ₹ {profitInAMonth} </span>
           </div>
         </div>
 

@@ -24,7 +24,6 @@ const UpdateProfile = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("jankalyan");
   const [phoneNumber, setPhoneNumber] = useState();
   const [age, setAge] = useState();
   const [location, setLocation] = useState("");
@@ -35,6 +34,44 @@ const UpdateProfile = () => {
 
 
   const [progressUpload, setProgressUpload] = useState();
+
+  const sexOptions = [
+    {
+      label: "Sex",
+      value: "Sex",
+    },
+    {
+      label: "Male",
+      value: "Male",
+    },
+    {
+      label: "Female",
+      value: "Female",
+    },
+    {
+      label: "Others",
+      value: "Others",
+    }
+  ];
+
+  const locationOptions = [
+    {
+      label: "Location",
+      value: "Location",
+    },
+    {
+      label: "Guwahati",
+      value: "Guwahati",
+    },
+    {
+      label: "Borpeta",
+      value: "Borpeta",
+    },
+    {
+      label: "Majuli",
+      value: "Majuli",
+    }
+  ];
 
   // -------------------------------- -----------
 
@@ -87,7 +124,7 @@ const UpdateProfile = () => {
       setSelectedPrescription(undefined);
       return;
     }
-    setSelectedPrescription(e.target.files[0])
+    setSelectedPrescription((prev => [...prev, {prescription: e.target.files[0], date: new Date()}]))
   }
 
   // -----------------------------------------Firebase Upload Profile Pic --------------------------
@@ -210,9 +247,6 @@ const UpdateProfile = () => {
 
 
 
-
-
-
   return (
     <div className="updateProfile">
       <div className="wrapper">
@@ -242,7 +276,7 @@ const UpdateProfile = () => {
               {selectedFile ? (
                 <img src={preview} alt='' />
               ) : (
-                <img src={reqPatient && reqPatient.profilePic} alt="" />
+                <img src={reqPatient && (reqPatient.profilePic ? reqPatient.profilePic : '/assets/noProfilePic.png')} alt="" />
               )}
               <div className="inputContainer">
                 <label htmlFor="profilePic">
@@ -269,7 +303,7 @@ const UpdateProfile = () => {
               {selectedIdProof ? (
                 <img src={IdPreview} alt=''/>
               ) : (
-                <img src={reqPatient && reqPatient.govtId} alt="" />
+                <img src={reqPatient && (reqPatient.govtId ? reqPatient.govtId : '/assets/noIdProof.png') } alt="" />
   )
               }
               <div className="inputContainer">
@@ -371,32 +405,31 @@ const UpdateProfile = () => {
               </div>
 
               <div className="location">
-                <select
-                  onChange={(e) => {
-                    e.target.value !== "location" &&
-                      setLocation(e.target.value);
-                  }}
-                  required
-                >
-                  <option value="0">Location</option>
-                  <option value="Guwahati">Guwahati</option>
-                  <option value="Borpeta">Borpeta</option>
-                  <option value="Other">Others</option>
-                </select>
+              <select
+              value={location ? location : 'Location'}
+               onChange={(e) => {
+                e.target.value !== "Location" && setSex(e.target.value);
+              }}
+                required
+              >
+                {locationOptions.map((option) => (
+              <option key={option.value} value={option.value} >{option.label}</option>
+            ))}
+              </select>
               </div>
 
               <div className="sex">
-                <select
-                  onChange={(e) => {
-                    e.target.value !== "sex" && setSex(e.target.value);
-                  }}
-                  required
-                >
-                  <option defaultValue="0">Sex</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Others</option>
-                </select>
+              <select
+              value={sex ? sex : 'Sex'}
+               onChange={(e) => {
+                e.target.value !== "Sex" && setSex(e.target.value);
+              }}
+                required
+              >
+                {sexOptions.map((option) => (
+              <option key={option.value} value={option.value} >{option.label}</option>
+            ))}
+              </select>
               </div>
             </div>
 

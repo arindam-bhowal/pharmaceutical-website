@@ -35,7 +35,6 @@ const WorkerTable = (props) => {
           <TableCell className="tableCell">Phone Number</TableCell>
           <TableCell className="tableCell">Sex</TableCell>
           <TableCell className="tableCell">Age</TableCell>
-          <TableCell className="tableCell">Location</TableCell>
           <TableCell className="tableCell">Number of Referals</TableCell>
           <TableCell className="tableCell">Referal Id</TableCell>
           <TableCell className="tableCell">Percent Per Referal</TableCell>
@@ -60,7 +59,6 @@ const WorkerTable = (props) => {
               <TableCell className="tableCell">{row.phoneNumber}</TableCell>
               <TableCell className="tableCell">{row.sex}</TableCell>
               <TableCell className="tableCell">{row.age}</TableCell>
-              <TableCell className="tableCell">{row.location}</TableCell>
               <TableCell className="tableCell">{row.referals? row.referals.length : 0}</TableCell>
               <TableCell className="tableCell">{row.referalId}</TableCell>
               <TableCell className="tableCell">{row.percentPerReferal}</TableCell>

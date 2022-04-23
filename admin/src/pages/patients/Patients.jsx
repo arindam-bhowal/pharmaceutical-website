@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 const Patients = () => {
   const [allPatients, setAllPatients] = useState([]);
   const [searchInput, setSearchInput] = useState("")
+  const [location, setLocation] = useState('')
 
   const { fetchAllPatients } = useContext(patientContext);
   
@@ -22,10 +23,14 @@ const Patients = () => {
   useEffect(() => {
     const getAllPatients = async () => {
       const res = await fetchAllPatients();
-      setAllPatients(res);
+      if(location){
+        setAllPatients(res.filter(patient => patient.location === location))
+      }else{
+        setAllPatients(res);
+      }
     };
     getAllPatients();
-  }, []);
+  }, [location]);
 
   return (
     <div className="patients">
@@ -36,7 +41,7 @@ const Patients = () => {
       <div className="main">
         <div className="top">
           <div className="heading">
-            <Typography variant="h2" component="h3">
+            <Typography variant="h2" component="h3" style={{textAlign: 'center'}}>
               Patient's Database
             </Typography>
           </div>
@@ -47,13 +52,16 @@ const Patients = () => {
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  // value={age}
-                  label="Age"
-                  // onChange={handleChange}
+                  label="Location"
+                  defaultValue="All"
+                  onChange={(e) => {
+                    e.target.value === 'All' ? setLocation('') : setLocation(e.target.value)
+                  }}
                 >
-                  <MenuItem >Borpeta</MenuItem>
-                  <MenuItem >Guwahati</MenuItem>
-                  <MenuItem >Majuli</MenuItem>
+                  <MenuItem value="All">All</MenuItem>
+                  <MenuItem value="Guwahati">Guwahati</MenuItem>
+                  <MenuItem value="Borpeta">Borpeta</MenuItem>
+                  <MenuItem value="Majuli">Majuli</MenuItem>
                 </Select>
               </FormControl>
             </div>
@@ -67,6 +75,7 @@ const Patients = () => {
                 <img
                   className="search-icon"
                   src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"
+                  alt=""
                 />
             </div>
             <div className="addButton">

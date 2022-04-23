@@ -1,5 +1,5 @@
 import "./stocks.scss";
-import { Typography } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import medicineContext from "../../../context/medicine/medicineContext";
@@ -9,31 +9,43 @@ import StockTable from "../stockTable/StockTable";
 import checkoutContext from "../../../context/checkout/checkoutContext";
 
 const Stocks = () => {
-
-  const { setReqStocks} = useContext(checkoutContext)
+  const { reqPatient, setReqStocks } = useContext(checkoutContext);
 
   const [allMedicines, setAllMedicines] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+  const [location, setLocation] = useState('')
 
   const [cart, setCart] = useState([]);
 
   const { fetchAllMedicines } = useContext(medicineContext);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getAllMedicines = async () => {
       const res = await fetchAllMedicines();
-      setAllMedicines(res);
+      if (res === "error") {
+        navigate("/error");
+      }
+
+      if(location){
+        setAllMedicines(res.filter(med=> med.location===location))
+      }else{
+        setAllMedicines(res);
+      }
     };
     getAllMedicines();
-  }, []);
-
+  }, [location]);
 
   const handleCheckout = () => {
-    setReqStocks(cart)
-    navigate('/checkout')
-  }
+    setReqStocks(cart);
+    if(cart.length!==0){
+      navigate("/checkout");
+    }
+    else{
+      alert('No Iteams Added to Cart')
+    }
+  };
 
   return (
     <div className="stocks">
@@ -49,6 +61,25 @@ const Stocks = () => {
             </Typography>
           </div>
           <div className="container">
+          <div className="locationForm">
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Location</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Location"
+                  defaultValue="All"
+                  onChange={(e) => {
+                    e.target.value === 'All' ? setLocation('') : setLocation(e.target.value)
+                  }}
+                >
+                  <MenuItem value="All">All</MenuItem>
+                  <MenuItem value="Guwahati">Guwahati</MenuItem>
+                  <MenuItem value="Borpeta">Borpeta</MenuItem>
+                  <MenuItem value="Majuli">Majuli</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
             <div className="search-container">
               <input
                 type="text"
@@ -70,7 +101,10 @@ const Stocks = () => {
             <div className="addButton">
               <span className="notification">{cart.length}</span>
               <div className="icon">
-                <ShoppingCartOutlined style={{ fontSize: "2em" }} onClick={handleCheckout} />
+                <ShoppingCartOutlined
+                  style={{ fontSize: "2em" }}
+                  onClick={reqPatient && handleCheckout}
+                />
               </div>
             </div>
             {/* </Link> */}

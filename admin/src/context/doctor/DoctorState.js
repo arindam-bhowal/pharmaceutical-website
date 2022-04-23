@@ -34,9 +34,9 @@ const DoctorState = (props) => {
 
      // --------------------Add a new Doctor in database ------------------------
 
-     const newDoctor = async (name, email, password, phoneNumber, sex, age , profilePic, govtId, registrationNo) => {
+     const newDoctor = async (name, email, password, phoneNumber, sex, age , profilePic, govtId, registrationNo, referals,referalId, percentPerReferal) => {
          try {
-             await axios.post(`${host}/doctor/register`, { name, email, password, phoneNumber, sex, age , profilePic, govtId, registrationNo })
+             await axios.post(`${host}/doctor/register`, { name, email, password, phoneNumber, sex, age , profilePic, govtId, registrationNo, referals,referalId, percentPerReferal })
              return 'success'
          } catch (error) {
              return 'error'
@@ -45,9 +45,9 @@ const DoctorState = (props) => {
 
       //   --------------------------- Update doctor credentials ---------------------------
 
-      const updateDoctor = async (doctorId, name, email, phoneNumber, sex, age , profilePic, govtId, registrationNo) => {
+      const updateDoctor = async (doctorId, name, email, phoneNumber, sex, age , profilePic, govtId, registrationNo, referals,referalId, percentPerReferal) => {
           try {
-              await axios.put(`${host}/doctor/update/${doctorId}`, {name, email, phoneNumber, sex, age , profilePic, govtId, registrationNo})
+              await axios.put(`${host}/doctor/update/${doctorId}`, {name, email, phoneNumber, sex, age , profilePic, govtId, registrationNo, referals,referalId, percentPerReferal})
           } catch (error) {
               return 'error'
           }

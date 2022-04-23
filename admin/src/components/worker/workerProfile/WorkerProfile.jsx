@@ -29,10 +29,8 @@ const WorkerProfile = () => {
   const [sex, setSex] = useState("");
   const [profilePic, setProfilePic] = useState("");
   const [govtId, setGovtId] = useState("");
-  const [location, setLocation] = useState('')
   const [referals, setReferals] = useState(0)
   const [referalId, setReferalId] = useState('')
-
   const [percentPerReferal, setPercentPerReferal] = useState(2)
 
   const [progressUpload, setProgressUpload] = useState();
@@ -163,7 +161,7 @@ const handleIdUpload = (e) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        await newWorker(name, email, password, phoneNumber, age, sex, profilePic, govtId, location, referals ,referalId, percentPerReferal)
+        await newWorker(name, email, password, phoneNumber, age, sex, profilePic, govtId, referals ,referalId, percentPerReferal)
         navigate('/workers')
     }
 
@@ -293,18 +291,6 @@ const handleIdUpload = (e) => {
 
           <div className="group">
             <input
-              name="location"
-              type="text"
-              onChange={(e) => setLocation(e.target.value)}
-              required
-            />
-            <span className="highlight"></span>
-            <span className="bar"></span>
-            <label>Location</label>
-          </div>
-
-          <div className="group">
-            <input
               name="percentPerReferal"
               type="number"
               defaultValue="2"
@@ -326,17 +312,6 @@ const handleIdUpload = (e) => {
                 onChange={(e) => setAge(e.target.value)}
               />
             </div>
-
-            {/* <div className="location">
-              <select
-                required
-              >
-                <option defaultValue="0">Location</option>
-                <option value="Guwahati">Guwahati</option>
-                <option value="Borpeta">Borpeta</option>
-                <option value="Other">Others</option>
-              </select>
-            </div> */}
 
             <div className="sex">
               <select

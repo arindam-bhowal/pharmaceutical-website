@@ -5,6 +5,7 @@ const Doctor = require("../models/Doctor");
 const Worker = require("../models/Worker");
 const Medicine = require("../models/Medicine");
 const CryptoJs = require("crypto-js");
+const Pharmacy = require("../models/Pharmacy");
 
 // ============================================================================================================================================
 // ============================================================================================================================================
@@ -364,5 +365,65 @@ router.delete("/medicine/delete/:medicineId", async (req, res) => {
     console.log(error);
   }
 });
+
+
+// ============
+// Pharmacy CRUD operation
+// ===========
+
+router.post('/pharmacy/register',async (req, res) => {
+  const newPharmacy = new Pharmacy(req.body)
+  try {
+    await newPharmacy.save()
+    res.status(200).json(newPharmacy)
+  } catch (error) {
+    res.status(500).send('error')
+  }
+})
+
+
+router.get('/pharmacy/get/all', async (req, res) => {
+  try {
+    const allPharmacy = await Pharmacy.find()
+    res.status(200).json(allPharmacy)
+  } catch (error) {
+    res.status(500).send('error')
+  }
+})
+
+router.get("/pharmacy/find/:pharmacyId", async (req, res) => {
+  try {
+    const reqMed = await Pharmacy.findById(req.params.pharmacyId);
+    res.status(200).json(reqMed);
+  } catch (error) {
+    // We will come to this latter
+    console.log(error);
+  }
+});
+
+router.put('/pharmacy/update/:pharmacyId', async (req, res) => {
+  try {
+    await Pharmacy.findByIdAndUpdate(
+      req.params.pharmacyId,
+      { $set: req.body },
+      { new: true }
+    )
+    res.status(200).json('Updated successfully!!')
+  } catch (error) {
+    res.status(500).send('error')
+  }
+})
+
+router.delete('/pharmacy/delete/:pharmacyId', async ( req, res) => {
+  try {
+    await Pharmacy.findByIdAndDelete(req.params.pharmacyId)
+    res.status(200).json('Pharmacy Deleted Successfully')
+  } catch (error) {
+    res.status(500).send('error')
+  }
+})
+
+
+
 
 module.exports = router;

@@ -46,7 +46,7 @@ const Doctor = () => {
             <input
               type="text"
               id="search-bar"
-              placeholder="Search for Patients"
+              placeholder="Search for a Doctor"
               onChange={(e)=>{setSearchInput(e.target.value.toLocaleLowerCase())}}
             />
             <a href="#">

@@ -1,23 +1,21 @@
 import {
   ChevronRightOutlined,
   CreditCardOutlined,
-  DarkModeOutlined,
   DashboardOutlined,
   GroupOutlined,
   GroupsOutlined,
-  LightModeOutlined,
   LogoutOutlined,
   MedicationOutlined,
-  PersonOutlineOutlined
+  PersonOutlineOutlined,
+  StoreOutlined
 } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./sidebar.scss";
 
 const Sidebar = () => {
   // All useStates
   const [isToggled, setisToggled] = useState(false);
-  const [isDark, setIsDark] = useState(false);
 
 
   // For toggling button
@@ -48,6 +46,13 @@ const Sidebar = () => {
                 <Link to="/">
                   <DashboardOutlined className="sidebar-icon" />
                   <span className="text nav-text">Dashboard</span>
+                </Link>
+              </li>
+
+              <li className="nav-link">
+                <Link to="/pharmacies">
+                  <StoreOutlined className="sidebar-icon" />
+                  <span className="text nav-text">Pharmacies</span>
                 </Link>
               </li>
 
