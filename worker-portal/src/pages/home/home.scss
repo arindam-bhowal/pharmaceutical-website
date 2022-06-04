@@ -1,0 +1,66 @@
+.home table,
+.home th,
+.home td {
+  border: 5px solid rgb(43, 139, 146);
+  margin: 10px;
+}
+
+.home {
+  display: flex;
+
+  .left {
+    margin: 0px 10px 0 10vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .card {
+      width: 25vw;
+      height: 25vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid green;
+      border-radius: 5px;
+      background-color: azure;
+      margin: 20px;
+
+      .content {
+        font-size: 2em;
+        margin: 20px;
+      }
+    }
+  }
+
+  .right {
+      margin-left: 10cw;
+    // border-left: 1px solid black;
+    // overflow: auto;
+    margin: auto;
+    table {
+      width: 50vw;
+      height: 40vh;
+      text-align: center;
+
+      th {
+        font-size: 2em;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 900px) {
+    .home{
+        flex-direction: column;
+
+        .left{
+            height: auto;
+            .card{
+                width: 50vw;
+            }
+        }
+    }
+  }

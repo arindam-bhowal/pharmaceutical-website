@@ -9,6 +9,7 @@
   "author": "Arindam",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.27.2",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.0",

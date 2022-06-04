@@ -1,0 +1,293 @@
+.editProfile {
+    height: 100vh;
+    width: 95vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    .wrapper {
+      width: 80%;
+      background: rgba(255, 255, 255, 0.45);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding-bottom: 20px;
+
+      .uploading{
+        .progressBar{
+          width: 100%;
+          height: 10px;
+          background-color: gray;
+          .progress{
+            height: 10px;
+            background-color: violet;
+          }
+        }
+      }
+  
+      .backBtn{
+          font-size: 2em;
+          margin: 10px 0 0 10px;
+          cursor: pointer;
+      }
+  
+      h1 {
+      //   margin-top: 10px;
+        color: purple;
+        font-weight: 300;
+        text-align: center;
+        margin-bottom: 5px;
+      }
+  
+      .container {
+        display: flex;
+  
+        .left {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+  
+          .profilePic,
+          .identity {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            img {
+              width: 8rem;
+              height: 8rem;
+              border-radius: 50%;
+              object-fit: cover;
+              border: 0.1px solid grey;
+            }
+          }
+  
+          .inputContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+  
+            label {
+              margin-top: 5px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              cursor: pointer;
+            }
+            input {
+              display: none;
+            }
+          }
+        }
+  
+        .right {
+          border-left: 0.1px solid grey;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+          .group {
+            position: relative;
+            margin-bottom: 45px;
+  
+            input {
+              font-size: 18px;
+              padding: 10px 10px 10px 5px;
+              display: block;
+              width: 300px;
+              border: none;
+              border-bottom: 1px solid #757575;
+            }
+            input:focus {
+              outline: none;
+            }
+  
+            /* LABEL ======================================= */
+            label {
+              color: #999;
+              font-size: 18px;
+              font-weight: normal;
+              position: absolute;
+              pointer-events: none;
+              left: 5px;
+              top: 10px;
+              transition: 0.2s ease all;
+              -moz-transition: 0.2s ease all;
+              -webkit-transition: 0.2s ease all;
+            }
+  
+            /* active state */
+            input:focus ~ label,
+            input:valid ~ label {
+              top: -20px;
+              font-size: 14px;
+              color: #5264ae;
+            }
+  
+            /* BOTTOM BARS ================================= */
+            .bar {
+              position: relative;
+              display: block;
+              width: 300px;
+            }
+            .bar:before,
+            .bar:after {
+              content: "";
+              height: 2px;
+              width: 0;
+              bottom: 1px;
+              position: absolute;
+              background: #5264ae;
+              transition: 0.2s ease all;
+              -moz-transition: 0.2s ease all;
+              -webkit-transition: 0.2s ease all;
+            }
+            .bar:before {
+              left: 50%;
+            }
+            .bar:after {
+              right: 50%;
+            }
+  
+            /* active state */
+            input:focus ~ .bar:before,
+            input:focus ~ .bar:after {
+              width: 50%;
+            }
+  
+            /* HIGHLIGHTER ================================== */
+            .highlight {
+              position: absolute;
+              height: 60%;
+              width: 100px;
+              top: 25%;
+              left: 0;
+              pointer-events: none;
+              opacity: 0.5;
+            }
+  
+            /* active state */
+            input:focus ~ .highlight {
+              -webkit-animation: inputHighlighter 0.3s ease;
+              -moz-animation: inputHighlighter 0.3s ease;
+              animation: inputHighlighter 0.3s ease;
+            }
+          }
+  
+          /* ANIMATIONS ================ */
+          @-webkit-keyframes inputHighlighter {
+            from {
+              background: #5264ae;
+            }
+            to {
+              width: 0;
+              background: transparent;
+            }
+          }
+          @-moz-keyframes inputHighlighter {
+            from {
+              background: #5264ae;
+            }
+            to {
+              width: 0;
+              background: transparent;
+            }
+          }
+          @keyframes inputHighlighter {
+            from {
+              background: #5264ae;
+            }
+            to {
+              width: 0;
+              background: transparent;
+            }
+          }
+  
+          .ageSexLocation{
+              display: flex;
+              align-items: center;
+              .age{
+                  // margin-right: 50px;
+                  input{
+                      width: 100px;
+                      height: 50px;
+  
+                      &:focus{
+                          outline: none;
+                      }
+                  }
+              }
+              .sex, .location{
+                  padding: 0 10px 0 10px;
+                  select {
+  
+                      /* Reset */
+                      appearance: none;
+                      border: 0;
+                      outline: 0;
+                      font: inherit;
+                      /* Personalize */
+                      width: 100%;
+                      height: 3em;
+                      padding: 0 4em 0 1em;
+                      background-color: #cebbf3;
+                      color: white;
+                      border-radius: 0.25em;
+                      box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+                      cursor: pointer;
+                      /* <option> colors */
+                      option {
+                        color: inherit;
+                        background-color: #320a28;
+                      }
+                      /* Remove focus outline */
+                      &:focus {
+                        outline: none;
+                      }
+                      /* Remove IE arrow */
+                      &::-ms-expand {
+                        display: none;
+                      }
+                    }
+                    
+              }
+          }
+  
+          .submitBtn{
+              margin: 30px;
+              width: 10em;
+              background-color: purple;
+          }
+        }
+      }
+    }
+  }
+  
+  #passwordEditIcon {
+    margin-left: 105px;
+  }
+  
+  // ------------------Media Queries ------------
+  @media screen and (max-width: 780px) {
+    .editProfile {
+      margin-top: 15em;
+      .wrapper {
+        .container {
+          flex-direction: column;
+          .right {
+            border: none;
+            margin-top: 10px;
+          }
+        }
+      }
+    }
+  }
+  

@@ -46,13 +46,13 @@ const Workers = () => {
             <input
               type="text"
               id="search-bar"
-              placeholder="Search for Patients"
+              placeholder="Search for Staff"
               onChange={(e)=>{setSearchInput(e.target.value.toLowerCase())}}
             />
             <a href="#">
               <img
                 className="search-icon"
-                src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"
+                src="/assets/search-icon.png"
                 alt=''
               />
             </a>

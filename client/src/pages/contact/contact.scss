@@ -1,161 +1,34 @@
 .contact {
-    input:focus,
-    textarea:focus,
-    keygen:focus,
-    select:focus {
-        outline: none;
-    }
-    ::-moz-placeholder {
-        color: #666;
-        font-weight: 300;
-        opacity: 1;
-    }
+  width: 98vw;
 
-    ::-webkit-input-placeholder {
-        color: #666;
-        font-weight: 300;
-    }
+  .heading {
+    font-size: 3em;
+    text-align: center;
+    margin: 20px;
+    background: -webkit-linear-gradient(#eee, purple);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 
-    /* Contact Form Styling */
-    .container {
-        padding: 0 50px 70px;
-    }
-    .textcenter {
-        text-align: center;
-    }
-    .section1 {
-        text-align: center;
-        display: table;
-        width: 100%;
-    }
-    .section1 .shtext {
-        display: block;
-        margin-top: 20px;
-    }
-    .section1 .seperator {
-        border-bottom: 1px solid #a2a2a2;
-        width: 35px;
-        display: inline-block;
-        margin: 20px;
-    }
+  .location {
+      margin: 30px;
+      .locationCard {
+        margin-top: 50px;
+      width: 100%;
+      text-align: center;
 
-    .section1 h1 {
-        font-size: 40px;
-        color: #a44dd8;
-        font-weight: normal;
-    }
-
-    .section2 {
-        width: 1200px;
-        margin: 25px auto;
-    }
-    .section2 .col2 {
-        width: 48.71%;
-    }
-    .section2 .col2.first {
-        float: left;
-    }
-    .section2 .col2.last {
-        float: right;
-    }
-    .section2 .col2.column2 {
-        padding: 0 30px;
-    }
-    .section2 span.collig {
-        color: #a2a2a2;
-        margin-right: 10px;
-        display: inline-block;
-    }
-    .section2 .sec2addr {
-        display: block;
-        line-height: 26px;
-    }
-    .section2 .sec2addr p:first-child {
-        margin-bottom: 10px;
-    }
-    .section2 .sec2contactform input[type="text"],
-    .section2 .sec2contactform input[type="email"],
-    .section2 .sec2contactform textarea {
-        padding: 18px;
-        border: 0;
-        background: #ededed;
-        margin: 7px 0;
-    }
-    .section2 .sec2contactform textarea {
-        width: 100%;
-        display: block;
-        color: #666;
-        resize: none;
-    }
-    .section2 .sec2contactform input[type="submit"] {
-        padding: 15px 40px;
-        color: #fff;
-        border: 0;
-        background: #a44dd8;
-        font-size: 16px;
-        text-transform: uppercase;
-        margin: 7px 0;
-        cursor: pointer;
-    }
-    .section2 .sec2contactform h3 {
-        font-weight: normal;
-        margin: 20px 0;
-        margin-top: 30px;
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 19px;
-        color: #a44dd8;
-    }
-}
-
-/* @media querries */
-
-@media only screen and (max-width: 1266px) {
-    .contact .section2 {
-        width: 100%;
-    }
-}
-@media only screen and (max-width: 960px) {
-    .contact {
-        .container {
-            padding: 0 30px 70px;
+      .details {
+        width: 50%;
+        margin: auto;
+        -webkit-box-shadow: 1px 5px 15px 4px rgba(0, 0, 0, 0.42);
+        box-shadow: 1px 5px 15px 4px rgba(0, 0, 0, 0.42);
+        .info {
+          margin: 20px;
+          background: -webkit-linear-gradient(#eee, #333);
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
-        .section2 .col2 {
-            width: 100%;
-            display: block;
-        }
-        .section2 .col2.first {
-            margin-bottom: 10px;
-        }
-        .section2 .col2.column2 {
-            padding: 0;
-        }
-        body .sec2map {
-            height: 250px !important;
-        }
+      }
     }
-}
-@media only screen and (max-width: 768px) {
-    .contact {
-        .section2 .sec2addr {
-            font-size: 14px;
-        }
-        .section2 .sec2contactform h3 {
-            font-size: 16px;
-        }
-        .section2 .sec2contactform input[type="text"],
-        .section2 .sec2contactform input[type="email"],
-        .section2 .sec2contactform textarea {
-            padding: 10px;
-            margin: 3px 0;
-        }
-        .section2 .sec2contactform input[type="submit"] {
-            padding: 10px 30px;
-            font-size: 14px;
-        }
-    }
-}
-@media only screen and (max-width: 420px) {
-    .contact .section1 h1 {
-        font-size: 28px;
-    }
+  }
 }

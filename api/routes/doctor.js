@@ -115,8 +115,16 @@ router.put("/update/:doctorId", async (req, res) => {
   }
 });
 
+// ----------------------Delete a Doctor details from database ----------------
 
-
+router.delete('/delete/:doctorId', async (req, res) => {
+  try {
+    await Doctor.findByIdAndDelete(req.params.doctorId)
+    res.status(200).json('Deleted doctor successfully!!')
+  } catch (error) {
+    res.status(500).json(error);
+  }
+})
 
 
 

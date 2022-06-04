@@ -10,12 +10,12 @@ const Navbar = () => {
       <nav className="stroke">
         <ul>
           <li><Link to="/">Home</Link></li>
-          <li><Link to="/about">About Us</Link></li>
+          <li><Link to="/about">Id Card</Link></li>
           <li><Link to="/appointment">Appointments</Link></li>
           <li><Link to="/history">History</Link></li>
           <li><Link to="/payments">Payment History</Link></li>
           <li><Link to="/profile">Profile</Link></li>
-          <li><Link to="/contact">Contact Us</Link></li>
+          <li><Link to="/contact">Our Branches</Link></li>
           <li><a style={{cursor: 'pointer'}} onClick={()=>{
             localStorage.removeItem('user')
             navigate('/login')

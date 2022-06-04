@@ -1,44 +1,88 @@
-import { Facebook, Instagram, Twitter } from '@mui/icons-material'
-import Navbar from '../../components/navbar/Navbar'
-import './about.scss'
+import { useEffect, useState } from "react";
+import Navbar from "../../components/navbar/Navbar";
+import "./about.scss";
 
 const About = () => {
-    return (
-        <>
-        <div className='navbar'>
-            <Navbar />
-        </div>
-        <div className="bdy">
-            <div className="about">
-                <div className="container">
-                    <div className="content-section">
-                        <div className="title">
-                            <h1>About Us</h1>
-                        </div>
-                        <div className="content">
-                            <h3>Keeping you healthy is our upmost priority</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat.</p>
-                            <div className="button">
-                                <a href="">Read More</a>
-                            </div>
-                        </div>
-                        <div className="social">
-                            <a href=""><Facebook className='aboutIcons' /></a>
-                            <a href=""><Twitter className='aboutIcons' /></a>
-                            <a href=""><Instagram className='aboutIcons' /></a>
-                        </div>
-                    </div>
-                    <div className="image-section">
-                        <img src="/assets/doctor.png" />
-                    </div>
-                </div>
-            </div>
-            </div>
-        </>
-    )
-}
+  const [reqUser, setReqUser] = useState([]);
 
-export default About
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    setReqUser(user);
+  }, []);
+
+  return (
+    <>
+      <div className="navbar">
+        <Navbar />
+      </div>
+
+      <div className="idCard">
+        <div>
+          <div className="bg-grid-line" />
+          <div className="card">
+            <header>
+              <h1>ID Card</h1>
+            </header>
+            <article>
+              <img
+                alt="My Pic"
+                id="thumb"
+                src={reqUser ? reqUser.profilePic : "/assets/noDefaultPic.png"}
+                style={{ objectFit: "cover" }}
+              />
+              {/* <h2>  </h2> */}
+              <div className="area">
+                <ul>
+                  <li>
+                    <div className="tag">Name :</div>
+                    <div className="tagInfo">
+                      {reqUser ? reqUser.name : "No Name"}
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="tag">Age :</div>
+                    <div className="tagInfo">
+                      {reqUser ? reqUser.age : "Age Not Mentioned"}
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="tag">Sex :</div>
+                    <div className="tagInfo">
+                      {reqUser ? reqUser.sex : "Sex Not Mentioned"}
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="tag">Email :</div>
+                    <div className="tagInfo">
+                      {reqUser ? reqUser.email : "Email Not Mentioned"}
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="tag">Phone Number :</div>
+                    <div className="tagInfo">
+                      {reqUser ? reqUser.phoneNumber : "Phone Number Not Mentioned"}
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="tag">Location :</div>
+                    <div className="tagInfo">
+                      {reqUser ? reqUser.location : "Location Not Mentioned"}
+                    </div>
+                  </li>
+
+                </ul>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default About;

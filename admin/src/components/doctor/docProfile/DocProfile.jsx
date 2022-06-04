@@ -21,11 +21,11 @@ const DocProfile = () => {
   // All UseStates -------------------------------
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [registrationNo, setRegistrationNo] = useState();
   const password = "janKalyan";
   const [phoneNumber, setPhoneNumber] = useState();
   const [age, setAge] = useState();
   const [sex, setSex] = useState("");
+  const [registrationNo, setRegistrationNo] = useState();
   const [profilePic, setProfilePic] = useState("");
   const [govtId, setGovtId] = useState("");
   const referals = []

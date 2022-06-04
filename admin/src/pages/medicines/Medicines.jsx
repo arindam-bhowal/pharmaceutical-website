@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import MedTable from "../../components/medicine/medTable/MedTable";
 import Sidebar from "../../components/sidebar/Sidebar";
 import medicineContext from "../../context/medicine/medicineContext";
+import pharmacyContext from "../../context/pharmacy/pharmacyContext";
 import "./medicines.scss";
 
 const Medicines = () => {
@@ -21,8 +22,18 @@ const Medicines = () => {
   const [searchInput, setSearchInput] = useState("");
   const [location, setLocation] = useState(undefined);
   const [allMedicines, setAllMedicines] = useState([]);
+  const [locationOptions, setLocationOptions] = useState([]);
 
   const { fetchAllMedicines } = useContext(medicineContext);
+  const { fetchAllPharmacies } = useContext(pharmacyContext);
+
+  useEffect(() => {
+    const getAllLocations = async () => {
+      const res = await fetchAllPharmacies();
+      setLocationOptions(res);
+    };
+    getAllLocations();
+  }, []);
 
   useEffect(() => {
     const getAllMedicines = async () => {
@@ -71,9 +82,11 @@ const Medicines = () => {
                   }}
                 >
                   <MenuItem value="All">All</MenuItem>
-                  <MenuItem value="Guwahati">Guwahati</MenuItem>
-                  <MenuItem value="Borpeta">Borpeta</MenuItem>
-                  <MenuItem value="Majuli">Majuli</MenuItem>
+                  {locationOptions.map((option) => (
+                    <MenuItem key={option.drugLicenseNo} value={option.branch}>
+                      {option.branch}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </div>
@@ -89,7 +102,7 @@ const Medicines = () => {
               <a href="#">
                 <img
                   className="search-icon"
-                  src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"
+                  src="/assets/search-icon.png"
                   alt=""
                 />
               </a>
