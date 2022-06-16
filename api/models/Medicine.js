@@ -7,6 +7,7 @@ const medicineSchema = new mongoose.Schema({
     costPrice: Number,
     sellingPrice: {type: Number, required: true},
     quantity: {type: Number, required: true},
+    discount: {type: Number, default: 0},
     location: {type: String, required: true}
 })
 

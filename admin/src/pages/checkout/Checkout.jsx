@@ -6,6 +6,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import checkoutContext from "../../context/checkout/checkoutContext";
 import medicineContext from "../../context/medicine/medicineContext";
 import patientContext from "../../context/patient/patientContext";
+import axios from 'axios'
 import "./checkout.scss";
 
 const Checkout = () => {
@@ -35,7 +36,7 @@ const Checkout = () => {
     AllMedicines.forEach((med) => {
       reqStocks.forEach((stock) => {
         if (med._id === stock.stockId) {
-          med.quantity = stock.quantity;
+          med.reqQuantity = stock.quantity;
           common.push(med);
         }
       });
@@ -47,7 +48,7 @@ const Checkout = () => {
 
   const calculateTotalAmount = () => {
     let total = cartStocks.reduce((amount, stock) => {
-      return amount + stock.sellingPrice * stock.quantity;
+      return amount + (stock.reqQuantity *(stock.sellingPrice* (100-stock.discount)/100));
     }, 0);
     setNetPrice(total);
   };
@@ -72,19 +73,28 @@ const Checkout = () => {
   //  ===============Handle Payments ==========================
 
   const handlePayment = async (status) => {
-    let newArray = patient.payments
-    newArray.push({amount: netPrice, status: status , date: new Date()})
+    let newArray = patient.payments;
+    newArray.push({ amount: netPrice, status: status, date: new Date().toUTCString() });
     try {
-      const res = await updatePaymentInfo(patient._id, newArray)
-      if(res==='error'){
-        navigate('error')
+      const res = await updatePaymentInfo(patient._id, newArray);
+
+      cartStocks.map( async (stock) => {
+        await axios.put(`http://localhost:8801/api/admin/medicine/update/${stock._id}`, {quantity: stock.quantity - stock.reqQuantity} )
+      })
+
+      if (res === "error") {
+        navigate("error");
       }
-      status==='success' ? alert('Patient has paid successfully!!. The reciept has been sent to his account') : alert('A request has been been sent to user account to pay!!')
-      navigate('/')
+      status === "success"
+        ? alert(
+            "Patient has paid successfully!!. The reciept has been sent to his account"
+          )
+        : alert("A request has been been sent to user account to pay!!");
+      navigate("/");
     } catch (error) {
-      navigate('/error')
+      navigate("/error");
     }
-  }
+  };
 
   return (
     <>
@@ -154,10 +164,10 @@ const Checkout = () => {
                 <div className="checkoutCardRight">
                   <div className="amount">
                     <span className="status remove">Quantity: </span>
-                    <span className="status add">{med.quantity}</span>
+                    <span className="status add">{med.reqQuantity}</span>
                   </div>
                   <div className="cardPrice">
-                    ₹ <span>{med.quantity * med.sellingPrice}</span>
+                    ₹ <span>{med.reqQuantity *(med.sellingPrice* (100-med.discount)/100)}</span>
                   </div>
                 </div>
               </div>

@@ -1,204 +1,232 @@
+import axios from "axios";
+import React from 'react';
 import { Button, Link } from "@mui/material";
 import "./register.scss";
-import axios from "axios";
-import { useState } from "react";
 
-const Register = () => {
+class Register extends React.Component {
 
-  const logo = '/assets/logo.png'
-
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState()
-  const [location, setLocation] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [age, setAge] = useState()
-  const [sex, setSex] = useState('')
-  const [referalId, setReferalId] = useState('')
-
-
-  function loadScript(src) {
-    return new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = src;
-      script.onload = () => {
-        resolve(true);
-      };
-      script.onerror = () => {
-        resolve(false);
-      };
-      document.body.appendChild(script);
-    });
+  constructor(props){
+    super(props);
+    this.state={
+      amount:0,
+      logo: '/assets/logo.png',
+      name: '',
+      email: '',
+      phoneNumber: '',
+      password: '',
+      cpassword: '',
+      age: '',
+      sex: '',
+      location: '',
+      referalId: ''
+    }
+    this.handleChange = this.handleChange.bind(this);
+    this.openPayModal = this.openPayModal.bind(this);
   }
 
-  async function displayRazorpay(reqAmount) {
+  componentDidMount () {
+    const script = document.createElement("script");
 
-    const res = await loadScript(
-      "https://checkout.razorpay.com/v1/checkout.js"
-    );
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
 
-    if (!res) {
-      alert("Razorpay SDK failed to load. Are you online?");
-      return;
-    }
+    document.body.appendChild(script);
+}
 
-    // creating a new order
-    const result = await axios.post("http://localhost:8801/api/payment/createorder", { amount: reqAmount });
+  handleChange(evt){
+    console.log(evt.target.value)
+    this.setState({
+      amount:evt.target.value
+    })
+  }
 
-    if (!result) {
-      alert("Server error. Are you online?");
-      return;
-    }
+  openPayModal(amt){
+    var amount = amt * 100; //Razorpay consider the amount in paise
 
-    // Getting the order details back
-    const { amount, id: order_id, currency } = result.data;
-
-    const options = {
-      key: process.env.REACT_APP_KEY_ID, // Enter the Key ID generated from the Dashboard
-      amount: amount.toString(),
-      currency: currency,
-      name: "JAN-KALYAN HEALTHCARE",
-      description: "Test Transaction",
-      image: { logo },
-      order_id: order_id,
-      handler: async function (response) {
-        const data = {
-          orderCreationId: order_id,
-          razorpayPaymentId: response.razorpay_payment_id,
-          razorpayOrderId: response.razorpay_order_id,
-          razorpaySignature: response.razorpay_signature,
-        };
-
-        const result = await axios.post(
-          "http://localhost:5000/api/payment/success",
-          data
-        );
-
-        alert(result.data.msg);
+    var options = {
+      "key": process.env.REACT_APP_razorpaytest_id,
+      "amount": 0, // 2000 paise = INR 20, amount in paisa
+      "name": "Merchant Name",
+      'order_id':"",
+      'image': this.state.logo,
+      "handler": function(response) {
+          console.log(response);
+          var values ={
+              razorpay_signature : response.razorpay_signature,
+              razorpay_order_id : response.razorpay_order_id,
+              transactionid : response.razorpay_payment_id,
+              transactionamount : amount,
+            }
+          axios.post('http://localhost:8801/api/payment/success',values)
+          .then(res=>{alert("Success")})
+          .catch(e=>console.log(e))
       },
-      prefill: {
-        name: name,
-        email: email,
-        contact: phoneNumber,
-      },
-      notes: {
-        address: location,
-      },
-      theme: {
-        color: "#61dafb",
-      },
+      "theme": {
+        "color": "#528ff0"
+      }
     };
 
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
-  }
+    axios.post('http://localhost:8801/api/payment/order',{amount:amount})
+    .then(res=>{
+        options.order_id = res.data.id;
+        options.amount = res.data.amount;
+        console.log(options)
+        var rzp1 = new window.Razorpay(options);
+        rzp1.open();
+    })
+    .catch(e=>console.log(e))
+    
+};
 
-
-
-  return (
+  render(){
+    return (
+    // <div style={{paddingLeft:"500px",paddingTop:"250px"}}>
+    //   Enter the amount:<input type="number" name="amount" onChange={this.handleChange}/>
+    //   <button onClick={(e)=>{this.openPayModal(this.state.amount)}}>Upgrade</button>
+    // </div>
     <div className="register">
-      <div className="wrapper">
-        <div className="leftBox">
-          <div className="top">
-            <div className="logo">
-              <img src="/assets/logo.png" alt="" />
-            </div>
-          </div>
-          <div className="bottom">
-            <div className="heading text">
-              <span>R</span>EGISTER
-            </div>
-            <form className="registerForm">
-              <div className="group">
-                <input type="text" required onChange={(e) => setName(e.target.value)} />
-                <span className="highlight"></span>
-                <span className="bar"></span>
-                <label>Name</label>
-              </div>
-
-              <div className="group">
-                <input type="email" required onChange={e => setEmail(e.target.value)} />
-                <span className="highlight"></span>
-                <span className="bar"></span>
-                <label>Email</label>
-              </div>
-
-              <div className="group">
-                <input type="password" required onChange={e => setPassword(e.target.value)} />
-                <span className="highlight"></span>
-                <span className="bar"></span>
-                <label> Password</label>
-              </div>
-
-              <div className="group">
-                <input type="password" required onChange={e => setConfirmPassword(e.target.value)} />
-                <span className="highlight"></span>
-                <span className="bar"></span>
-                <label>Confirm Password</label>
-              </div>
-
-              <div className="group">
-                <input type="number" required onChange={e => setPhoneNumber(e.target.value)} />
-                <span className="highlight"></span>
-                <span className="bar"></span>
-                <label>Phone Number</label>
-              </div>
-
-              <div className="ageAndSex">
-                <select className="group sex" onChange={e => setSex(e.target.value)}>
-                  <option>Sex</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>  
-                  <option value="Others">Others!</option>
-                </select>
-
-                <div className="group age">
-                  <input type="number" required onChange={e => setAge(e.target.value)} />
-                  <span className="highlight"></span>
-                  <span className="bar"></span>
-                  <label>Age</label>
-                </div>
-              </div>
-
-              <div className="group">
-                <select className="location" onChange={e => setLocation(e.target.value)}>
-                  <option>location</option>
-                  <option value="Borpeta">Borpeta</option>
-                  <option value="Guwahati">Guwahati</option>
-                  <option value="Others">Others!</option>
-                </select>
-              </div>
-
-              <div className="group">
-                <input type="text" required onChange={e => setReferalId(e.target.value)} />
-                <span className="highlight"></span>
-                <span className="bar"></span>
-                <label>Referal Id</label>
-              </div>
-
-              <div className="loginLink">
-                <p>
-                  Already have an account?
-                  <Link to="/login" style={{ textDecoration: "none" }}>
-                    <span style={{ cursor: "pointer" }}> Login Now</span>
-                  </Link>
-                </p>
-              </div>
-
-              <div className="group">
-                <Button variant="contained" onClick={()=>{displayRazorpay(2000)}}>Pay ₹20 now to register</Button>
-              </div>
-            </form>
+    <div className="wrapper">
+      <div className="leftBox">
+        <div className="top">
+          <div className="logo">
+            <img src="/assets/logo.png" alt="" />
           </div>
         </div>
+        <div className="bottom">
+          <div className="heading text">
+            <span>R</span>EGISTER
+          </div>
+          <form className="registerForm">
+            <div className="group">
+              <input
+                type="text"
+                required
+                onChange={(e) => this.setState({name: e.target.value})}
+              />
+              <span className="highlight"></span>
+              <span className="bar"></span>
+              <label>Name</label>
+            </div>
 
-        <div className="rightBox">
-          <img src="/assets/register.png" alt="" />
+            <div className="group">
+              <input
+                type="email"
+                required
+                onChange={(e) => this.setState({email: e.target.value})}
+              />
+              <span className="highlight"></span>
+              <span className="bar"></span>
+              <label>Email</label>
+            </div>
+
+            <div className="group">
+              <input
+                type="password"
+                required
+                onChange={(e) => this.setState({password: e.target.value})}
+              />
+              <span className="highlight"></span>
+              <span className="bar"></span>
+              <label> Password</label>
+            </div>
+
+            <div className="group">
+              <input
+                type="password"
+                required
+                onChange={(e) => this.setState({cpassword: e.target.value})}
+              />
+              <span className="highlight"></span>
+              <span className="bar"></span>
+              <label>Confirm Password</label>
+            </div>
+
+            <div className="group">
+              <input
+                type="number"
+                required
+                onChange={(e) => this.setState({phoneNumber: e.target.value})}
+              />
+              <span className="highlight"></span>
+              <span className="bar"></span>
+              <label>Phone Number</label>
+            </div>
+
+            <div className="ageAndSex">
+              <select
+                className="group sex"
+                onChange={(e) => this.setState({sex: e.target.value})}
+              >
+                <option>Sex</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others!</option>
+              </select>
+
+              <div className="group age">
+                <input
+                  type="number"
+                  required
+                  onChange={(e) => this.setState({age: e.target.value})}
+                />
+                <span className="highlight"></span>
+                <span className="bar"></span>
+                <label>Age</label>
+              </div>
+            </div>
+
+            <div className="group">
+              <select
+                className="location"
+                onChange={(e) => this.setState({location: e.target.value})}
+              >
+                <option>location</option>
+                <option value="Borpeta">Borpeta</option>
+                <option value="Guwahati">Guwahati</option>
+                <option value="Others">Others!</option>
+              </select>
+            </div>
+
+            <div className="group">
+              <input
+                type="text"
+                required
+                onChange={(e) => this.setState({referalId: e.target.value})}
+              />
+              <span className="highlight"></span>
+              <span className="bar"></span>
+              <label>Referal Id</label>
+            </div>
+
+            <div className="loginLink">
+              <p>
+                Already have an account?
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  <span style={{ cursor: "pointer" }}> Login Now</span>
+                </Link>
+              </p>
+            </div>
+
+            <div className="group">
+              <Button
+                variant="contained"
+                onClick={(e)=>{this.openPayModal(20)}}
+              >
+                Pay ₹20 now to register
+              </Button>
+            </div>
+          </form>
         </div>
       </div>
+
+      <div className="rightBox">
+        <img src="/assets/register.png" alt="" />
+      </div>
     </div>
+  </div>
   );
-};
+}
+  
+}
 
 export default Register;

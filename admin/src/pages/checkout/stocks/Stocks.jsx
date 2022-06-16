@@ -116,7 +116,7 @@ const Stocks = () => {
               <a href="#">
                 <img
                   className="search-icon"
-                  src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"
+                  src="/assets/search-icon.png"
                 />
               </a>
             </div>

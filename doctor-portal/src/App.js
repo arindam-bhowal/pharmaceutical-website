@@ -17,7 +17,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-      <Route path="/" element={ <Home /> } />
+      <Route path="/" element={ localStorage.getItem('doc') ? <Home /> : <Login /> } />
 
       <Route path="/doctorId" element={<IdCard />} />
 
@@ -31,7 +31,7 @@ function App() {
 
         <Route path="/editprofile" element={<EditProfile />} />
 
-        <Route path="/login" element={ <Login />} />
+        <Route path="/login" element={ localStorage.getItem('doc') ? <Home /> : <Login /> } />
         <Route path="/register" element={<Register />} />
         <Route path="/error" element={<Error />} />
       </Routes>

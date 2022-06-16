@@ -4,19 +4,34 @@ import { useNavigate } from "react-router-dom";
 import medicineContext from "../../../context/medicine/medicineContext";
 import DatePicker from 'react-date-picker';
 import "./medProfile.scss";
+import pharmacyContext from "../../../context/pharmacy/pharmacyContext";
+import { MenuItem, Select } from "@mui/material";
 
 const MedProfile = () => {
   const { newMedicine } = useContext(medicineContext);
+  const { fetchAllPharmacies } = useContext(pharmacyContext);
 
   const [drugName, setDrugName] = useState("");
   const [manufacturer, setManufacturer] = useState("");
   const [expireDate, setExpireDate] = useState();
   const [costPrice, setCostPrice] = useState();
   const [sellingPrice, setSellingPrice] = useState();
+  const [discount, setDiscount] = useState()
   const [quantity, setQuantity] = useState();
   const [location, setLocation] = useState("");
   
   const [date, setDate] = useState(new Date())
+
+  const [locationOptions, setLocationOptions] = useState([]);
+
+  useEffect(() => {
+    const getAllLocations = async () => {
+      const res = await fetchAllPharmacies();
+      setLocationOptions(res);
+    };
+    getAllLocations();
+  }, []);
+
 
   const navigate = useNavigate();
 
@@ -54,6 +69,7 @@ const MedProfile = () => {
       expireDate,
       costPrice,
       sellingPrice,
+      discount,
       quantity,
       location
     );
@@ -112,6 +128,15 @@ const MedProfile = () => {
           </fieldset>
           <fieldset>
             <input
+              placeholder="Discount"
+              type="number"
+              onChange={(e) => setDiscount(e.target.value)}
+              tabIndex="2"
+              required
+            />
+          </fieldset>
+          <fieldset>
+            <input
               placeholder="Quantity"
               type="number"
               onChange={(e) => setQuantity(e.target.value)}
@@ -120,16 +145,22 @@ const MedProfile = () => {
             />
           </fieldset>
           <fieldset>
-          <select
-               onChange={(e) => {
-                e.target.value !== "location" && setLocation(e.target.value);
-              }}
-                required
-              >
-                {options.map((option) => (
-              <option key={option.value} value={option.value} >{option.label}</option>
-            ))}
-              </select>
+          <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Location"
+                  defaultValue="All"
+                  onChange={(e) => {
+                    e.target.value === 'All' ? setLocation('') : setLocation(e.target.value)
+                  }}
+                >
+                  <MenuItem value="All">Location</MenuItem>
+                  {locationOptions.map((option) => (
+                    <MenuItem key={option.drugLicenseNo} value={option.branch}>
+                      {option.branch}
+                    </MenuItem>
+                  ))}
+                </Select>
           </fieldset>
           <fieldset>
             <button

@@ -113,15 +113,19 @@ const UpdateProfile = () => {
     setSelectedIdProof(e.target.files[0]);
   };
 
-  const [selectedPrescription, setSelectedPrescription] = useState()
+  const [selectedPrescription, setSelectedPrescription] = useState([])
 
   const handlePrescriptionUpload = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedPrescription(undefined);
       return;
     }
-    setSelectedPrescription((prev => [...prev, {prescription: e.target.files[0], date: new Date()}]))
-  }
+    setSelectedPrescription(e.target.files[0]);
+    // setSelectedPrescription((prev) => [
+    //   ...prev,
+    //   { prescription: e.target.files[0] },
+    // ]);
+  };
 
   // -----------------------------------------Firebase Upload Profile Pic --------------------------
  const handleProfilePicUpload = (e) => {
@@ -176,29 +180,29 @@ const UpdateProfile = () => {
   };
 
   // -----------------------------------------Firebase Upload Prescription --------------------------
-    const uploadPrescription = () => {
-      const fileName = new Date() + selectedPrescription.name
-      const storage = getStorage(app)
-      const storageRef = ref(storage, fileName)
-      const uploadTask = uploadBytesResumable(storageRef, selectedPrescription)
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setProgressUpload(progress);
-          
-        },
-        (error) => {
-          navigate("/error");
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setPrescriptions(prev => [...prev, downloadURL])
-          });
-        }
-      );
-    };
+  const uploadPrescription = (e) => {
+    e.preventDefault();
+    const fileName = new Date() + selectedPrescription.name;
+    const storage = getStorage(app);
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, selectedPrescription);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgressUpload(progress);
+      },
+      (error) => {
+        navigate("/error");
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setPrescriptions(prev => [...prev, {prescription: downloadURL, date: new Date()}]);
+        });
+      }
+    );
+  };
 
   // ---------------------*******************---------------------------------------
   // Get patient details

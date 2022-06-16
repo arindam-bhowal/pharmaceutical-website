@@ -25,7 +25,7 @@ const IdCard = () => {
               <img
                 alt="My Pic"
                 id="thumb"
-                src={reqUser ? reqUser.profilePic : "/assets/noDefaultPic.png"}
+                src={reqUser && (reqUser.profilePic ? reqUser.profilePic : "assets/defaultProfilePic.png")}
                 style={{ objectFit: "cover" }}
               />
               {/* <h2>  </h2> */}

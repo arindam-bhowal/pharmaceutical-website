@@ -15,6 +15,10 @@ const Login = () => {
     e.preventDefault()
     const login = async () => {
       const res = await loginDoctor(email, password)
+      if(res.status===404){
+        alert(res.msg)
+        navigate(0)
+      }
       localStorage.setItem('doc', JSON.stringify(res.data.otherInfo))
       if(res==='error'){
         navigate('error')

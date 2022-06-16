@@ -26,7 +26,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+
+      <Route path="/login" element={localStorage.getItem('admin') ? <Dashboard /> : <Login />} />
+
+        <Route path="/" element={localStorage.getItem('admin') ? <Dashboard /> : <Login />} />
 
         <Route path="/patients" element={<Patients />} />
         <Route path="/patient/profile" element={<Profile />} />

@@ -26,7 +26,7 @@ const Sidebar = () => {
   //  For logout
   const handleLogout = () => {
     localStorage.removeItem("worker");
-    navigate("/login");
+    navigate(0);
   };
 
   return (

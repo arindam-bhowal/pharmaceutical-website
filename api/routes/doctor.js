@@ -31,7 +31,10 @@ router.post("/register", async (req, res) => {
     try {
       const reqDoctor = await Doctor.findOne({ email: req.body.email });
       // Todo:: the error message
-      !reqDoctor && res.status(404).json("User with this credentials not found");
+      !reqDoctor && res.status(404).json({
+        msg: "User with this credentials not found",
+        status: 404
+      });
       // ==check Password==
       if (
         req.body.password ===
@@ -50,7 +53,10 @@ router.post("/register", async (req, res) => {
         res.status(200).json({ otherInfo, doctorAuthToken });
       } else {
         // Todo:: the error message
-        res.status(404).json("Invalid credentials");
+        res.status(404).json({
+          msg: "Invalid credentials",
+          status: 404
+        });
       }
     } catch (error) {
       // We will come to this latter
@@ -125,7 +131,17 @@ router.delete('/delete/:doctorId', async (req, res) => {
     res.status(500).json(error);
   }
 })
+// ----------------------Find a Worker using referalId ----------------
 
+router.get('/referedBy/:referalId', async (req, res) => {
+  try {
+    const reqDoctor = await Doctor.findOne({ referalId: req.params.referalId})
+    const { name, email, phoneNumber} = reqDoctor._doc
+    res.status(200).json({name, email, phoneNumber})
+  } catch (error) {
+    return 'error'
+  }
+})
 
 
 

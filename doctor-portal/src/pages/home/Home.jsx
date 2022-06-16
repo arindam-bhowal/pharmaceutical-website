@@ -70,7 +70,7 @@ const Home = () => {
         <div className="left">
           <div className="card">
             <h2>Number of refered Patients</h2>
-            <div className="content">{reqDoc ? (reqDoc.referals && reqDoc.referals.length): 0}</div>
+            <div className="content">{reqDoc ? (filteredArray && filteredArray.length): 0}</div>
           </div>
 
           <div className="card">

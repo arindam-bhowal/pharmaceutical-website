@@ -66,6 +66,7 @@ const StockTable = (props) => {
             <TableCell className="tableCell">Expire Date</TableCell>
             <TableCell className="tableCell">Cost Price</TableCell>
             <TableCell className="tableCell">Selling Price</TableCell>
+            <TableCell className="tableCell">Discount</TableCell>
             <TableCell className="tableCell">Quantity</TableCell>
             <TableCell className="tableCell">Location</TableCell>
             <TableCell className="tableCell">Add to cart</TableCell>
@@ -86,6 +87,7 @@ const StockTable = (props) => {
                   <TableCell className="tableCell">
                     {row.sellingPrice}
                   </TableCell>
+                  <TableCell className="tableCell">{row.discount}</TableCell>
                   <TableCell className="tableCell">{row.quantity}</TableCell>
                   <TableCell className="tableCell">{row.location}</TableCell>
                   <TableCell className="tableCell">

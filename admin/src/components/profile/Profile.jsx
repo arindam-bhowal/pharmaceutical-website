@@ -327,6 +327,7 @@ const handleIdUpload = (e) => {
                   }}
                   required
                 >
+                  <option value="Location">Location</option>
                   {locationOptions.map((option) => (
               <option key={option.drugLicenseNo} value={option.branch} >{option.branch}</option>
             ))}

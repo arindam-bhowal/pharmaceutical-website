@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 import "./about.scss";
 
@@ -27,7 +28,7 @@ const About = () => {
               <img
                 alt="My Pic"
                 id="thumb"
-                src={reqUser ? reqUser.profilePic : "/assets/noDefaultPic.png"}
+                src={reqUser && (reqUser.profilePic ? reqUser.profilePic : "/assets/defaultProfilePic.png")}
                 style={{ objectFit: "cover" }}
               />
               {/* <h2>  </h2> */}
@@ -72,6 +73,13 @@ const About = () => {
                     <div className="tag">Location :</div>
                     <div className="tagInfo">
                       {reqUser ? reqUser.location : "Location Not Mentioned"}
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="tag">GovtId :</div>
+                    <div classNareme="tagInfo">
+                      {reqUser ? (<a href={reqUser.govtId}>Click Here to view</a>): ""}
                     </div>
                   </li>
 

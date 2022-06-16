@@ -14,13 +14,15 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     const login = async () => {
-      const res = await loginWorker(email, password)
-      console.log(res)
+      const res = await loginWorker(email, password).catch(err => {
+        alert(err.response.data.msg)
+        navigate(0)
+      })
       localStorage.setItem('worker', JSON.stringify(res.data.otherInfo))
       if(res==='error'){
         navigate('error')
       }
-      navigate('/')
+      navigate(0)
     }
     login()
   }

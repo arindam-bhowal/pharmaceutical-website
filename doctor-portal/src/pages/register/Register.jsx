@@ -10,7 +10,7 @@ import {
 import { useContext, useEffect, useState } from "react";
 import "./register.scss";
 import referralCodeGenerator from "referral-code-generator";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import doctorContext from "../../context/doctor/doctorContext";
 
 const Register = () => {
@@ -179,6 +179,10 @@ const Register = () => {
                   type="submit"
                   defaultValue="Register"
                 />
+
+                <p>Already have an account&nbsp;
+                  <Link to='/login'>Login Now</Link>
+                  </p>
               </form>
             </div>
           </div>

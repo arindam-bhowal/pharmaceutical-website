@@ -83,10 +83,8 @@ const Dashboard = () => {
       allPatients.forEach(patient => {
         patient.payments.forEach(data => {
           if(data.status === 'success'){
+            console.log(data.date)
             totalAmount += data.amount
-            // const date = data.date
-            // const currentDate = new Date()
-            // console.log(currentDate.getMonth())
           }
         })
       })

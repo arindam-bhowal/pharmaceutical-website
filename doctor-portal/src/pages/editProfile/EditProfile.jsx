@@ -239,7 +239,8 @@ const EditProfile = () => {
       referalId,
       percentPerReferal
     );
-    navigate("/");
+    localStorage.removeItem('doc')
+    navigate("/login");
   };
 
   return (

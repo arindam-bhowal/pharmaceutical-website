@@ -18,6 +18,7 @@ const Home = () => {
 
   const [allPatients, setAllPatients] = useState([])
   const [filteredArray, setFilteredArray] = useState([])
+  const [netEarning, setNetEarning] = useState(0)
 
   useEffect(() => {
     if (localStorage.getItem("worker")) {
@@ -60,6 +61,26 @@ const Home = () => {
       setFilteredArray(newArray)
     }
   }, [reqWorker, allPatients])
+
+  //  ----Calculating earning in this month----
+  useEffect(() => {
+    const currentMonth = new Date().getMonth()
+    const currentYear = new Date().getFullYear()
+    const filteredPayment = []
+    filteredArray.map(patient => {
+      const paymentArray = 
+      patient.payments
+      .filter(payment => payment.status === 'success')
+      // .filter(payment => payment.date.getMonth() === currentMonth && payment.date.getFullYear() === currentYear)
+      filteredPayment.push(...paymentArray)
+    })
+    const total = 0
+    filteredPayment.payments && filteredPayment.payments.map(payment => {
+      total += payment.amount 
+    })
+    setNetEarning(total)
+  }, [filteredArray])
+  
   
   
 
@@ -70,17 +91,17 @@ const Home = () => {
         <div className="left">
           <div className="card">
             <h2>Number of refered Patients</h2>
-            <div className="content">{reqWorker ? (reqWorker.referals && reqWorker.referals.length): 0}</div>
+            <div className="content">{reqWorker ? (filteredArray && filteredArray.length): 0}</div>
           </div>
 
           <div className="card">
-            <h2>Percentage Per Referal</h2>
-            <div className="content">{reqWorker ? reqWorker.percentPerReferal: 'undefined'}</div>
+            <h2>Referal ID</h2>
+            <div className="content">{reqWorker ? reqWorker.referalId: 'undefined'}</div>
           </div>
 
           <div className="card">
             <h2>Earning this Month</h2>
-            <div className="content">3</div>
+            <div className="content"> ₹ {netEarning}</div>
           </div>
         </div>
         <div className="right">

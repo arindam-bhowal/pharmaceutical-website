@@ -40,7 +40,6 @@ app.use('/api/worker', workerRoute)
 app.use('/api/medicine', medicineRoute)
 
 
-
 // ===========
 // For Admin
 // ===========

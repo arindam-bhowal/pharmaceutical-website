@@ -6,26 +6,31 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const Home = () => {
-
   const [referalId, setReferalId] = useState();
-  const [referedBy, setReferedBy] = useState([])
+  const [referedBy, setReferedBy] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    const reqUser = JSON.parse(localStorage.getItem("user"));
 
-    const reqUser = JSON.parse(localStorage.getItem('user'))
-
-    if(reqUser.referedBy){
-      setReferalId(reqUser.referedBy)
+    if (reqUser.referedBy) {
+      setReferalId(reqUser.referedBy);
     }
 
     const getReferedPerson = async () => {
-      if(referalId){
+      console.log(referalId[0]);
+      if (referalId) {
+        if (referalId[0] === "d") {
           const res = await axios.get(
-            `http://localhost:8801/api/worker/referedBy/${referalId}`
+            `http://localhost:8801/api/doctor/referedBy/${referalId}`
           );
-          setReferedBy(res.data);
+          res && setReferedBy(res.data);
+        }
+        const res = await axios.get(
+          `http://localhost:8801/api/worker/referedBy/${referalId}`
+        );
+        res && setReferedBy(res.data);
       }
     };
     getReferedPerson();
@@ -52,17 +57,13 @@ const Home = () => {
             </Button>
           </section>
           <section className="right-sec">
-
-              {
-                  referedBy.name && (
-            <div className="referalInfo" style={{ textAlign: "right" }}>
-              <h4>Reffered By - {referedBy.name}</h4>
-              <h5>Email - {referedBy.email} </h5>
-              <h5>Contact No- +91 {referedBy.phoneNumber}</h5>
-            </div>
-                  )
-              }
-            
+            {referedBy.name && (
+              <div className="referalInfo" style={{ textAlign: "right" }}>
+                <h4>Reffered By - {referedBy.name}</h4>
+                <h5>Email - {referedBy.email} </h5>
+                <h5>Contact No- +91 {referedBy.phoneNumber}</h5>
+              </div>
+            )}
 
             <figure>
               <img src="assets/home-bg.png" alt="" />

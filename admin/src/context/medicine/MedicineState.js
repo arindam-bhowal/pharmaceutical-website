@@ -38,6 +38,7 @@ const MedicineState = (props) => {
     expireDate,
     costPrice,
     sellingPrice,
+    discount,
     quantity,
     location
   ) => {
@@ -48,6 +49,7 @@ const MedicineState = (props) => {
         expireDate,
         costPrice,
         sellingPrice,
+        discount,
         quantity,
         location
       });
@@ -66,6 +68,7 @@ const MedicineState = (props) => {
     expireDate,
     costPrice,
     sellingPrice,
+    discount,
     quantity,
     location
   ) => {
@@ -76,6 +79,7 @@ const MedicineState = (props) => {
         expireDate,
         costPrice,
         sellingPrice,
+        discount,
         quantity,
         location
       });

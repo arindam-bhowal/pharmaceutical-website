@@ -1,38 +1,55 @@
-const express = require("express");
-const router = express.Router();
-const Razorpay = require("razorpay");
-const dotenv = require("dotenv");
-const uniqueId = require("uniqid");
+const router = require('express').Router();
 
-dotenv.config();
+const Razorpay = require('razorpay');
+let Transaction = require('../models/Transaction');
 
-// const razorpayInstance = new Razorpay({
-// key_iprocess: process.env.YOUR_KEY_ID,
-// key_secret: process.env.YOUR_SECRET,
-// });
+require('dotenv').config();
+const keyid= process.env.YOUR_KEY_ID;
+const keysecret = process.env.YOUR_SECRET;
 
-const razorpayInstance = new Razorpay({
-  key_id: process.env.YOUR_KEY_ID,
-  key_secret: process.env.YOUR_SECRET,
+const crypto = require('crypto')
+
+
+router.route('/order').post(function(req,res){
+  var instance = new Razorpay({
+    key_id: keyid,
+    key_secret: keysecret
+  })
+var options = {
+  amount: req.body.amount,  // amount in the smallest currency unit
+  currency: "INR",
+  receipt: "order_rcptid_11",
+  payment_capture : 1
+};
+instance.orders.create(options, function(err, order) {
+  if(err){
+    return res.send(err)}
+  else{
+   return res.json(order)}
+});
 });
 
-router.post("/createorder", (req, res) => {
-  razorpayInstance.orders.create(
-    { amount: req.body.amount, currency: "INR" },
-    (err, order) => {
-      if (!err) res.status(200).json(order);
-      else res.status(500).send(err);
-    }
-  );
-});
+router.route('/success').post(function(req,res) {
+  const generated_signature = crypto.createHmac('sha256',keysecret)
+  generated_signature.update(req.body.razorpay_order_id+"|"+ req.body.transactionid)
+  if ( generated_signature.digest('hex') === req.body.razorpay_signature){
+          const transaction = new Transaction({
+            transactionid:req.body.transactionid,
+            transactionamount:req.body.transactionamount,
+        });
+        transaction.save(function(err, savedtransac){
+          if(err){
+              console.log(err);
+              return res.status(500).send("Some Problem Occured");
+          }
+          res.send({transaction: savedtransac});
 
-router.post("/success", (req, res) => {
-  const { validatePaymentVerification } = require("./dist/utils/razorpay-utils");
-  validatePaymentVerification(
-    { order_id: req.body.razorpayOrderId, payment_id: req.body.razorpayPaymentId },
-    req.body.razorpaySignature,
-    process.env.key_id
-  );
+      });
+    // return res.send('success');
+  }
+  else{
+    return res.send('failed');
+  }
 });
 
 module.exports = router;

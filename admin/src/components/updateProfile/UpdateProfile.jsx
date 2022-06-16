@@ -16,7 +16,7 @@ import pharmacyContext from "../../context/pharmacy/pharmacyContext";
 
 const UpdateProfile = () => {
   const { updatePatient, getPatient } = useContext(patientContext);
-  const { fetchAllPharmacies } = useContext(pharmacyContext)
+  const { fetchAllPharmacies } = useContext(pharmacyContext);
 
   const { patientId } = useParams();
 
@@ -32,9 +32,9 @@ const UpdateProfile = () => {
   const [sex, setSex] = useState("");
   const [profilePic, setProfilePic] = useState("");
   const [govtId, setGovtId] = useState("");
-  const [prescriptions, setPrescriptions] = useState([])
+  const [prescriptions, setPrescriptions] = useState([]);
 
-  const [locationOptions, setLocationOptions] = useState([])
+  const [locationOptions, setLocationOptions] = useState([]);
 
   const [progressUpload, setProgressUpload] = useState();
 
@@ -54,7 +54,7 @@ const UpdateProfile = () => {
     {
       label: "Others",
       value: "Others",
-    }
+    },
   ];
 
   // ----------------Location -----------------
@@ -66,8 +66,6 @@ const UpdateProfile = () => {
     };
     getAllLocations();
   }, []);
-
-
 
   // -------------------------------- -----------
 
@@ -113,56 +111,59 @@ const UpdateProfile = () => {
     setSelectedIdProof(e.target.files[0]);
   };
 
-  const [selectedPrescription, setSelectedPrescription] = useState()
+  const [selectedPrescription, setSelectedPrescription] = useState([]);
 
   const handlePrescriptionUpload = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedPrescription(undefined);
       return;
     }
-    setSelectedPrescription((prev => [...prev, {prescription: e.target.files[0], date: new Date()}]))
-  }
+    setSelectedPrescription(e.target.files[0]);
+    // setSelectedPrescription((prev) => [
+    //   ...prev,
+    //   { prescription: e.target.files[0] },
+    // ]);
+  };
 
   // -----------------------------------------Firebase Upload Profile Pic --------------------------
- const handleProfilePicUpload = (e) => {
-  e.preventDefault();
-  const fileName = new Date() + selectedFile.name;
-  const storage = getStorage(app);
-  const storageRef = ref(storage, fileName);
-  const uploadTask = uploadBytesResumable(storageRef, selectedFile);
-  uploadTask.on(
-    "state_changed",
-    (snapshot) => {
-      const progress =
-        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      setProgressUpload(progress);
-    },
-    (error) => {
-      navigate("/error");
-    },
-    () => {
-      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        setProfilePic(downloadURL);
-      });
-    }
-  );
-};
-
-// -----------------------------------------Firebase Upload Id Proof --------------------------
-
-  const idProofUpload = (e) => {
-    e.preventDefault()
-    const fileName = new Date() + selectedIdProof.name
-    const storage = getStorage(app)
-    const storageRef = ref(storage, fileName)
-    const uploadTask = uploadBytesResumable(storageRef,selectedIdProof )
+  const handleProfilePicUpload = (e) => {
+    e.preventDefault();
+    const fileName = new Date() + selectedFile.name;
+    const storage = getStorage(app);
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, selectedFile);
     uploadTask.on(
       "state_changed",
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setProgressUpload(progress);
-        
+      },
+      (error) => {
+        navigate("/error");
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setProfilePic(downloadURL);
+        });
+      }
+    );
+  };
+
+  // -----------------------------------------Firebase Upload Id Proof --------------------------
+
+  const idProofUpload = (e) => {
+    e.preventDefault();
+    const fileName = new Date() + selectedIdProof.name;
+    const storage = getStorage(app);
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, selectedIdProof);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgressUpload(progress);
       },
       (error) => {
         navigate("/error");
@@ -176,29 +177,29 @@ const UpdateProfile = () => {
   };
 
   // -----------------------------------------Firebase Upload Prescription --------------------------
-    const uploadPrescription = () => {
-      const fileName = new Date() + selectedPrescription.name
-      const storage = getStorage(app)
-      const storageRef = ref(storage, fileName)
-      const uploadTask = uploadBytesResumable(storageRef, selectedPrescription)
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setProgressUpload(progress);
-          
-        },
-        (error) => {
-          navigate("/error");
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setPrescriptions(prev => [...prev, downloadURL])
-          });
-        }
-      );
-    };
+  const uploadPrescription = (e) => {
+    e.preventDefault();
+    const fileName = new Date() + selectedPrescription.name;
+    const storage = getStorage(app);
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, selectedPrescription);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgressUpload(progress);
+      },
+      (error) => {
+        navigate("/error");
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setPrescriptions(prev => [...prev, {prescription: downloadURL, date: new Date().toUTCString()}]);
+        });
+      }
+    );
+  };
 
   // ---------------------*******************---------------------------------------
   // Get patient details
@@ -220,7 +221,7 @@ const UpdateProfile = () => {
       setSex(reqPatient.sex);
       setProfilePic(reqPatient.profilePic);
       setGovtId(reqPatient.govtId);
-      setPrescriptions(reqPatient.prescriptions)
+      setPrescriptions(reqPatient.prescriptions);
     }
   }, [reqPatient]);
 
@@ -241,20 +242,19 @@ const UpdateProfile = () => {
     navigate("/patients");
   };
 
-
-
   return (
     <div className="updateProfile">
       <div className="wrapper">
-
-      {progressUpload &&
-       <div className="uploading">
-         <div className="progressBar">
-             <div className="progress" style={{width: `${progressUpload}%`}}>
- 
-             </div>
-         </div>
-       </div>}
+        {progressUpload && (
+          <div className="uploading">
+            <div className="progressBar">
+              <div
+                className="progress"
+                style={{ width: `${progressUpload}%` }}
+              ></div>
+            </div>
+          </div>
+        )}
 
         <ArrowBack
           className="backBtn"
@@ -270,9 +270,17 @@ const UpdateProfile = () => {
           <div className="left">
             <div className="profilePic">
               {selectedFile ? (
-                <img src={preview} alt='' />
+                <img src={preview} alt="" />
               ) : (
-                <img src={reqPatient && (reqPatient.profilePic ? reqPatient.profilePic : '/assets/noProfilePic.png')} alt="" />
+                <img
+                  src={
+                    reqPatient &&
+                    (reqPatient.profilePic
+                      ? reqPatient.profilePic
+                      : "/assets/noProfilePic.png")
+                  }
+                  alt=""
+                />
               )}
               <div className="inputContainer">
                 <label htmlFor="profilePic">
@@ -287,21 +295,28 @@ const UpdateProfile = () => {
                 />
               </div>
               <Button
-               variant="contained"
-               style={{ margin: "10px" }}
-               onClick={handleProfilePicUpload}
-             >
-               Upload Now
-             </Button>
+                variant="contained"
+                style={{ margin: "10px" }}
+                onClick={handleProfilePicUpload}
+              >
+                Upload Now
+              </Button>
             </div>
 
             <div className="identity">
               {selectedIdProof ? (
-                <img src={IdPreview} alt=''/>
+                <img src={IdPreview} alt="" />
               ) : (
-                <img src={reqPatient && (reqPatient.govtId ? reqPatient.govtId : '/assets/noIdProof.png') } alt="" />
-  )
-              }
+                <img
+                  src={
+                    reqPatient &&
+                    (reqPatient.govtId
+                      ? reqPatient.govtId
+                      : "/assets/noIdProof.png")
+                  }
+                  alt=""
+                />
+              )}
               <div className="inputContainer">
                 <label htmlFor="signature">
                   <Edit className="editIcon" />
@@ -314,13 +329,13 @@ const UpdateProfile = () => {
                   onChange={handleIdUpload}
                 />
               </div>
-                 <Button
-               variant="contained"
-               style={{ margin: "10px" }}
-               onClick={idProofUpload}
-             >
-               Upload Now
-             </Button>
+              <Button
+                variant="contained"
+                style={{ margin: "10px" }}
+                onClick={idProofUpload}
+              >
+                Upload Now
+              </Button>
             </div>
 
             <div
@@ -333,8 +348,15 @@ const UpdateProfile = () => {
                 justifyContent: "center",
               }}
             >
-              <input type="file" name="" id="" onChange={handlePrescriptionUpload} />
-              <Button variant="contained" onClick={uploadPrescription}>Upload Prescription</Button>
+              <input
+                type="file"
+                name=""
+                id=""
+                onChange={handlePrescriptionUpload}
+              />
+              <Button variant="contained" onClick={uploadPrescription}>
+                Upload Prescription
+              </Button>
             </div>
           </div>
           <div className="right">
@@ -401,31 +423,36 @@ const UpdateProfile = () => {
               </div>
 
               <div className="location">
-              <select
-              value={location ? location : 'Location'}
-               onChange={(e) => {
-                e.target.value !== "Location" && setSex(e.target.value);
-              }}
-                required
-              >
-                {locationOptions.map((option) => (
-              <option key={option.drugLicenseNo} value={option.branch} >{option.branch}</option>
-            ))}
-              </select>
+                <select
+                  value={location ? location : "Location"}
+                  onChange={(e) => {
+                    e.target.value !== "Location" && setSex(e.target.value);
+                  }}
+                  required
+                >
+                  <option value="Location">Location</option>
+                  {locationOptions.map((option) => (
+                    <option key={option.drugLicenseNo} value={option.branch}>
+                      {option.branch}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="sex">
-              <select
-              value={sex ? sex : 'Sex'}
-               onChange={(e) => {
-                e.target.value !== "Sex" && setSex(e.target.value);
-              }}
-                required
-              >
-                {sexOptions.map((option) => (
-              <option key={option.value} value={option.value} >{option.label}</option>
-            ))}
-              </select>
+                <select
+                  value={sex ? sex : "Sex"}
+                  onChange={(e) => {
+                    e.target.value !== "Sex" && setSex(e.target.value);
+                  }}
+                  required
+                >
+                  {sexOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 

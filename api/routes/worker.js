@@ -34,7 +34,10 @@ router.post("/login", async (req, res) => {
   try {
     const reqWorker = await Worker.findOne({ email: req.body.email });
     // Todo:: the error message
-    !reqWorker && res.status(404).json("User with this credentials not found");
+    !reqWorker && res.status(404).json({
+      msg: 'User with this credentials not found',
+      status: 404
+    });
     // ==check Password==
     if (
       req.body.password ===
@@ -53,7 +56,10 @@ router.post("/login", async (req, res) => {
       res.status(200).json({ otherInfo, workerAuthToken });
     } else {
       // Todo:: the error message
-      res.status(404).json("Invalid credentials");
+      res.status(404).json({
+        msg: 'Incorrect Password',
+        status: 404
+      });
     }
   } catch (error) {
     // We will come to this latter

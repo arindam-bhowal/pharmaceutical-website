@@ -9,11 +9,13 @@ import {
   PersonOutlineOutlined,
   StoreOutlined
 } from "@mui/icons-material";
+import { Button } from "@mui/material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./sidebar.scss";
 
 const Sidebar = () => {
+  const navigate = useNavigate()
   // All useStates
   const [isToggled, setisToggled] = useState(false);
 
@@ -22,6 +24,11 @@ const Sidebar = () => {
   const handleToggle = () => {
     setisToggled(!isToggled);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('admin')
+    navigate(0)
+  }
 
   return (
     <>
@@ -90,10 +97,10 @@ const Sidebar = () => {
           </div>
           <div className="bottom-content">
             <li className="">
-              <Link to="/">
+              <Button onClick={handleLogout}>
                 <LogoutOutlined className="sidebar-icon" />
                 <span className="text nav-text">Logout</span>
-              </Link>
+              </Button>
             </li>
 
           </div>

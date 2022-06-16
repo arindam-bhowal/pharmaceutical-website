@@ -25,7 +25,9 @@ const DoctorState = (props) => {
 
      const loginDoctor = async (email, password) => {
          try {
-             const res = axios.post(`${host}/login`, {email, password})
+             const res = axios.post(`${host}/login`, {email, password}).catch(err => {
+                 return err.response.data
+             })
              return res
          } catch (error) {
              return 'error'

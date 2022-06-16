@@ -2,17 +2,42 @@ import "./payment.scss";
 import { Download } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import Navbar from "../../components/navbar/Navbar";
-import axios from 'axios'
-import { useState, useEffect } from "react";
+import axios from "axios";
+import { useState, useEffect, useContext } from "react";
+import userContext from "../../context/userContext";
 
 const Payment = () => {
+  const logo = "/assets/logo.png";
+  const { fetchPatient } = useContext(userContext);
 
-    const logo = '/assets/logo.png'
+  const [reqUserId, setReqUserId] = useState("");
+  const [reqUser, setReqUser] = useState([]);
 
-    const [reqUser, setReqUser] = useState([])
+  const [allPayments, setAllPayments] = useState([]);
 
-    const [amount, setAmount] = useState(100)
+  // -----Fetching User --------------
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    setReqUserId(user._id);
+  }, []);
 
+  useEffect(() => {
+    const getUser = async () => {
+      const res = await fetchPatient(reqUserId);
+      setReqUser(res.data);
+    };
+    if (reqUserId) {
+      getUser();
+    }
+  }, [reqUserId]);
+
+  // -----Fetching Payments History --------------
+
+  useEffect(() => {
+    setAllPayments(reqUser.payments);
+  }, [reqUser]);
+
+  // ------------------payments-------------------
 
   function loadScript(src) {
     return new Promise((resolve) => {
@@ -28,9 +53,7 @@ const Payment = () => {
     });
   }
 
-
   async function displayRazorpay(reqAmount) {
-
     const res = await loadScript(
       "https://checkout.razorpay.com/v1/checkout.js"
     );
@@ -41,7 +64,10 @@ const Payment = () => {
     }
 
     // creating a new order
-    const result = await axios.post("http://localhost:8801/api/payment/createorder", { amount: reqAmount });
+    const result = await axios.post(
+      "http://localhost:8801/api/payment/createorder",
+      { amount: reqAmount }
+    );
 
     if (!result) {
       alert("Server error. Are you online?");
@@ -91,12 +117,6 @@ const Payment = () => {
     paymentObject.open();
   }
 
-  useEffect(() => {
-    const res = JSON.parse(localStorage.getItem('user'))
-    setReqUser(res)
-  }, [])
-  
-
   return (
     <>
       <div className="navbar">
@@ -106,24 +126,37 @@ const Payment = () => {
         <div className="pendingPayments">
           <h2 className="header">Pending Payments</h2>
           <div className="wrapper">
-            {/* <span className="noPendingPayments">
-                      No Pending Payments
-                  </span> */}
+            {allPayments === "" && (
+              <>
+                <span className="noPendingPayments">No Pending Payments</span>
+              </>
+            )}
 
-            <div className="card">
-              <div className="date">26th March 2022</div>
-              <div className="status pending">&nbsp; Pending &nbsp;</div>
-              <div className="amount">₹ 200</div>
-              <div className="payNow">
-                <Button
-                  variant="contained"
-                  className="btn"
-                  onClick={()=>{displayRazorpay(amount)}}
-                >
-                  Pay Now
-                </Button>
-              </div>
-            </div>
+            {allPayments &&
+              allPayments.map((payment) => {
+                if (payment.status === "pending") {
+                  return (
+                    <div className="card">
+                      <div className="date">{payment.date}</div>
+                      <div className="status pending">
+                        &nbsp; Pending &nbsp;
+                      </div>
+                      <div className="amount">₹ {payment.amount}</div>
+                      <div className="payNow">
+                        <Button
+                          variant="contained"
+                          className="btn"
+                          onClick={() => {
+                            displayRazorpay(payment.amount*100);
+                          }}
+                        >
+                          Pay Now
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                }
+              })}
           </div>
         </div>
 
@@ -134,17 +167,24 @@ const Payment = () => {
                     No payment history found
                 </span> */}
 
-            <div className="card">
-              <div className="date">26th March 2022</div>
-              <div className="status paid">&nbsp; paid &nbsp;</div>
-              <div className="amount">₹ 200</div>
-              <div className="download">
-                <Button variant="contained" className="btn">
-                  <Download />
-                  <p>Download Invoice</p>
-                </Button>
-              </div>
-            </div>
+            {allPayments &&
+              allPayments.map((payment) => {
+                if (payment.status === "success") {
+                  return (
+                    <div className="card">
+                      <div className="date">{payment.date}</div>
+                      <div className="status paid">&nbsp; paid &nbsp;</div>
+                      <div className="amount">₹ {payment.amount}</div>
+                      <div className="download">
+                        <Button variant="contained" className="btn">
+                          <Download />
+                          <p>Download Invoice</p>
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                }
+              })}
           </div>
         </div>
       </div>
