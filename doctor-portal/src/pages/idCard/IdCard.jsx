@@ -108,6 +108,14 @@ const IdCard = () => {
                       </a>
                     </div>
                   </li>
+
+                  <li>
+                    <div className="tag">Authorization Signature: </div>
+                    <div className="tagInfo">
+                      <img id="authorSignature" src="https://firebasestorage.googleapis.com/v0/b/jankalyan-f1fa7.appspot.com/o/signature.png?alt=media&token=ec5638bd-be78-4c8a-94a1-e9eacc4351d0" alt="" />
+                    </div>
+                  </li>
+                  
                 </ul>
               </div>
             </article>

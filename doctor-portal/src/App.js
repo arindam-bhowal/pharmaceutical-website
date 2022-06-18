@@ -19,17 +19,17 @@ function App() {
       <Routes>
       <Route path="/" element={ localStorage.getItem('doc') ? <Home /> : <Login /> } />
 
-      <Route path="/doctorId" element={<IdCard />} />
+      <Route path="/doctorId" element={localStorage.getItem('doc') ? <IdCard />  : <Login />  }  />
 
-        <Route path="/patients" element={<Patients />} />
-        <Route path="/patient/create" element={<Profile />} />
-        <Route path="/patient/update/:patientId" element={<UpdateProfile />} />
+        <Route path="/patients" element={localStorage.getItem('doc') ? <Patients />  : <Login />  } />
+        <Route path="/patient/create" element={localStorage.getItem('doc') ? <Profile />  : <Login />  } />
+        <Route path="/patient/update/:patientId" element={localStorage.getItem('doc') ? <UpdateProfile /> : <Login />  } />
 
-        <Route path="/workers" element={<Workers />} />
-        <Route path="/worker/create" element={<WorkerProfile />} />
-        <Route path="/worker/update/:workerId" element={<UpdateWorker />} />
+        <Route path="/workers" element={localStorage.getItem('doc') ? <Workers />  : <Login />  } />
+        <Route path="/worker/create" element={localStorage.getItem('doc') ? <WorkerProfile /> : <Login />  } />
+        <Route path="/worker/update/:workerId" element={localStorage.getItem('doc') ? <UpdateWorker /> : <Login />  } />
 
-        <Route path="/editprofile" element={<EditProfile />} />
+        <Route path="/editprofile" element={localStorage.getItem('doc') ? <EditProfile /> : <Login />  } />
 
         <Route path="/login" element={ localStorage.getItem('doc') ? <Home /> : <Login /> } />
         <Route path="/register" element={<Register />} />

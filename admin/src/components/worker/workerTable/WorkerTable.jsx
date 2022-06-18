@@ -16,11 +16,13 @@ import workerContext from "../../../context/worker/workerContext";
 import patientContext from "../../../context/patient/patientContext";
 
 const WorkerTable = (props) => {
+  const navigate = useNavigate();
+  const { data, query } = props;
+
   const { deleteWorker } = useContext(workerContext);
   const { fetchAllPatients } = useContext(patientContext);
 
   const [allPatients, setAllPatients] = useState([]);
-  const [reqAmount, setReqAmount] = useState();
 
   useEffect(() => {
     const getAllPatients = async () => {
@@ -30,10 +32,35 @@ const WorkerTable = (props) => {
     getAllPatients();
   }, []);
 
-  const { data, query } = props;
-
-
-  const navigate = useNavigate();
+  useEffect(() => {
+    data.map((row) => {
+      let filteredArray = [];
+      filteredArray = allPatients.filter(
+        (patient) => patient.referedBy === row.referalId
+      );
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      const filteredPayment = [];
+      filteredArray.map((patient) => {
+        const paymentArray = patient.payments
+          .filter((payment) => payment.status === "success")
+          .filter(
+            (payment) =>
+              new Date(payment.date).getMonth() === currentMonth &&
+              new Date(payment.date).getFullYear() === currentYear
+          );
+        filteredPayment.push(...paymentArray);
+      });
+      let total = 0;
+      filteredPayment &&
+        filteredPayment.map((payment) => {
+          total += payment.amount*row.percentPerReferal/100;
+          console.log(payment.amount);
+        });
+      row.income = total;
+      return row.income;
+    });
+  }, [allPatients, data]);
 
   return (
     <TableContainer component={Paper} className="workerTable">
@@ -48,7 +75,7 @@ const WorkerTable = (props) => {
             <TableCell className="tableCell">Number of Referals</TableCell>
             <TableCell className="tableCell">Referal Id</TableCell>
             <TableCell className="tableCell">Percent Per Referal</TableCell>
-            <TableCell className="tableCell">Income</TableCell>
+            <TableCell className="tableCell">Income this month</TableCell>
             <TableCell className="tableCell">Identity</TableCell>
             <TableCell className="tableCell">Actions</TableCell>
           </TableRow>
@@ -89,7 +116,7 @@ const WorkerTable = (props) => {
                 <TableCell className="tableCell">
                   {row.percentPerReferal}
                 </TableCell>
-                <TableCell className="tableCell">{0}</TableCell>
+                <TableCell className="tableCell"> ₹ {row.income}</TableCell>
                 <TableCell className="tableCell">
                   <div className="cellWrapper">
                     <a

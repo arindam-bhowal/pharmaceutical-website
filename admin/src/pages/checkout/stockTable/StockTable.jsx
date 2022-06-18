@@ -22,11 +22,11 @@ const StockTable = (props) => {
     }
   });
 
-  const handleAddition = (id, amount) => {
+  const handleAddition = (id, amount, drugName) => {
     let newArray = [];
     const res = cart.find((item) => item.stockId === id);
     if (res === undefined) {
-      setCart((cart) => [...cart, { stockId: id, quantity: 1 }]);
+      setCart((cart) => [...cart, { stockId: id, quantity: 1, drugName: drugName }]);
     } else {
       newArray = [...cart];
       newArray.forEach((item) => {
@@ -94,7 +94,7 @@ const StockTable = (props) => {
                     {/* <Add className="icon status add" onClick={()=>{setCartItem(cartItem => [...cartItem, row._id])}} /> */}
                     <Add
                       className="icon status add"
-                      onClick={() => handleAddition(row._id, row.quantity)}
+                      onClick={() => handleAddition(row._id, row.quantity, row.drugName)}
                     />
                     <span className="status quantity">
                       {cart.find((item) => item.stockId === row._id)

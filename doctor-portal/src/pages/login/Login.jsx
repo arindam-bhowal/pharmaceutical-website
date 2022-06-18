@@ -23,7 +23,7 @@ const Login = () => {
       if(res==='error'){
         navigate('error')
       }
-      navigate('/')
+      navigate(0)
     }
     login()
   }

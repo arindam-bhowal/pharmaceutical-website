@@ -6,7 +6,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import checkoutContext from "../../context/checkout/checkoutContext";
 import medicineContext from "../../context/medicine/medicineContext";
 import patientContext from "../../context/patient/patientContext";
-import axios from 'axios'
+import axios from "axios";
 import "./checkout.scss";
 
 const Checkout = () => {
@@ -19,7 +19,7 @@ const Checkout = () => {
 
   const { fetchAllMedicines } = useContext(medicineContext);
   const [cartStocks, setCartStocks] = useState([]);
-  const [netPrice, setNetPrice] = useState(0);
+  // const [netPrice, setNetPrice] = useState(0);
 
   //  ================ Warn Before Reloading====================
   useBeforeunload((event) => {
@@ -46,14 +46,21 @@ const Checkout = () => {
 
   // ====================== Display Net Amount=================
 
-  const calculateTotalAmount = () => {
-    let total = cartStocks.reduce((amount, stock) => {
-      return amount + (stock.reqQuantity *(stock.sellingPrice* (100-stock.discount)/100));
-    }, 0);
-    setNetPrice(total);
-  };
+  // useEffect(() => {
+  //   const calculateTotalAmount = async () => {
+  //     let total = await cartStocks.reduce((amount, stock) => {
+  //       return (
+  //         amount +
+  //         stock.reqQuantity *
+  //           ((stock.sellingPrice * (100 - stock.discount)) / 100)
+  //       );
+  //     }, 0);
+  //     setNetPrice(total);
+  //   };
+  //   calculateTotalAmount();
+  // }, [netPrice]);
 
-  //  ========= Get Patient, Stocks and Net Amount ============
+  //  ========= Get Patient, Stocks============
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -64,23 +71,37 @@ const Checkout = () => {
         navigate("/checkout/patient");
       }
     };
-
     fetchPatient();
     getStocks();
-    calculateTotalAmount();
-  }, [reqPatient, cartStocks]);
+  }, [reqPatient]);
 
   //  ===============Handle Payments ==========================
 
   const handlePayment = async (status) => {
+    let total = await cartStocks.reduce((amount, stock) => {
+      return (
+        amount +
+        stock.reqQuantity *
+          ((stock.sellingPrice * (100 - stock.discount)) / 100)
+      );
+    }, 0);
+    
     let newArray = patient.payments;
-    newArray.push({ amount: netPrice, status: status, date: new Date().toUTCString() });
+    newArray.push({
+      amount: total,
+      status: status,
+      stocks: reqStocks,
+      date: new Date().toUTCString(),
+    });
     try {
       const res = await updatePaymentInfo(patient._id, newArray);
 
-      cartStocks.map( async (stock) => {
-        await axios.put(`http://localhost:8801/api/admin/medicine/update/${stock._id}`, {quantity: stock.quantity - stock.reqQuantity} )
-      })
+      cartStocks.map(async (stock) => {
+        await axios.put(
+          `http://localhost:8801/api/admin/medicine/update/${stock._id}`,
+          { quantity: stock.quantity - stock.reqQuantity }
+        );
+      });
 
       if (res === "error") {
         navigate("error");
@@ -122,7 +143,15 @@ const Checkout = () => {
                 style={{ fontSize: "3em", margin: "10px" }}
               >
                 {" "}
-                ₹{netPrice}
+                ₹{
+                  cartStocks.reduce((amount, stock) => {
+                    return (
+                      amount +
+                      stock.reqQuantity *
+                        ((stock.sellingPrice * (100 - stock.discount)) / 100)
+                    );
+                  }, 0)
+                }
               </span>
             </div>
             <div className="buyButton">
@@ -151,7 +180,7 @@ const Checkout = () => {
 
         <div className="bottom">
           <h2 style={{ color: "rgb(9, 128, 128)", textAlign: "center" }}>
-            Select Quantity
+            Medicine Details
           </h2>
           <div className="wrapper">
             {cartStocks.map((med) => (
@@ -167,7 +196,11 @@ const Checkout = () => {
                     <span className="status add">{med.reqQuantity}</span>
                   </div>
                   <div className="cardPrice">
-                    ₹ <span>{med.reqQuantity *(med.sellingPrice* (100-med.discount)/100)}</span>
+                    ₹{" "}
+                    <span>
+                      {med.reqQuantity *
+                        ((med.sellingPrice * (100 - med.discount)) / 100)}
+                    </span>
                   </div>
                 </div>
               </div>

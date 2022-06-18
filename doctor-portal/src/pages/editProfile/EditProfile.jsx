@@ -32,7 +32,7 @@ const EditProfile = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [registrationNo, setRegistrationNo] = useState();
-  const password = "janKalyan";
+  const [password, setPassword] = useState('')
   const [phoneNumber, setPhoneNumber] = useState();
   const [age, setAge] = useState();
   const [sex, setSex] = useState("");
@@ -237,10 +237,11 @@ const EditProfile = () => {
       registrationNo,
       referals,
       referalId,
-      percentPerReferal
+      percentPerReferal,
+      password
     );
     localStorage.removeItem('doc')
-    navigate("/login");
+    navigate(0);
   };
 
   return (
@@ -382,11 +383,12 @@ const EditProfile = () => {
                 style={{ backgroundColor: "#e1dbdb" }}
                 name="password"
                 type="text"
-                disabled
+                required
+                onChange={(e) => setPassword(e.target.value)}
               />
               <span className="highlight"></span>
               <span className="bar"></span>
-              <label>Default Password</label>
+              <label>Password</label>
             </div>
 
             <div className="group">

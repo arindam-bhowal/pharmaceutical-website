@@ -55,14 +55,17 @@ const History = () => {
                       <FileCopy className="cardIcon" />
                     </div>
                     <div className="details">
-                      <div className="date">{prescription.date}</div>
-                      <div className="download">Download Prescription now</div>
+                      <div className="date">
+                        {new Date(prescription.date).getDate() + '/' + new Date(prescription.date).getMonth() + '/' + new Date(prescription.date).getFullYear()}
+                        </div>
+                     { prescription.prescription ? <div className="download">Download Prescription now</div> : <div>No Prescription Found</div>}
                     </div>
-                    <div className="icon download">
+                   { prescription.prescription &&
+                   ( <div className="icon download">
                       <a href={prescription.prescription} rel="noopener" target='_blank' style={{color: 'black'}}>
                       <FileDownload className="cardIcon" />
                       </a>
-                    </div>
+                    </div>)}
                   </div>
                 );
               })}

@@ -12,11 +12,11 @@ import {
 } from "firebase/storage";
 import app from "../../firebase";
 import Navbar from "../../components/navbar/Navbar";
-
+import pharmacyContext from "../../context/pharmacy/pharmacyContext";
 
 const Profile = () => {
-
-  const { fetchPatient, updateUser } = useContext(userContext)
+  const { fetchPatient, updateUser } = useContext(userContext);
+  const { fetchAllPharmacies } = useContext(pharmacyContext);
 
   const navigate = useNavigate();
 
@@ -31,8 +31,19 @@ const Profile = () => {
   const [govtId, setGovtId] = useState("");
 
   const [progressUpload, setProgressUpload] = useState();
+  const [locationOptions, setLocationOptions] = useState([]);
 
-  const [reqUser, setRequser] = useState([])
+  const [reqUser, setRequser] = useState([]);
+
+  // ----------------Location -----------------
+
+  useEffect(() => {
+    const getAllLocations = async () => {
+      const res = await fetchAllPharmacies();
+      setLocationOptions(res);
+    };
+    getAllLocations();
+  }, []);
 
   // --------------------------------------------------Profile Pic Upload -------------------------------------------
 
@@ -136,217 +147,226 @@ const Profile = () => {
   // ================================================================================================
 
   useEffect(() => {
+    const res = JSON.parse(localStorage.getItem("user"));
+    setRequser(res);
 
-    const res = JSON.parse(localStorage.getItem('user'));
-      setRequser(res)
-
-    setName(reqUser.name)
-    setEmail(reqUser.email)
-    setPassword(reqUser.password)
-    setPhoneNumber(reqUser.phoneNumber)
-    setAge(reqUser.age)
-    setLocation(reqUser.location)
-    setSex(reqUser.sex)
-    setProfilePic(reqUser.profilePic)
-    setGovtId(reqUser.govtId)
-
-  }, [])
-  
+    setName(reqUser.name);
+    setEmail(reqUser.email);
+    setPhoneNumber(reqUser.phoneNumber);
+    setAge(reqUser.age);
+    setLocation(reqUser.location);
+    setSex(reqUser.sex);
+    setProfilePic(reqUser.profilePic);
+    setGovtId(reqUser.govtId);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await updateUser(reqUser._id, name, email, password, phoneNumber, age, location, sex, profilePic, govtId)
-    if(res==='error'){
-      navigate('/error')
+    const res = await updateUser(
+      reqUser._id,
+      name,
+      email,
+      password,
+      phoneNumber,
+      age,
+      location,
+      sex,
+      profilePic,
+      govtId
+    );
+    if (res === "error") {
+      navigate("/error");
     }
-    navigate('/')
+    localStorage.removeItem("user");
+    navigate("/");
   };
 
   return (
     <>
-     <div className="navbar">
+      <div className="navbar">
         <Navbar />
       </div>
-    <div className="profile">
-      <div className="wrapper">
-        {progressUpload && (
-          <div className="uploading">
-            <div className="progressBar">
-              <div
-                className="progress"
-                style={{ width: `${progressUpload}%` }}
-              ></div>
-            </div>
-          </div>
-        )}
-
-        <ArrowBack
-          className="backBtn"
-          onClick={() => {
-            navigate(-1);
-          }}
-        />
-        <div className="header">
-          <h1>Update Profile</h1>
-        </div>
-
-        <form className="container" onSubmit={handleSubmit}>
-          <div className="left">
-            <div className="profilePic">
-              {selectedFile ? (
-                <img src={preview} alt="" />
-              ) : (
-                <img src={reqUser? reqUser.profilePic : "/assets/defaultProfilePic.png"} alt="" />
-              )}
-              <div className="inputContainer">
-                <label htmlFor="profilePic">
-                  <Edit className="editIcon" />
-                  Add Profile Picture
-                </label>
-                <input
-                  type="file"
-                  id="profilePic"
-                  accept=".png, .jpg, .jpeg"
-                  onChange={handleFileUpload}
-                />
+      <div className="profile">
+        <div className="wrapper">
+          {progressUpload && (
+            <div className="uploading">
+              <div className="progressBar">
+                <div
+                  className="progress"
+                  style={{ width: `${progressUpload}%` }}
+                ></div>
               </div>
-              <Button
-                variant="contained"
-                style={{ margin: "10px" }}
-                onClick={handleProfilePicUpload}
-              >
-                Upload Now
-              </Button>
             </div>
+          )}
 
-            <div className="identity">
-              {setSelectedIdProof ? (
-                <img src={IdPreview} alt="" />
-              ) : (
-                <img src={reqUser? reqUser.govtId : ""} alt="" />
-              )}
-              <div className="inputContainer">
-                <label htmlFor="signature">
-                  <Edit className="editIcon" />
-                  Add Identity Proof
-                </label>
-                <input
-                  type="file"
-                  id="signature"
-                  accept=".png, .jpg, .jpeg"
-                  onChange={handleIdUpload}
-                />
-              </div>
-              <Button
-                variant="contained"
-                style={{ margin: "10px" }}
-                onClick={idProofUpload}
-              >
-                Upload Now
-              </Button>
-            </div>
+          <ArrowBack
+            className="backBtn"
+            onClick={() => {
+              navigate(-1);
+            }}
+          />
+          <div className="header">
+            <h1>Update Profile</h1>
           </div>
-          <div className="right">
-            <div className="group">
-              <input
-                name="name"
-                type="text"
-                required
-                defaultValue={reqUser && reqUser.name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <span className="highlight"></span>
-              <span className="bar"></span>
-              <label>Name</label>
-            </div>
 
-            <div className="group">
-              <input
-                name="email"
-                type="text"
-                required
-                defaultValue={reqUser && reqUser.email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <span className="highlight"></span>
-              <span className="bar"></span>
-              <label>Email</label>
-            </div>
+          <form className="container" onSubmit={handleSubmit}>
+            <div className="left">
+              <div className="profilePic">
+                {selectedFile ? (
+                  <img src={preview} alt="" />
+                ) : (
+                  <img src="/assets/defaultProfilePic.png" alt="" />
+                )}
+                <div className="inputContainer">
+                  <label htmlFor="profilePic">
+                    <Edit className="editIcon" />
+                    Add Profile Picture
+                  </label>
+                  <input
+                    type="file"
+                    id="profilePic"
+                    accept=".png, .jpg, .jpeg"
+                    onChange={handleFileUpload}
+                  />
+                </div>
+                <Button
+                  variant="contained"
+                  style={{ margin: "10px" }}
+                  onClick={handleProfilePicUpload}
+                >
+                  Upload Now
+                </Button>
+              </div>
 
-            <div className="group">
-              <input
-                name="password"
-                type="password"
-                required
-                defaultValue={reqUser && reqUser.password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <span className="highlight"></span>
-              <span className="bar"></span>
-              <label>Password</label>
+              <div className="identity">
+                {selectedIdProof ? (
+                  <img src={IdPreview} alt="" />
+                ) : (
+                  <img src="/assets/noIdProof.png" alt="" />
+                )}
+                <div className="inputContainer">
+                  <label htmlFor="signature">
+                    <Edit className="editIcon" />
+                    Add Identity Proof
+                  </label>
+                  <input
+                    type="file"
+                    id="signature"
+                    accept=".png, .jpg, .jpeg"
+                    onChange={handleIdUpload}
+                  />
+                </div>
+                <Button
+                  variant="contained"
+                  style={{ margin: "10px" }}
+                  onClick={idProofUpload}
+                >
+                  Upload Now
+                </Button>
+              </div>
             </div>
-
-            <div className="group">
-              <input
-                name="phoneNumber"
-                type="number"
-                required
-                defaultValue={reqUser && reqUser.phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
-              <span className="highlight"></span>
-              <span className="bar"></span>
-              <label>Phone Number</label>
-            </div>
-
-            <div className="ageSexLocation">
-              <div className="age">
+            <div className="right">
+              <div className="group">
                 <input
-                  name="age"
-                  placeholder="Age"
+                  name="name"
+                  type="text"
+                  required
+                  defaultValue={reqUser && reqUser.name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <span className="highlight"></span>
+                <span className="bar"></span>
+                <label>Name</label>
+              </div>
+
+              <div className="group">
+                <input
+                  name="email"
+                  type="text"
+                  required
+                  defaultValue={reqUser && reqUser.email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <span className="highlight"></span>
+                <span className="bar"></span>
+                <label>Email</label>
+              </div>
+
+              <div className="group">
+                <input
+                  name="password"
+                  type="password"
+                  required
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <span className="highlight"></span>
+                <span className="bar"></span>
+                <label>Password *</label>
+              </div>
+
+              <div className="group">
+                <input
+                  name="phoneNumber"
                   type="number"
-                  defaultValue={reqUser && reqUser.age}
-                  onChange={(e) => setAge(e.target.value)}
+                  required
+                  defaultValue={reqUser && reqUser.phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                 />
+                <span className="highlight"></span>
+                <span className="bar"></span>
+                <label>Phone Number</label>
               </div>
 
-              <div className="location">
-                <select
-                  onChange={(e) => {
-                    e.target.value !== "location" &&
-                      setLocation(e.target.value);
-                  }}
-                  required
-                >
-                  <option defaultValue="0">Location</option>
-                  <option value="Guwahati">Guwahati</option>
-                  <option value="Borpeta">Borpeta</option>
-                  <option value="Other">Others</option>
-                </select>
+              <div className="ageSexLocation">
+                <div className="age">
+                  <input
+                    name="age"
+                    placeholder="Age"
+                    type="number"
+                    defaultValue={reqUser && reqUser.age}
+                    onChange={(e) => setAge(e.target.value)}
+                  />
+                </div>
+
+                <div className="location">
+                  <select
+                    onChange={(e) => {
+                      e.target.value !== "location" &&
+                        setLocation(e.target.value);
+                    }}
+                    required
+                  >
+                    <option value="Location">Location</option>
+                    {locationOptions.map((option) => (
+                      <option key={option.drugLicenseNo} value={option.branch}>
+                        {option.branch}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="sex">
+                  <select
+                    onChange={(e) => {
+                      e.target.value !== "sex" && setSex(e.target.value);
+                    }}
+                    required
+                  >
+                    <option defaultValue="0">Sex</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Others</option>
+                  </select>
+                </div>
               </div>
 
-              <div className="sex">
-                <select
-                  onChange={(e) => {
-                    e.target.value !== "sex" && setSex(e.target.value);
-                  }}
-                  required
-                >
-                  <option defaultValue="0">Sex</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Others</option>
-                </select>
-              </div>
+              <Button variant="contained" type="submit" className="submitBtn">
+                Update
+              </Button>
             </div>
-
-            <Button variant="contained" type="submit" className="submitBtn">
-              Update
-            </Button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
     </>
   );
 };

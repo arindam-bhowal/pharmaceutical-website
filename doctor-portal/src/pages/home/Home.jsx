@@ -18,6 +18,8 @@ const Home = () => {
   const [allPatients, setAllPatients] = useState([])
 
   const [filteredArray, setFilteredArray] = useState([])
+  const [netEarning, setNetEarning] = useState(0)
+
 
   useEffect(() => {
     if (localStorage.getItem("doc")) {
@@ -60,7 +62,26 @@ const Home = () => {
       setFilteredArray(newArray)
     }
   }, [reqDoc, allPatients])
+
   
+  //  ----Calculating earning in this month----
+  useEffect(() => {
+    const currentMonth = new Date().getMonth()
+    const currentYear = new Date().getFullYear()
+    const filteredPayment = []
+    filteredArray.map(patient => {
+      const paymentArray = 
+      patient.payments
+      .filter(payment => payment.status === 'success')
+      .filter(payment => new Date(payment.date).getMonth() === currentMonth && new Date(payment.date).getFullYear() === currentYear)
+      filteredPayment.push(...paymentArray)
+    })
+    let total = 0
+    filteredPayment && filteredPayment.map(payment => {
+      total += payment.amount
+    })
+    setNetEarning(total)
+  }, [filteredArray])
   
 
   return (
@@ -74,13 +95,13 @@ const Home = () => {
           </div>
 
           <div className="card">
-            <h2>Percentage Per Referal</h2>
-            <div className="content">{reqDoc ? reqDoc.percentPerReferal: 'undefined'}</div>
+            <h2>Referal Id</h2>
+            <div className="content">{reqDoc ? reqDoc.referalId: 'undefined'}</div>
           </div>
 
           <div className="card">
             <h2>Earning this Month</h2>
-            <div className="content">3</div>
+            <div className="content"> ₹ {netEarning}</div>
           </div>
         </div>
         <div className="right">

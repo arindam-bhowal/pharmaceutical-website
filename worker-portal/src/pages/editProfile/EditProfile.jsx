@@ -339,11 +339,12 @@ const EditProfile = () => {
               name="password"
               type="text"
               defaultValue={reqWorker && reqWorker.password}
+              required
               onChange={(e) => setPassword(e.target.value)}
             />
             <span className="highlight"></span>
             <span className="bar"></span>
-            <label>Default Password</label>
+            <label>Password</label>
           </div>
 
           <div className="group">

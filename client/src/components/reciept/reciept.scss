@@ -1,0 +1,109 @@
+.reciept {
+    margin-left: 90px;
+  
+    .top {
+      height: 20vh;
+      margin-left: 10px;
+      width: 95%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+  
+      .left {
+        display: flex;
+        width: 25vw;
+        justify-content: space-between;
+        align-items: center;
+  
+        .heading {
+          color: rgb(9, 128, 128);
+        }
+        .details {
+          margin-top: 15px;
+          h4 {
+            padding: 5px;
+          }
+          h5 {
+            padding: 5px;
+          }
+          h6 {
+            padding: 5px;
+          }
+        }
+      }
+  
+      .right {
+          .btn{
+            margin: 10px;
+          }
+      }
+    }
+  
+    .bottom {
+      display: flex;
+      margin-top: 10px;
+      margin-left: 10px;
+      overflow: auto;
+      height: 70vh;
+      .wrapper {
+        width: 75vw;
+        display: flex;
+        //   justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        overflow: auto;
+  
+        .checkoutCard {
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          margin-top: 30px;
+          width: 40vw;
+          height: 20vh;
+          // background-color: red;
+          -webkit-box-shadow: 5px 5px 6px 4px rgba(0, 0, 0, 0.41);
+          box-shadow: 5px 5px 6px 4px rgba(0, 0, 0, 0.41);
+  
+          .checkoutCardRight {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            width: 20vw;
+  
+            .amount {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+  
+              .status {
+                // padding: 5px;
+                border-radius: 5px;
+                margin: 2px;
+                font-size: 1em;
+                margin: 3px;
+  
+                &.quantity {
+                  margin: 2px;
+                  font-size: 1em;
+                }
+  
+                &.remove {
+                  color: rgb(0, 0, 0);
+                  //   background-color: rgba(0, 0, 0, 0.151);
+                  cursor: pointer;
+                }
+                &.add {
+                  color: rgb(255, 0, 0);
+                  //   background-color: rgba(0, 0, 0, 0.151);
+                  cursor: pointer;
+                }
+                &:hover {
+                  background-color: rgba(255, 255, 255, 0.151);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

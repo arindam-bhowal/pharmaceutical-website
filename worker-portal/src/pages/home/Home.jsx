@@ -71,12 +71,12 @@ const Home = () => {
       const paymentArray = 
       patient.payments
       .filter(payment => payment.status === 'success')
-      // .filter(payment => payment.date.getMonth() === currentMonth && payment.date.getFullYear() === currentYear)
+      .filter(payment => new Date(payment.date).getMonth() === currentMonth && new Date(payment.date).getFullYear() === currentYear)
       filteredPayment.push(...paymentArray)
     })
-    const total = 0
-    filteredPayment.payments && filteredPayment.payments.map(payment => {
-      total += payment.amount 
+    let total = 0
+    filteredPayment && filteredPayment.map(payment => {
+      total += payment.amount
     })
     setNetEarning(total)
   }, [filteredArray])
@@ -101,7 +101,7 @@ const Home = () => {
 
           <div className="card">
             <h2>Earning this Month</h2>
-            <div className="content"> ₹ {netEarning}</div>
+            <div className="content">₹ {netEarning}</div>
           </div>
         </div>
         <div className="right">

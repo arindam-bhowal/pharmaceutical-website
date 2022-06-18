@@ -9,8 +9,11 @@ const Login = () => {
 
   const handleSubmit = async () => {
     if(username==='janKalyan' && password==='janKalyan'){
-      localStorage.setItem('admin', {user: username})
+      localStorage.setItem('admin', JSON.parse({user: username}))
       navigate('/')
+    }
+    else{
+      alert('Wrong Credentials!!')
     }
   }
     

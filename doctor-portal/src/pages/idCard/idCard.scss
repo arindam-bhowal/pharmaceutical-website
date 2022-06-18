@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   .bg-grid-line,
   .card:after,
   .card header:before {
@@ -294,4 +294,9 @@
       inset 0 -1px 0 rgba(0, 0, 0, 0.07);
     border-radius: 50px;
   }
+}
+
+#authorSignature {
+  width: 10em;
+  height: 6em;
 }

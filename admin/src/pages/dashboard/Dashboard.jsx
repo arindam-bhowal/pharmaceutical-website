@@ -7,7 +7,6 @@ import doctorContext from "../../context/doctor/doctorContext";
 import workerContext from "../../context/worker/workerContext";
 import "./dashboard.scss";
 
-
 const Dashboard = () => {
   const [userStats, setUserStats] = useState([]);
 
@@ -18,8 +17,8 @@ const Dashboard = () => {
   const [noOfPatient, setNoOfPatient] = useState(0);
   const [noOfWorker, setNoOfWorker] = useState(0);
   const [noOfDoctor, setNoOfDoctor] = useState(0);
-  const [allPatients, setAllPatients] = useState([])
-  const [profitInAMonth, setProfitInAMonth] = useState(0)
+  const [allPatients, setAllPatients] = useState([]);
+  const [profitInAMonth, setProfitInAMonth] = useState(0);
 
   const navigate = useNavigate();
 
@@ -45,55 +44,51 @@ const Dashboard = () => {
   useEffect(() => {
     const getStats = async () => {
       try {
-        const res = await patientStats()
+        const res = await patientStats();
         res.data.map((item) =>
           setUserStats((prev) => [
             ...prev,
             { name: MONTHS[item._id - 1], "Active User": item.total },
           ])
         );
-      } 
-      catch {
-        navigate('/error')
+      } catch {
+        navigate("/error");
       }
     };
     getStats();
   }, [MONTHS, patientStats]);
 
-
   // ================Calculate no of users =============
   useEffect(() => {
     const calculateUsers = async () => {
-      const patients = await fetchAllPatients()
-      const workers = await fetchAllWorkers()
-      const doctors = await fetchAllDoctors()
+      const patients = await fetchAllPatients();
+      const workers = await fetchAllWorkers();
+      const doctors = await fetchAllDoctors();
 
-      setAllPatients(patients)
-      setNoOfPatient(patients.length)
-      setNoOfWorker(workers.length)
-      setNoOfDoctor(doctors.length)
-    }
-    calculateUsers()
-  }, [])
+      setAllPatients(patients);
+      setNoOfPatient(patients.length);
+      setNoOfWorker(workers.length);
+      setNoOfDoctor(doctors.length);
+    };
+    calculateUsers();
+  }, []);
 
   //  =============Calculate Profit ======================
   useEffect(() => {
-    if(allPatients){
-      let totalAmount = 0
-      allPatients.forEach(patient => {
-        patient.payments.forEach(data => {
-          if(data.status === 'success'){
-            console.log(data.date)
-            totalAmount += data.amount
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    if (allPatients) {
+      let totalAmount = 0;
+      allPatients.forEach((patient) => {
+        patient.payments.forEach((data) => {
+          if (data.status === "success" &&( new Date(data.date).getMonth() === currentMonth && new Date(data.date).getFullYear() === currentYear) ) {
+            totalAmount += data.amount;
           }
-        })
-      })
-      setProfitInAMonth(totalAmount)
+        });
+      });
+      setProfitInAMonth(totalAmount);
     }
-  }, [allPatients])
-  
-
-  
+  }, [allPatients]);
 
   return (
     <>

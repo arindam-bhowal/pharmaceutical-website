@@ -5,10 +5,12 @@ import Navbar from "../../components/navbar/Navbar";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import userContext from "../../context/userContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Payment = () => {
+  const navigate = useNavigate()
   const logo = "/assets/logo.png";
-  const { fetchPatient } = useContext(userContext);
+  const { fetchPatient, setReqPaymentReciept } = useContext(userContext);
 
   const [reqUserId, setReqUserId] = useState("");
   const [reqUser, setReqUser] = useState([]);
@@ -37,84 +39,72 @@ const Payment = () => {
     setAllPayments(reqUser.payments);
   }, [reqUser]);
 
-  // ------------------payments-------------------
+  // ---------------Update Payment Status ------------------
 
-  function loadScript(src) {
-    return new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = src;
-      script.onload = () => {
-        resolve(true);
-      };
-      script.onerror = () => {
-        resolve(false);
-      };
-      document.body.appendChild(script);
-    });
+  const updatePaymentStatus = async (date) => {
+    let reqPayment = reqUser.payments.filter(payment => payment.date === date)
+    reqPayment[0].status = 'success'
+    let index = reqUser.payments.findIndex(payment => payment.date === date)
+    reqUser.payments[index] = reqPayment[0]
+
+    await axios.put(`http://localhost:8801/api/patient/update/${reqUserId}`, {payments : reqUser.payments})
+    navigate(0)
   }
 
-  async function displayRazorpay(reqAmount) {
-    const res = await loadScript(
-      "https://checkout.razorpay.com/v1/checkout.js"
-    );
+  // ------------------payments-------------------
+  //  Script
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+  //  Payment Function
 
-    if (!res) {
-      alert("Razorpay SDK failed to load. Are you online?");
-      return;
-    }
+  async function displayRazorpay(reqAmount, date) {
+    var amount = reqAmount * 100;
 
-    // creating a new order
-    const result = await axios.post(
-      "http://localhost:8801/api/payment/createorder",
-      { amount: reqAmount }
-    );
-
-    if (!result) {
-      alert("Server error. Are you online?");
-      return;
-    }
-
-    // Getting the order details back
-    const { amount, id: order_id, currency } = result.data;
-
-    const options = {
-      key: process.env.REACT_APP_KEY_ID, // Enter the Key ID generated from the Dashboard
-      amount: amount.toString(),
-      currency: currency,
-      name: "JAN-KALYAN HEALTHCARE",
-      description: "Test Transaction",
-      image: { logo },
-      order_id: order_id,
-      handler: async function (response) {
-        const data = {
-          orderCreationId: order_id,
-          razorpayPaymentId: response.razorpay_payment_id,
-          razorpayOrderId: response.razorpay_order_id,
-          razorpaySignature: response.razorpay_signature,
+    var options = {
+      key: process.env.REACT_APP_razorpaytest_id,
+      amount: 0,
+      name: "JanKalyan",
+      order_id: "",
+      image: logo,
+      handler: function (response) {
+        var values = {
+          razorpay_signature: response.razorpay_signature,
+          razorpay_order_id: response.razorpay_order_id,
+          transactionid: response.razorpay_payment_id,
+          transactionamount: amount,
         };
-
-        const result = await axios.post(
-          "http://localhost:5000/api/payment/success",
-          data
-        );
-
-        alert(result.data.msg);
+        axios
+          .post("http://localhost:8801/api/payment/success", values)
+          .then((res) => {
+            // console.log(res);
+            alert("Success");
+            updatePaymentStatus(date)
+          })
+          .catch((e) => console.log(e));
       },
       prefill: {
         name: reqUser.name,
         email: reqUser.email,
         contact: reqUser.phoneNumber,
       },
-      notes: {
-        address: reqUser.location,
-      },
       theme: {
-        color: "#61dafb",
+        color: "#528ff0",
       },
     };
 
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
+    axios
+      .post("http://localhost:8801/api/payment/order", { amount: amount })
+      .then((res) => {
+        options.order_id = res.data.id;
+        options.amount = res.data.amount;
+        var rzp1 = new window.Razorpay(options);
+        rzp1.open();
+      })
+      .catch((e) => console.log(e));
   }
 
   return (
@@ -136,8 +126,14 @@ const Payment = () => {
               allPayments.map((payment) => {
                 if (payment.status === "pending") {
                   return (
-                    <div className="card">
-                      <div className="date">{payment.date}</div>
+                    <div key={payment.date} className="card">
+                      <div className="date">
+                        {new Date(payment.date).getDate() +
+                          "/" +
+                          new Date(payment.date).getMonth() +
+                          "/" +
+                          new Date(payment.date).getFullYear()}
+                      </div>
                       <div className="status pending">
                         &nbsp; Pending &nbsp;
                       </div>
@@ -147,7 +143,7 @@ const Payment = () => {
                           variant="contained"
                           className="btn"
                           onClick={() => {
-                            displayRazorpay(payment.amount*100);
+                            displayRazorpay(payment.amount , payment.date);
                           }}
                         >
                           Pay Now
@@ -171,12 +167,21 @@ const Payment = () => {
               allPayments.map((payment) => {
                 if (payment.status === "success") {
                   return (
-                    <div className="card">
-                      <div className="date">{payment.date}</div>
+                    <div key={payment.date} className="card">
+                      <div className="date">
+                        {new Date(payment.date).getDate() +
+                          "/" +
+                          new Date(payment.date).getMonth() +
+                          "/" +
+                          new Date(payment.date).getFullYear()}
+                      </div>
                       <div className="status paid">&nbsp; paid &nbsp;</div>
                       <div className="amount">₹ {payment.amount}</div>
                       <div className="download">
-                        <Button variant="contained" className="btn">
+                        <Button variant="contained" className="btn" onClick={() =>{
+                          setReqPaymentReciept(payment)
+                           navigate('/reciept')
+                        }}>
                           <Download />
                           <p>Download Invoice</p>
                         </Button>

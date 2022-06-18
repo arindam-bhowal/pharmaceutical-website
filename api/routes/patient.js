@@ -11,6 +11,15 @@ const jwt = require("jsonwebtoken");
 // ====================
 
 router.post("/register", async (req, res) => {
+  const alreadyRegistered = await Patient.findOne({ email: req.body.email });
+
+  if (alreadyRegistered) {
+    res.status(403).json({
+      msg: "Patient with this email is already registered",
+      status: 403,
+    });
+  }
+
   const encryptedPassword = CryptoJs.AES.encrypt(
     req.body.password,
     process.env.SECRETE_MESSAGE
@@ -33,7 +42,11 @@ router.post("/login", async (req, res) => {
   try {
     const reqPatient = await Patient.findOne({ email: req.body.email });
     // Todo:: the error message
-    !reqPatient && res.status(404).json("User with this credentials not found");
+    !reqPatient &&
+      res.status(404).json({
+        msg: "User with this credentials not found",
+        status: 404,
+      });
     // ==check Password==
     if (
       req.body.password ===
@@ -52,14 +65,16 @@ router.post("/login", async (req, res) => {
       res.status(200).json({ reqPatient, patientAuthToken });
     } else {
       // Todo:: the error message
-      res.status(404).json("Invalid credentials");
+      res.status(404).json({
+        msg: "Incorrect Password",
+        status: 404,
+      });
     }
   } catch (error) {
     // We will come to this latter
     console.log(error);
   }
 });
-
 
 // ================
 // Patients CRUD operations
@@ -101,7 +116,7 @@ router.put("/update/:patientId", async (req, res) => {
         req.body.password,
         process.env.SECRETE_MESSAGE
       ).toString();
-        req.body.password = encryptedPassword
+      req.body.password = encryptedPassword;
     }
     await Patient.findByIdAndUpdate(
       req.params.patientId,
@@ -114,7 +129,6 @@ router.put("/update/:patientId", async (req, res) => {
     res.status(500).json(error);
   }
 });
-
 
 // ----------------------Patient Stats ----------------
 
@@ -137,17 +151,10 @@ router.get("/stats", async (req, res) => {
         },
       },
     ]);
-    res.status(200).json(data)
+    res.status(200).json(data);
   } catch (err) {
     res.status(500).json(err);
   }
 });
-
-
-
-
-
-
-
 
 module.exports = router;

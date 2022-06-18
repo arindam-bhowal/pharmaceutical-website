@@ -75,8 +75,8 @@ router.post("/register", async (req, res) => {
 router.get("/find/:doctorId", async (req, res) => {
   try {
     const reqDoctor = await Doctor.findById(req.params.doctorId);
-    const { password, ...otherInfo } = reqDoctor._doc;
-    res.status(200).json(otherInfo);
+    // const { password, ...otherInfo } = reqDoctor._doc;
+    res.status(200).json(reqDoctor);
   } catch (error) {
     // We will come to the error page later
     res.status(500).json(error);

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 import "./about.scss";
 
@@ -80,6 +79,13 @@ const About = () => {
                     <div className="tag">GovtId :</div>
                     <div classNareme="tagInfo">
                       {reqUser ? (<a href={reqUser.govtId}>Click Here to view</a>): ""}
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="tag">Authorization Signature: </div>
+                    <div className="tagInfo">
+                      <img id="authorSignature" src="https://firebasestorage.googleapis.com/v0/b/jankalyan-f1fa7.appspot.com/o/signature.png?alt=media&token=ec5638bd-be78-4c8a-94a1-e9eacc4351d0" alt="" />
                     </div>
                   </li>
 

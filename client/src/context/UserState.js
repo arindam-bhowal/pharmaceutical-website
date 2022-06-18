@@ -1,9 +1,12 @@
 import userContext from "./userContext";
 import axios from 'axios'
+import { useState } from "react";
 
 const UserState = (props) => {
 
     const host = "http://localhost:8801/api/patient";
+
+    const [reqPaymentReciept, setReqPaymentReciept] = useState()
 
     //  Patient Login
     const patientLogin = async(email, password) => {
@@ -36,7 +39,7 @@ const UserState = (props) => {
 
 
     return (
-    <userContext.Provider value={{ patientLogin, fetchPatient, updateUser }}>
+    <userContext.Provider value={{ patientLogin, fetchPatient, updateUser, setReqPaymentReciept, reqPaymentReciept }}>
         {props.children}
     </userContext.Provider>
     )
