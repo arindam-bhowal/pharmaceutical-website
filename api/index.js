@@ -2,6 +2,7 @@ const express = require('express')
 const connectToMongo = require('./db')
 const cors = require('cors')
 const app = express()
+const dotenv = require('dotenv')
 
 const patientRoute = require('./routes/patient')
 const medicineRoute = require('./routes/medicine')
@@ -15,7 +16,7 @@ const paymentRoute = require('./routes/payment')
 // -----------------Middle wares ---------------
 app.use(express.json())
 app.use(cors())
-
+dotenv.config()
 
 // ------------------------------ALL ROUTES---------------------------------
 
@@ -53,6 +54,6 @@ app.use('/api/payment', paymentRoute)
 
 
 // -----------------Listing to port ---------------
-app.listen(8801, () => {
+app.listen(process.env.PORT, () => {
     console.log('The backend server is running successfully!!')
 })
